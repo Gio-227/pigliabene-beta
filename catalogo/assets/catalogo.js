@@ -13,10 +13,12 @@
   var mappa = [], altezzaNastro = 0, altezzaFinestra = 0;
   function misura(){
     altezzaFinestra = finestra.clientHeight;
-    /* Lo stacco fra un produttore e il successivo e' alto quasi quanto la
-       finestra: senza, per mezzo schermo si leggono le voci di uno sotto il
-       marchio di un altro — succedeva, ed era il difetto peggiore. */
-    var stacco = Math.round(altezzaFinestra * 0.88);
+    /* LA VIA DI MEZZO (Gio, 16/09 sera). Lo stacco era alto quanto la finestra
+       per non far leggere due produttori insieme, ma lasciava troppo vuoto.
+       Ora e' un terzo, e a separarli non e' il nulla: e' il cartiglio che
+       annuncia chi arriva. Cosi' lo scorrimento resta libero, il passaggio si
+       vede, e il vuoto scende da ~10 schermate a ~3 sui 21 produttori. */
+    var stacco = Math.round(altezzaFinestra * 0.35);
     blocchi.forEach(function(b){ b.style.paddingBottom = stacco + 'px'; });
     altezzaNastro = nastro.scrollHeight;
     mappa = blocchi.filter(function(b){ return !b.hidden; }).map(function(b){
@@ -45,13 +47,15 @@
     var avanzamento = Math.min(Math.max(-scena.getBoundingClientRect().top, 0),
                                Math.max(0, altezzaNastro - altezzaFinestra));
     nastro.style.transform = 'translateY(' + (-avanzamento) + 'px)';
-    /* attivo = il produttore che occupa piu' finestra. E' la regola onesta:
-       qualunque sia lo stacco, il telaio segue quello che si sta leggendo. */
-    var a = avanzamento, b = avanzamento + altezzaFinestra;
-    var id = null, meglio = -1;
+    /* Il telaio cambia quando il CARTIGLIO del produttore che arriva ha
+       superato il 42% della finestra, cioe' quando il suo nome e' bene in
+       vista in alto. E' un segnale che si vede, non un calcolo di aree: con
+       lo stacco corto due produttori restano un attimo in pagina insieme, e
+       il cartiglio dice a chi appartiene quello che stai leggendo. */
+    var mira = avanzamento + altezzaFinestra * 0.42;
+    var id = mappa.length ? mappa[0].id : null;
     for (var i = 0; i < mappa.length; i++){
-      var vis = Math.min(b, mappa[i].fine) - Math.max(a, mappa[i].cima);
-      if (vis >= meglio){ meglio = vis; id = mappa[i].id; }
+      if (mappa[i].cima <= mira) id = mappa[i].id; else break;
     }
     if (id && id !== attivo) cambia(id);
   }

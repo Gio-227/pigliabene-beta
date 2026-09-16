@@ -161,6 +161,22 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .nastro{will-change:transform}
 .blocco{padding-bottom:clamp(30px,6cqw,70px)}
 .blocco[hidden]{display:none}
+
+/* il cartiglio di passaggio: riempie lo stacco fra due produttori con qualcosa
+   che si legge, e dice a chi appartiene quello che comincia sotto */
+.passaggio{
+  padding:0 0 clamp(16px,2.4cqw,26px); margin-bottom:clamp(16px,2.4cqw,26px);
+  border-bottom:1px solid currentColor; opacity:.9;
+}
+.passaggio .chi{
+  display:block; font-size:calc(var(--corpo) * 1.12); font-weight:700;
+  letter-spacing:.01em; line-height:1.15;
+}
+.passaggio .dett{
+  display:block; margin-top:5px; font-size:calc(var(--corpo) * .74);
+  letter-spacing:.04em; opacity:.72;
+}
+.passaggio .dett b{font-weight:700; letter-spacing:-.06em; opacity:.9}
 .gruppo{margin-bottom:clamp(18px,2.78cqw,32px)}
 .gruppo[hidden]{display:none}
 .gruppo h2{
@@ -305,6 +321,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .gruppo li{line-height:1.36; gap:8px}
   .gruppo li::before{left:-13px}
   .blocco{padding-bottom:40px}
+  .passaggio{padding-bottom:12px; margin-bottom:14px}
   .copertina h1{font-size:32px; margin-bottom:12px}
   .copertina .kick{font-size:11px; margin-bottom:10px}
   .copertina p{font-size:14.5px; max-width:none; margin-bottom:8px}
