@@ -16,7 +16,14 @@
   --barra-alta:56px;   /* testata */
   --piede-alto:0px;    /* la barra del preventivo non c'e' piu' (Gio, 16/09) */
   --fondo:#FCFFE5; --testo:#980000; --fondo-foto:#FCFFE5;
-  --m-foto:2.6cqw;     /* stacco della foto da destra, alto e basso */
+  --m-foto:clamp(14px,2.6cqw,40px);  /* stacco della foto da destra, alto e basso */
+  /* IL TETTO AI CORPI (Gio, 16/09): le misure erano tutte in cqw e crescevano
+     senza fine col monitor — a 1920 una voce d'elenco arrivava a 41 px. Ora
+     ogni corpo e' un clamp col massimo intorno ai 16 pt, e la pagina si
+     bilancia su 1920x1080 pieno tenendo il testo in una colonna larga quanto
+     si legge bene, centrata nel pannello invece che persa a sinistra. */
+  --corpo:clamp(15px,2.15cqw,21px);   /* titoli e voci, stesso corpo come sulla carta */
+  --colonna:620px;                    /* quanto e' larga la colonna di lettura */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -117,18 +124,27 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .pannello{
   background:var(--fondo); color:var(--testo);
-  display:flex; flex-direction:column; padding:3.1cqw 3.1cqw 2.4cqw;
+  display:flex; flex-direction:column;
+  padding:clamp(20px,3.1cqw,44px) clamp(18px,3.1cqw,44px) clamp(16px,2.4cqw,34px);
   transition:background .5s ease, color .5s ease; min-height:0;
 }
-.marchio{position:relative; height:11cqw; flex:none}
+/* La colonna di lettura: sopra i 1400 px il pannello diventa largo e il testo
+   resterebbe appiccicato a sinistra con mezzo metro di vuoto a destra. Cosi'
+   invece il vuoto sta ai due lati, e a 1920 la pagina respira. */
+.marchio,.finestra,.richiami{width:100%; max-width:var(--colonna); margin-inline:auto}
+
+/* IL MARCHIO STA FERMO (Gio, 16/09): altezza e larghezza hanno un tetto, e si
+   stringono solo quando lo schermo non gliene lascia abbastanza. */
+.marchio{position:relative; height:clamp(46px,11cqw,92px); flex:none}
 .marchio img{
-  position:absolute; inset:0; margin:auto; max-height:100%; max-width:46%;
+  position:absolute; inset:0; margin:auto; max-height:100%;
+  max-width:min(46%, 280px);
   object-fit:contain; opacity:0; transition:opacity .45s ease;
 }
 .marchio img.vivo{opacity:1}
 .marchio .scritta{
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  font-size:2.6cqw; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  font-size:clamp(16px,2.6cqw,25px); font-weight:600; letter-spacing:.06em; text-transform:uppercase;
   opacity:0; transition:opacity .45s ease;
 }
 .marchio .scritta.vivo{opacity:1}
@@ -137,42 +153,43 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
    dietro il marchio sia quando scendono dietro il richiamo, invece di essere
    tagliate di netto contro gli ancoraggi che stanno fermi. */
 .finestra{
-  flex:1 1 auto; overflow:hidden; padding-top:1.2cqw; min-height:0; position:relative;
-  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 2.6cqw, #000 calc(100% - 3.2cqw), transparent 100%);
-          mask-image:linear-gradient(to bottom, transparent 0, #000 2.6cqw, #000 calc(100% - 3.2cqw), transparent 100%);
+  flex:1 1 auto; overflow:hidden; padding-top:clamp(10px,1.2cqw,18px); min-height:0; position:relative;
+  --sf-alto:clamp(16px,2.6cqw,34px); --sf-basso:clamp(20px,3.2cqw,42px);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 var(--sf-alto), #000 calc(100% - var(--sf-basso)), transparent 100%);
+          mask-image:linear-gradient(to bottom, transparent 0, #000 var(--sf-alto), #000 calc(100% - var(--sf-basso)), transparent 100%);
 }
 .nastro{will-change:transform}
-.blocco{padding-bottom:6cqw}
+.blocco{padding-bottom:clamp(30px,6cqw,70px)}
 .blocco[hidden]{display:none}
-.gruppo{margin-bottom:2.78cqw}
+.gruppo{margin-bottom:clamp(18px,2.78cqw,32px)}
 .gruppo[hidden]{display:none}
 .gruppo h2{
-  margin:0 0 .45cqw; font-size:2.15cqw; font-weight:400;
-  letter-spacing:.015em; text-transform:uppercase; line-height:1.15;
+  margin:0 0 6px; font-size:var(--corpo); font-weight:400;
+  letter-spacing:.015em; text-transform:uppercase; line-height:1.18;
 }
 .gruppo h2 .fmt{font-size:.78em; opacity:.68; text-transform:none; letter-spacing:.01em}
-.gruppo ul{margin:0; padding:0 0 0 2.3cqw; list-style:none}
-.gruppo li{font-size:2.15cqw; line-height:1.22; position:relative; display:flex; gap:1cqw; align-items:baseline}
+.gruppo ul{margin:0; padding:0 0 0 clamp(16px,2.3cqw,24px); list-style:none}
+.gruppo li{font-size:var(--corpo); line-height:1.34; position:relative; display:flex; gap:10px; align-items:baseline}
 .gruppo li[hidden]{display:none}
-.gruppo li::before{content:"\2022"; position:absolute; left:-1.5cqw; opacity:.9}
+.gruppo li::before{content:"\2022"; position:absolute; left:clamp(-16px,-1.5cqw,-11px); opacity:.9}
 .gruppo li .nome{flex:1 1 auto; min-width:0}
 .gruppo li .nota{opacity:.7; font-size:.84em}
 /* i € sulle singole righe sono stati tolti (Gio, 16/09): la fascia e' del
    produttore, non della referenza. La regola .eu vive ora solo sulla card. */
 
 /* la copertina, che e' la prima schermata del nastro */
-.copertina{padding-bottom:6cqw}
-.copertina .kick{font-size:1.4cqw; letter-spacing:.28em; text-transform:uppercase; opacity:.85; margin:0 0 1.2cqw}
-.copertina h1{margin:0 0 1.3cqw; font-size:5.2cqw; line-height:1.02; font-weight:700; letter-spacing:-.015em}
-.copertina p{margin:0 0 .8cqw; font-size:1.7cqw; line-height:1.45; max-width:40cqw; opacity:.95}
-.copertina .nota{font-size:1.45cqw; opacity:.78}
-.copertina .giu{margin-top:1.6cqw; font-size:1.3cqw; letter-spacing:.16em; text-transform:uppercase; opacity:1; font-weight:600}
+.copertina{padding-bottom:clamp(30px,6cqw,70px)}
+.copertina .kick{font-size:clamp(11px,1.4cqw,14px); letter-spacing:.28em; text-transform:uppercase; opacity:.85; margin:0 0 14px}
+.copertina h1{margin:0 0 16px; font-size:clamp(32px,5.2cqw,62px); line-height:1.04; font-weight:700; letter-spacing:-.015em}
+.copertina p{margin:0 0 10px; font-size:clamp(14.5px,1.7cqw,19px); line-height:1.5; max-width:34em; opacity:.95}
+.copertina .nota{font-size:clamp(12px,1.45cqw,15px); opacity:.78}
+.copertina .giu{margin-top:20px; font-size:clamp(11px,1.3cqw,13px); letter-spacing:.16em; text-transform:uppercase; opacity:1; font-weight:600}
 
-.richiami{position:relative; flex:none; height:4.4cqw; margin-top:1.2cqw}
+.richiami{position:relative; flex:none; height:clamp(34px,4.4cqw,50px); margin-top:clamp(10px,1.2cqw,18px)}
 .richiami a{
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
   text-align:center; opacity:0; transition:opacity .45s ease; pointer-events:none;
-  font-size:1.45cqw; font-weight:700; letter-spacing:.045em; text-transform:uppercase;
+  font-size:clamp(11px,1.45cqw,15px); font-weight:700; letter-spacing:.045em; text-transform:uppercase;
   text-decoration:underline; text-underline-offset:.35em; line-height:1.35;
 }
 .richiami a.vivo{opacity:1; pointer-events:auto}
@@ -194,7 +211,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .pacchetto img.vivo{opacity:1}
 /* il packshot sta nello stesso rettangolo, solo contenuto invece che tagliato */
-.pacchetto.contain img{object-fit:contain; padding:2.2cqw}
+.pacchetto.contain img{object-fit:contain; padding:clamp(14px,2.2cqw,40px)}
 
 /* ───────── la barra a lettere */
 .lettere{
@@ -281,10 +298,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .marchio img{max-width:52%}
   .marchio .scritta{font-size:16px}
   .finestra{padding-top:10px}
+  :root{--corpo:15.5px}
   .gruppo{margin-bottom:20px}
-  .gruppo h2{font-size:15.5px; margin-bottom:5px}
+  .gruppo h2{margin-bottom:5px}
   .gruppo ul{padding-left:17px}
-  .gruppo li{font-size:15.5px; line-height:1.36; gap:8px}
+  .gruppo li{line-height:1.36; gap:8px}
   .gruppo li::before{left:-13px}
   .blocco{padding-bottom:40px}
   .copertina h1{font-size:32px; margin-bottom:12px}
@@ -296,8 +314,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .richiami a{font-size:11.5px}
   .lettere{right:2px; gap:0}
   .lettere button{font-size:9px; padding:2px 4px}
-  .azioni{right:30px; bottom:calc(12px + env(safe-area-inset-bottom,0px)); gap:6px}
-  .azioni a{padding:11px 14px; font-size:12.5px}
+  /* Sul telefono in basso c'e' il richiamo «clicca qui», e i due bottoni ci
+     finivano sopra: si leggeva «CLICCA QU». Salgono sulla foto, che sta in
+     alto e ha spazio, e non coprono piu' una riga di testo. */
+  .azioni{
+    top:calc(var(--barra-alta) + 10px); bottom:auto; right:10px;
+    flex-direction:column; align-items:flex-end; gap:6px;
+  }
+  .azioni a{padding:9px 12px; font-size:12px}
 }
 @media (max-width:430px){
   .testata .comandi{gap:6px}
