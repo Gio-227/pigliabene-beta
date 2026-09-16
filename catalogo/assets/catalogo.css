@@ -166,7 +166,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .copertina h1{margin:0 0 1.3cqw; font-size:5.2cqw; line-height:1.02; font-weight:700; letter-spacing:-.015em}
 .copertina p{margin:0 0 .8cqw; font-size:1.7cqw; line-height:1.45; max-width:40cqw; opacity:.95}
 .copertina .nota{font-size:1.45cqw; opacity:.78}
-.copertina .giu{margin-top:1.6cqw; font-size:1.3cqw; letter-spacing:.16em; text-transform:uppercase; opacity:.8}
+.copertina .giu{margin-top:1.6cqw; font-size:1.3cqw; letter-spacing:.16em; text-transform:uppercase; opacity:1; font-weight:600}
 
 .richiami{position:relative; flex:none; height:4.4cqw; margin-top:1.2cqw}
 .richiami a{
@@ -224,8 +224,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* ───────── i due bottoni: fluttuano, non stanno su una barra (Gio, 16/09).
    Stanno a sinistra della barra a lettere per non finirci sopra. */
 .azioni{
-  position:fixed; right:46px; z-index:60;
-  bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  position:fixed; z-index:60;
+  right:calc(var(--m-foto) + 16px);
+  bottom:calc(var(--m-foto) + 16px + env(safe-area-inset-bottom,0px));
   display:flex; gap:8px; align-items:center;
 }
 .azioni a{
@@ -295,7 +296,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .richiami a{font-size:11.5px}
   .lettere{right:2px; gap:0}
   .lettere button{font-size:9px; padding:2px 4px}
-  .azioni{right:30px; bottom:calc(14px + env(safe-area-inset-bottom,0px)); gap:6px}
+  .azioni{right:30px; bottom:calc(12px + env(safe-area-inset-bottom,0px)); gap:6px}
   .azioni a{padding:11px 14px; font-size:12.5px}
 }
 @media (max-width:430px){
