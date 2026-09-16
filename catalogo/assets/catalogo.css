@@ -137,8 +137,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* la copertina, che e' la prima schermata del nastro */
 .copertina{padding-bottom:6cqw}
 .copertina .kick{font-size:1.4cqw; letter-spacing:.28em; text-transform:uppercase; opacity:.85; margin:0 0 1.2cqw}
-.copertina h1{margin:0 0 1.5cqw; font-size:5.6cqw; line-height:1.02; font-weight:700; letter-spacing:-.015em}
-.copertina p{margin:0 0 .9cqw; font-size:1.8cqw; line-height:1.5; max-width:38cqw; opacity:.95}
+.copertina h1{margin:0 0 1.3cqw; font-size:5.2cqw; line-height:1.02; font-weight:700; letter-spacing:-.015em}
+.copertina p{margin:0 0 .8cqw; font-size:1.7cqw; line-height:1.45; max-width:40cqw; opacity:.95}
 .copertina .nota{font-size:1.45cqw; opacity:.78}
 .copertina .giu{margin-top:1.6cqw; font-size:1.3cqw; letter-spacing:.16em; text-transform:uppercase; opacity:.8}
 
@@ -176,7 +176,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ───────── piede e barra del preventivo */
 .piede{
-  padding:26px clamp(16px,4vw,40px) 30px; max-width:1400px; margin:0 auto;
+  padding:26px clamp(16px,4vw,40px) calc(30px + var(--piede-alto)); /* la barra non lo copre */
+  max-width:1400px; margin:0 auto;
   font-size:12.5px; line-height:1.65; opacity:.78;
 }
 .preventivo{
@@ -199,16 +200,29 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .preventivo a:hover{opacity:.88}
 
 /* ───────── senza JavaScript il nastro e' solo un elenco lungo */
-.nojs .palco{position:static; height:auto; aspect-ratio:16/9}
-.nojs .finestra{overflow:visible}
-.nojs .marchio img,.nojs .richiami a,.nojs .pacchetto,.nojs .pacchetto img{opacity:1; position:relative}
-.nojs .lettere,.nojs .fasce,.nojs .ordine{display:none}
+.nojs .palco{position:static; height:auto; aspect-ratio:auto; overflow:visible; display:block}
+.nojs .pannello{padding:24px}
+.nojs .marchio{height:auto; display:flex; flex-wrap:wrap; gap:18px; justify-content:flex-start}
+.nojs .marchio img{position:static; max-height:54px; max-width:200px}
+.nojs .marchio .scritta{position:static; display:inline}
+.nojs .finestra{overflow:visible; mask-image:none; -webkit-mask-image:none}
+.nojs .richiami{height:auto; display:flex; flex-direction:column; gap:10px}
+.nojs .richiami a{position:static; justify-content:flex-start}
+.nojs .foto{display:none}
+.nojs .marchio img,.nojs .richiami a,.nojs .pacchetto,.nojs .pacchetto img{opacity:1}
+.nojs .lettere,.nojs .fasce,.nojs .ordine,.nojs #btn-produttori{display:none}
+.nojs .pannello-prod{position:static; opacity:1; visibility:visible; transform:none; max-height:none}
 
 /* ───────── telefono: il telaio si riorganizza, non si rimpicciolisce */
 @media (max-width:860px){
-  :root{--barra-alta:50px; --piede-alto:64px}
+  /* due righe di testata: a una sola i comandi uscivano dallo schermo
+     (505 px in 336) e «tutto» finiva fuori, senza modo di spegnere il filtro */
+  :root{--barra-alta:94px; --piede-alto:64px}
+  .testata{flex-wrap:wrap; align-content:center; padding-top:6px; padding-bottom:6px; row-gap:6px}
   .testata .tit,.testata .ins{display:none}
-  .testata .comandi{margin-left:0; width:100%; justify-content:space-between}
+  .testata .comandi{margin-left:0; width:100%; justify-content:space-between; flex-wrap:wrap; row-gap:6px}
+  .testata .fasce{width:100%; justify-content:space-between}
+  .testata .fasce button{flex:1 1 0}
   .palco{
     height:calc(100svh - var(--barra-alta) - var(--piede-alto));
     grid-template-columns:1fr; grid-template-rows:34% 1fr; max-width:none;
@@ -226,10 +240,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .gruppo li{font-size:15.5px; line-height:1.36; gap:8px}
   .gruppo li::before{left:-13px}
   .blocco{padding-bottom:40px}
-  .copertina h1{font-size:34px}
-  .copertina .kick{font-size:11px; margin-bottom:12px}
-  .copertina p{font-size:14.5px; max-width:none}
-  .copertina .giu{font-size:11px}
+  .copertina h1{font-size:32px; margin-bottom:12px}
+  .copertina .kick{font-size:11px; margin-bottom:10px}
+  .copertina p{font-size:14.5px; max-width:none; margin-bottom:8px}
+  .copertina .nota{font-size:12.5px}
+  .copertina .giu{font-size:11px; margin-top:12px}
   .richiami{height:34px; margin-top:10px}
   .richiami a{font-size:11.5px}
   .lettere{right:2px; gap:0}

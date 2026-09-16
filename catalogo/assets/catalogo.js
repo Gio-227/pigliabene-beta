@@ -13,29 +13,41 @@
   var mappa = [], altezzaNastro = 0, altezzaFinestra = 0;
   function misura(){
     altezzaFinestra = finestra.clientHeight;
+    /* Lo stacco fra un produttore e il successivo e' alto quasi quanto la
+       finestra: senza, per mezzo schermo si leggono le voci di uno sotto il
+       marchio di un altro — succedeva, ed era il difetto peggiore. */
+    var stacco = Math.round(altezzaFinestra * 0.88);
+    blocchi.forEach(function(b){ b.style.paddingBottom = stacco + 'px'; });
     altezzaNastro = nastro.scrollHeight;
     mappa = blocchi.filter(function(b){ return !b.hidden; }).map(function(b){
-      return { id: b.dataset.p, cima: b.offsetTop, fondo: b.offsetTop + b.offsetHeight };
+      return { id: b.dataset.p, cima: b.offsetTop,
+               fine: b.offsetTop + b.offsetHeight - stacco,   /* dove finisce il TESTO */
+               fondo: b.offsetTop + b.offsetHeight };
     });
     var corsa = Math.max(0, altezzaNastro - altezzaFinestra);
-    scena.style.height = (corsa + palco.offsetHeight) + 'px';
+    /* la scena deve essere alta abbastanza da far arrivare in cima l'ultima
+       riga: il palco resta appiccicato sotto la testata, quindi va contato
+       anche quello, o la coda del catalogo non si vede mai */
+    var piede = document.querySelector('.preventivo');
+    var utile = Math.max(palco.offsetHeight + parseFloat(getComputedStyle(palco).top || 0),
+                         window.innerHeight - (piede ? piede.offsetHeight : 0));
+    scena.style.height = (corsa + utile) + 'px';
     muovi();
   }
 
   /* ---- scorrimento: la pagina scorre, il nastro trasla, il telaio sta fermo */
   var attivo = null, ticchetta = false;
   function muovi(){
-    var top = scena.getBoundingClientRect().top;
-    var avanzamento = Math.min(Math.max(-top + parseFloat(getComputedStyle(palco).top || 0) * 0, 0),
-                               Math.max(0, altezzaNastro - altezzaFinestra));
+    var cima = scena.getBoundingClientRect().top - parseFloat(getComputedStyle(palco).top || 0);
+    var avanzamento = Math.min(Math.max(-cima, 0), Math.max(0, altezzaNastro - altezzaFinestra));
     nastro.style.transform = 'translateY(' + (-avanzamento) + 'px)';
-    /* il produttore attivo e' quello che tiene la mezzeria della finestra:
-       ancorarlo a un punto preciso evita lo sfarfallio a cavallo fra due */
-    var mira = avanzamento + altezzaFinestra * 0.5;
-    var id = mappa.length ? mappa[0].id : null;
+    /* attivo = il produttore che occupa piu' finestra. E' la regola onesta:
+       qualunque sia lo stacco, il telaio segue quello che si sta leggendo. */
+    var a = avanzamento, b = avanzamento + altezzaFinestra;
+    var id = null, meglio = -1;
     for (var i = 0; i < mappa.length; i++){
-      if (mira >= mappa[i].cima && mira < mappa[i].fondo){ id = mappa[i].id; break; }
-      if (mira >= mappa[i].fondo) id = mappa[i].id;
+      var vis = Math.min(b, mappa[i].fine) - Math.max(a, mappa[i].cima);
+      if (vis >= meglio){ meglio = vis; id = mappa[i].id; }
     }
     if (id && id !== attivo) cambia(id);
   }
@@ -129,6 +141,12 @@
     });
     ordinati.forEach(function(b){ nastro.appendChild(b); });
     blocchi = [].slice.call(nastro.children);
+    /* anche la barra a lettere segue l'ordine, se no indica il posto sbagliato */
+    var rail = document.querySelector('.lettere');
+    ordinati.forEach(function(b){
+      var bt = rail.querySelector('button[data-p="' + b.dataset.p + '"]');
+      if (bt) rail.appendChild(bt);
+    });
     misura();
   }
   if (selOrdine) selOrdine.addEventListener('change', function(){ riordina(selOrdine.value); });
