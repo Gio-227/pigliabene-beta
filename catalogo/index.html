@@ -1,62 +1,297 @@
 <!doctype html>
-<html lang="it">
+<html lang="it" class="nojs">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Catalogo Natale 2026 · Piglia Bene</title>
+<title>Catalogo di Natale 2026 · Piglia Bene</title>
 <meta name="description" content="Il catalogo di Natale di Piglia Bene: i nostri artigiani del gusto, referenza per referenza. Senza prezzi: il listino te lo mandiamo noi.">
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="assets/catalogo.css?v=4e2cec19">
+<link rel="stylesheet" href="assets/catalogo.css?v=0837e29c">
 </head>
 <body>
-<section class="copertina">
-  <p class="kicker">Sempre i soliti noti? Ovviamente no.</p>
-  <h1>A Natale<br>Piglia Bene.</h1>
-  <p>Questo è il catalogo dei nostri artigiani del gusto: chi sono, cosa fanno, e cosa abbiamo scelto di tenere in bottega per il Natale 2026.</p>
-  <p><strong>Anteprima di lavorazione — 4 produttori sui 21 che hanno referenze scelte.</strong> Non ci sono prezzi, e non è una dimenticanza: il listino viaggia via mail, su misura di chi lo chiede.</p>
-  <p>Felicetti e Riso Buono portano i colori del catalogo di carta, campionati a pixel dalle loro pagine. <strong>Marco Colzani e Guido Castagna nel catalogo di carta non ci sono</strong> — sono entrati a listino dopo — quindi colore e foto sono una proposta, e le loro schede lo dicono.</p>
-</section>
-<nav class="indice">
-  <a class="scheda" href="colzani.html" style="--fondo:#E8DCC8;--testo:#1A1512;--fondo-foto:#CFBFA4">
-    <div class="mini"><img src="assets/img/colzani/colzani_marco-nel-campo-lamponi_web.jpg" alt="Marco Colzani nel campo di lamponi, con un lampone in mano"></div>
-    <div class="testo">
-      <div class="occ">Carate Brianza · Brianza</div>
-      <h3>Marco Colzani</h3>
-      <div class="conta">38 referenze · 6 pagine</div>
-      <div class="provv">colore e foto proposti — da confermare</div>
+
+<header class="testata">
+  <span class="ins">A Natale Piglia Bene</span>
+  <span class="tit">Catalogo 2026</span>
+  <div class="comandi">
+    <button class="bott" id="btn-produttori" aria-expanded="false" aria-controls="pannello-produttori">Tutti i produttori</button>
+    <label class="ordine"><span>Ordine</span>
+      <select id="ordine">
+        <option value="categoria">per categoria</option>
+        <option value="alfabetico">alfabetico</option>
+        <option value="novita">le novità prima</option>
+      </select>
+    </label>
+    <div class="fasce" role="group" aria-label="Filtra per fascia di spesa">
+      <button data-fascia="1" aria-pressed="false" title="fino a 10 €">€</button><button data-fascia="2" aria-pressed="false" title="10-15 €">€€</button><button data-fascia="3" aria-pressed="false" title="15-25 €">€€€</button><button data-fascia="4" aria-pressed="false" title="25-50 €">€€€€</button><button data-fascia="5" aria-pressed="false" title="oltre 50 €">€€€€€</button>
+      <button class="azzera" type="button">tutto</button>
     </div>
-  </a>
-  <a class="scheda" href="guido-castagna.html" style="--fondo:#2E1C14;--testo:#FFFFFF;--fondo-foto:#1A0F0A">
-    <div class="mini"><img src="assets/img/guido-castagna/guido-castagna_laboratorio-giaveno_web.jpg" alt="Il laboratorio Guido Castagna a Giaveno, di sera, con la neve"></div>
-    <div class="testo">
-      <div class="occ">Giaveno · Torino</div>
-      <h3>Guido Castagna</h3>
-      <div class="conta">21 referenze · 3 pagine</div>
-      <div class="provv">colore e foto proposti — da confermare</div>
+  </div>
+</header>
+
+<div class="pannello-prod" id="pannello-produttori">
+  <div class="griglia">
+      <button class="card" data-vai="guido-castagna" style="--c-fondo:#2E1C14;--c-testo:#FFFFFF;--c-foto:#1A0F0A">
+        <span class="im"><img src="assets/img/guido-castagna/guido-castagna_laboratorio-giaveno_web.jpg" alt="Il laboratorio Guido Castagna a Giaveno, di sera, con la neve" loading="lazy"></span>
+        <span class="tx"><span class="oc">Giaveno · Torino</span><h3>Guido Castagna</h3><span class="cn">21 referenze · Cioccolato</span><span class="pv">colore e foto proposti — da confermare</span></span>
+      </button>
+      <button class="card" data-vai="monograno-felicetti" style="--c-fondo:#FFFFFF;--c-testo:#000000;--c-foto:#E0C181">
+        <span class="im contain"><img src="assets/img/monograno-felicetti/monograno-felicetti_matt-spaghetto_cat-p12.png" alt="Astuccio Monograno Felicetti Matt, spaghetti" loading="lazy"></span>
+        <span class="tx"><span class="oc">Predazzo · Val di Fiemme</span><h3>Monograno Felicetti</h3><span class="cn">14 referenze · Pasta</span></span>
+      </button>
+      <button class="card" data-vai="riso-buono" style="--c-fondo:#AE0F23;--c-testo:#FFFFFF;--c-foto:#000000">
+        <span class="im"><img src="assets/img/riso-buono/riso-buono_artemide-vetro-950g_cat-p13.png" alt="Riso Buono Carnaroli Gran Riserva, vaso di vetro da 950 g" loading="lazy"></span>
+        <span class="tx"><span class="oc">Vercelli · Piemonte</span><h3>Riso Buono</h3><span class="cn">6 referenze · Riso e farine</span></span>
+      </button>
+      <button class="card" data-vai="colzani" style="--c-fondo:#E8DCC8;--c-testo:#1A1512;--c-foto:#CFBFA4">
+        <span class="im"><img src="assets/img/colzani/colzani_marco-nel-campo-lamponi_web.jpg" alt="Marco Colzani nel campo di lamponi, con un lampone in mano" loading="lazy"></span>
+        <span class="tx"><span class="oc">Carate Brianza · Brianza</span><h3>Marco Colzani</h3><span class="cn">38 referenze · Bibite</span><span class="pv">colore e foto proposti — da confermare</span></span>
+      </button>
+  </div>
+  <p class="legenda">Fasce di spesa: <b>€</b> fino a 10 € · <b>€€</b> 10-15 € · <b>€€€</b> 15-25 € · <b>€€€€</b> 25-50 € · <b>€€€€€</b> oltre 50 €.
+    <span class="nb">Gli € dicono la fascia, non il prezzo: il listino con le cifre te lo mandiamo su richiesta. Le referenze che in matrice non hanno ancora un costo restano visibili con qualunque filtro.</span>
+  </p>
+</div>
+
+<main class="scena" id="scena">
+  <div class="palco" id="palco">
+    <div class="pannello">
+      <div class="marchio"><span class="scritta" data-p="copertina">Catalogo di Natale 2026</span>
+        <img src="assets/img/guido-castagna/logo_guido-castagna_bianco.png" alt="Guido Castagna" data-p="guido-castagna">
+        <img src="assets/img/monograno-felicetti/logo_monograno-felicetti_cat25-p09.png" alt="Monograno Felicetti" data-p="monograno-felicetti">
+        <img src="assets/img/riso-buono/logo_riso-buono_cat25-p10.png" alt="Riso Buono" data-p="riso-buono">
+        <img src="assets/img/colzani/logo_colzani_nero.png" alt="Marco Colzani" data-p="colzani"></div>
+      <div class="finestra" id="finestra">
+        <div class="nastro" id="nastro">
+      <section class="blocco" data-p="copertina">
+        <div class="copertina">
+          <p class="kick">Sempre i soliti noti? Ovviamente no.</p>
+          <h1>A Natale<br>Piglia Bene.</h1>
+          <p>Il catalogo dei nostri artigiani del gusto: chi sono, cosa fanno, e cosa abbiamo scelto di tenere in bottega per il Natale 2026.</p>
+          <p><strong>Anteprima di lavorazione — 4 produttori sui 21 che hanno referenze scelte, 281 referenze.</strong> Non ci sono prezzi, e non è una dimenticanza: il listino viaggia via mail, su misura di chi lo chiede. Gli € accanto a ogni voce dicono la fascia, non la cifra.</p>
+          <p class="giu">Scorri per sfogliare ↓</p>
+        </div>
+      </section>
+      <section class="blocco" data-p="guido-castagna">
+          <section class="gruppo">
+          <h2>Tavoletta <span class="fmt">· 50 e 100 g</span></h2>
+          <ul>
+          <li data-f="1"><span class="nome">Extra fondente 64% <span class="nota">(100 g)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Gianduja <span class="nota">(100 g)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Gianduja + Nocciola Piemonte IGP <span class="nota">(100 g)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Granella di fava <span class="nota">(100 g)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Porcelana 86% <span class="nota">(100 g)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Gianduja-fondente <span class="nota">(50 g, limited edition)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Cento+Giuinott <span class="nota">(100 g)</span></span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Giuinott (gianduiotto) sfusi</h2>
+          <ul>
+          <li data-f="0"><span class="nome">minimo 3 kg</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Bassinati <span class="fmt">· 100 g</span></h2>
+          <ul>
+          <li data-f="1"><span class="nome">Arancia candita</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Nocciola Piemonte IGP</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Zenzero candito</span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Scatola praline <span class="fmt">· 16 pz</span></h2>
+          <ul>
+          <li data-f="3"><span class="nome">Cremini <span class="nota">(16 pz)</span></span><span class="eu">€€€</span></li>
+          <li data-f="3"><span class="nome">Speziati <span class="nota">(16 pz)</span></span><span class="eu">€€€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Scatola praline miste <span class="fmt">· 36 pz</span></h2>
+          <ul>
+          <li data-f="4"><span class="nome">Classica <span class="nota">(36 pz)</span></span><span class="eu">€€€€</span></li>
+          <li data-f="4"><span class="nome">Speziata <span class="nota">(36 pz)</span></span><span class="eu">€€€€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Tavoletta con scatola <span class="fmt">· 1 kg</span></h2>
+          <ul>
+          <li data-f="5"><span class="nome">Extra fondente + Nocciola Piemonte IGP <span class="nota">(1 kg con)</span></span><span class="eu">€€€€€</span></li>
+          <li data-f="5"><span class="nome">Gianduja + Nocciola Piemonte IGP <span class="nota">(1 kg con)</span></span><span class="eu">€€€€€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Crema gianduja CQ</h2>
+          <ul>
+          <li data-f="2"><span class="nome">200 g · vaso</span><span class="eu">€€</span></li>
+          <li data-f="4"><span class="nome">500 g · vaso</span><span class="eu">€€€€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Crema nocciola +55</h2>
+          <ul>
+          <li data-f="2"><span class="nome">200 g · vaso</span><span class="eu">€€</span></li>
+          <li data-f="4"><span class="nome">500 g · vaso</span><span class="eu">€€€€</span></li>
+          </ul>
+          </section>
+      </section>
+      <section class="blocco" data-p="monograno-felicetti">
+          <section class="gruppo">
+          <h2>Matt</h2>
+          <ul>
+          <li data-f="1"><span class="nome">Pachè <span class="nota">(trafila 183)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Penne ritorte <span class="nota">(trafila 170)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Spaghetti quadrati <span class="nota">(trafila 106)</span></span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Il Cappelli</h2>
+          <ul>
+          <li data-f="1"><span class="nome">Il Valentino <span class="nota">(trafila 9108)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Linguine <span class="nota">(trafila 9152)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Mezze maniche <span class="nota">(trafila 9154)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Paccheri rigati <span class="nota">(trafila 9137)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Penne rigate <span class="nota">(trafila 9169)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Spaghettini <span class="nota">(trafila 9103)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Spiralotti <span class="nota">(trafila 9158)</span></span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Farro</h2>
+          <ul>
+          <li data-f="1"><span class="nome">Ditalini <span class="nota">(trafila 23)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Fusilli <span class="nota">(trafila 178)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Linguine <span class="nota">(trafila 152)</span></span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Latta degustazione Monograno Matt lunga</h2>
+          <ul>
+          <li data-f="2"><span class="nome">3 conf. da 500 g <span class="nota">(min. 6 pz)</span></span><span class="eu">€€</span></li>
+          </ul>
+          </section>
+      </section>
+      <section class="blocco" data-p="riso-buono">
+          <section class="gruppo">
+          <h2>Riso Artemide (astuccio di cartone)</h2>
+          <ul>
+          <li data-f="2"><span class="nome">1 kg · busta</span><span class="eu">€€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Carnaroli Gran Riserva riso in vetro</h2>
+          <ul>
+          <li data-f="3"><span class="nome">950 g (1 L)</span><span class="eu">€€€</span></li>
+          <li data-f="4"><span class="nome">4 kg (5 L)</span><span class="eu">€€€€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Riso Carnaroli (astuccio di cartone)</h2>
+          <ul>
+          <li data-f="1"><span class="nome">1 kg · busta</span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Artemide Gran Riserva riso in vetro</h2>
+          <ul>
+          <li data-f="3"><span class="nome">950 g (1 L)</span><span class="eu">€€€</span></li>
+          <li data-f="5"><span class="nome">4 kg (5 L)</span><span class="eu">€€€€€</span></li>
+          </ul>
+          </section>
+      </section>
+      <section class="blocco" data-p="colzani">
+          <section class="gruppo">
+          <h2>Nettare <span class="fmt">· 220 e 500 ml</span></h2>
+          <ul>
+          <li data-f="1"><span class="nome">Limonata</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Sambuco <span class="nota">(220 ml)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Albicocca</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Pera</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Pesca bianca</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Pesca gialla <span class="nota">(220 ml)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Ananas</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Lamponi <span class="nota">(220 ml)</span></span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Mirtilli</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Pesca <span class="nota">(500 ml)</span></span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Succo 100% <span class="fmt">· 220 e 500 ml</span></h2>
+          <ul>
+          <li data-f="1"><span class="nome">Arancia</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Carota</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Mela limpido</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">ACE (arancia, carota, mela, limone, frutto della passione)</span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Sidro di mele Lombardia</h2>
+          <ul>
+          <li data-f="2"><span class="nome">750 ml</span><span class="eu">€€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Confettura</h2>
+          <ul>
+          <li data-f="1"><span class="nome">Albicocca</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Pere e cioccolato</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Pesca</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Lamponi</span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Confettura gastronomica</h2>
+          <ul>
+          <li data-f="1"><span class="nome">Ananas e rosmarino</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Cipolle rosse</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Peperoni rossi</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Pomodori</span><span class="eu">€</span></li>
+          <li data-f="1"><span class="nome">Cavolo cappuccio</span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Marmellata</h2>
+          <ul>
+          <li data-f="1"><span class="nome">Mandarini</span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Caffè 100% arabica blend</h2>
+          <ul>
+          <li data-f="1"><span class="nome">Grani o macinato moka, sacchetto 250 g</span><span class="eu">€</span></li>
+          </ul>
+          </section>
+          <section class="gruppo">
+          <h2>Specialty coffee</h2>
+          <ul>
+          <li data-f="2"><span class="nome">Brasile, grani, sacchetto 250 g</span><span class="eu">€€</span></li>
+          <li data-f="2"><span class="nome">Guatemala, grani, sacchetto 250 g</span><span class="eu">€€</span></li>
+          </ul>
+          </section>
+      </section>
+        </div>
+      </div>
+      <div class="richiami"><a href="https://www.guidocastagna.it/" target="_blank" rel="noopener" data-p="guido-castagna">Clicca qui e scopri il gianduiotto piu&#x27; premiato al mondo</a>
+        <a href="https://www.felicetti.it/it/" target="_blank" rel="noopener" data-p="monograno-felicetti">Clicca qui e scopri la pasta dei grandi chef</a>
+        <a href="https://www.instagram.com/risobuono" target="_blank" rel="noopener" data-p="riso-buono">Clicca qui e scopri il riso di Vercelli in vetro</a>
+        <a href="https://www.marcocolzani.it/" target="_blank" rel="noopener" data-p="colzani">Clicca qui e scopri il juice maker della Brianza</a></div>
     </div>
-  </a>
-  <a class="scheda" href="monograno-felicetti.html" style="--fondo:#FFFFFF;--testo:#000000;--fondo-foto:#E0C181">
-    <div class="mini contain"><img src="assets/img/monograno-felicetti/monograno-felicetti_matt-spaghetto_cat-p12.png" alt="Astuccio Monograno Felicetti Matt, spaghetti"></div>
-    <div class="testo">
-      <div class="occ">Predazzo · Val di Fiemme</div>
-      <h3>Monograno Felicetti</h3>
-      <div class="conta">14 referenze · 2 pagine</div>
-    </div>
-  </a>
-  <a class="scheda" href="riso-buono.html" style="--fondo:#AE0F23;--testo:#FFFFFF;--fondo-foto:#000000">
-    <div class="mini"><img src="assets/img/riso-buono/riso-buono_artemide-vetro-950g_cat-p13.png" alt="Riso Buono Carnaroli Gran Riserva, vaso di vetro da 950 g"></div>
-    <div class="testo">
-      <div class="occ">Vercelli · Piemonte</div>
-      <h3>Riso Buono</h3>
-      <div class="conta">6 referenze · 2 pagine</div>
-    </div>
-  </a>
-</nav>
+    <div class="foto"><div class="pacchetto" data-p="copertina"></div>
+      <div class="pacchetto" data-p="guido-castagna"><img src="assets/img/guido-castagna/guido-castagna_laboratorio-giaveno_web.jpg" alt="Il laboratorio Guido Castagna a Giaveno, di sera, con la neve"><img src="assets/img/guido-castagna/guido-castagna_giuinott-2_web.jpg" alt="Giuinott, il gianduiotto Guido Castagna" loading="lazy"><img src="assets/img/guido-castagna/guido-castagna_mani-rollano-tartufi_web.jpg" alt="Le mani che rollano i tartufi di cioccolato" loading="lazy"><img src="assets/img/guido-castagna/guido-castagna_scatola-16-cremini_web.jpg" alt="La scatola da 16 cremini" loading="lazy"></div>
+      <div class="pacchetto contain" data-p="monograno-felicetti"><img src="assets/img/monograno-felicetti/monograno-felicetti_matt-spaghetto_cat-p12.png" alt="Astuccio Monograno Felicetti Matt, spaghetti"><img src="assets/img/monograno-felicetti/monograno-felicetti_cappelli-pache_cat-p12.png" alt="Astuccio Monograno Felicetti Il Cappelli, pache" loading="lazy"><img src="assets/img/monograno-felicetti/monograno-felicetti_matt-fusilloni_cat-p12.png" alt="Astuccio Monograno Felicetti Matt, fusilloni" loading="lazy"></div>
+      <div class="pacchetto" data-p="riso-buono"><img src="assets/img/riso-buono/riso-buono_artemide-vetro-950g_cat-p13.png" alt="Riso Buono Carnaroli Gran Riserva, vaso di vetro da 950 g"><img src="assets/img/riso-buono/carnaroliincetro4kg-innatura-risobuono.webp" alt="Il Carnaroli in vetro da 4 kg, in natura" loading="lazy"></div>
+      <div class="pacchetto" data-p="colzani"><img src="assets/img/colzani/colzani_marco-nel-campo-lamponi_web.jpg" alt="Marco Colzani nel campo di lamponi, con un lampone in mano"><img src="assets/img/colzani/colzani_linea-imbottigliamento_web.jpg" alt="Bottiglie di succo sulla linea di imbottigliamento del laboratorio Colzani" loading="lazy"><img src="assets/img/colzani/colzani_frutta-e-bottiglie_web.jpg" alt="La frutta e le bottiglie del laboratorio Colzani" loading="lazy"></div></div>
+  </div>
+</main>
+
+<nav class="lettere" aria-label="Salta a un produttore"><button data-vai="guido-castagna" data-p="guido-castagna" title="Guido Castagna">G</button><button data-vai="monograno-felicetti" data-p="monograno-felicetti" title="Monograno Felicetti">M</button><button data-vai="riso-buono" data-p="riso-buono" title="Riso Buono">R</button><button data-vai="colzani" data-p="colzani" title="Marco Colzani">M</button></nav>
+
 <footer class="piede">
   <strong>Piglia Bene</strong> — enoteca e vineria con catering, via Aggiunti 35, Sansepolcro (AR).
   Feel Good S.r.l. · P.IVA 02434040511 · <a href="https://www.pigliabene.it">www.pigliabene.it</a><br>
   Anteprima di lavorazione del catalogo di Natale 2026: le pagine non sono indicizzate e i contenuti possono cambiare.
 </footer>
+
 <div class="preventivo">
   <div class="dice">Il catalogo non espone i prezzi.<small>Il listino con i prezzi te lo mandiamo noi, azienda o privato che tu sia.</small></div>
   <div class="bottoni">
@@ -64,5 +299,8 @@
     <a class="vuoto" href="mailto:bottegapigliabene@gmail.com?subject=Catalogo%20Natale%202026%20%E2%80%94%20richiesta%20preventivo">Scrivici</a>
   </div>
 </div>
+
+<script>window.CATALOGO={"produttori": {"copertina": {"fondo": "#980000", "testo": "#FCFFE5", "fondoFoto": "#6E0000", "nome": "Copertina", "novita": false, "catOrdine": -1}, "guido-castagna": {"fondo": "#2E1C14", "testo": "#FFFFFF", "fondoFoto": "#1A0F0A", "nome": "Guido Castagna", "novita": true, "catOrdine": 2}, "monograno-felicetti": {"fondo": "#FFFFFF", "testo": "#000000", "fondoFoto": "#E0C181", "nome": "Monograno Felicetti", "novita": false, "catOrdine": 4}, "riso-buono": {"fondo": "#AE0F23", "testo": "#FFFFFF", "fondoFoto": "#000000", "nome": "Riso Buono", "novita": false, "catOrdine": 5}, "colzani": {"fondo": "#E8DCC8", "testo": "#1A1512", "fondoFoto": "#CFBFA4", "nome": "Marco Colzani", "novita": true, "catOrdine": 11}}};</script>
+<script src="assets/catalogo.js?v=0837e29c"></script>
 </body>
 </html>
