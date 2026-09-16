@@ -28,9 +28,9 @@
     /* la scena deve essere alta abbastanza da far arrivare in cima l'ultima
        riga: il palco resta appiccicato sotto la testata, quindi va contato
        anche quello, o la coda del catalogo non si vede mai */
-    var piede = document.querySelector('.preventivo');
+    /* la barra in fondo non c'e' piu': i bottoni fluttuano e non rubano altezza */
     var utile = Math.max(palco.offsetHeight + parseFloat(getComputedStyle(palco).top || 0),
-                         window.innerHeight - (piede ? piede.offsetHeight : 0));
+                         window.innerHeight);
     scena.style.height = (corsa + utile) + 'px';
     muovi();
   }
@@ -97,7 +97,7 @@
       imgs[k].classList.remove('vivo');
       k = (k + 1) % imgs.length;
       imgs[k].classList.add('vivo');
-    }, 6000);
+    }, 3000);
   }
   palco.addEventListener('mouseenter', function(){ if (tempo){ clearInterval(tempo); tempo = null; } });
   palco.addEventListener('mouseleave', function(){ if (attivo) avviaCarosello(attivo); });
@@ -155,32 +155,30 @@
   }
   if (selOrdine) selOrdine.addEventListener('change', function(){ riordina(selOrdine.value); });
 
-  /* ---- il filtro a euro */
+  /* ---- il filtro a euro. La fascia sta sul PRODUTTORE, non sull'articolo
+     (Gio, 16/09): il filtro quindi nasconde produttori interi, mai singole
+     righe. Fascia 0 = nessuna referenza con costo in matrice: non si nasconde
+     mai, perche' sparire da un filtro non e' la stessa cosa che non esserci. */
   var scelte = {};
   function applicaFiltro(){
     var attive = Object.keys(scelte).filter(function(k){ return scelte[k]; }).map(Number);
-    [].forEach.call(nastro.querySelectorAll('.gruppo'), function(g){
-      var vive = 0;
-      [].forEach.call(g.querySelectorAll('li'), function(li){
-        var f = (li.dataset.f || '0').split(',').map(Number);
-        /* la fascia 0 vuol dire «costo non in matrice»: non si nasconde mai,
-           perche' sparire da un filtro non e' la stessa cosa che non esserci */
-        var ok = !attive.length || f.indexOf(0) >= 0 || f.some(function(x){ return attive.indexOf(x) >= 0; });
-        li.hidden = !ok;
-        if (ok) vive++;
-      });
-      g.hidden = vive === 0;
-    });
     blocchi.forEach(function(b){
-      if (b.dataset.p === 'copertina') return;
-      var q = b.querySelectorAll('.gruppo:not([hidden])').length;
-      b.hidden = q === 0;
+      if (b.dataset.p === 'copertina'){ b.hidden = false; return; }
+      var f = Number(b.dataset.f || 0);
+      b.hidden = !(!attive.length || f === 0 || attive.indexOf(f) >= 0);
     });
     [].forEach.call(document.querySelectorAll('.lettere button'), function(bt){
       var b = blocchi.filter(function(x){ return x.dataset.p === bt.dataset.p; })[0];
       bt.disabled = !!(b && b.hidden);
     });
+    [].forEach.call(document.querySelectorAll('.card'), function(c){
+      var b = blocchi.filter(function(x){ return x.dataset.p === c.dataset.vai; })[0];
+      c.hidden = !!(b && b.hidden);
+    });
     misura();
+    /* se il produttore che si stava guardando e' sparito, si riparte da capo */
+    var vivo = blocchi.filter(function(x){ return x.dataset.p === attivo && !x.hidden; })[0];
+    if (!vivo) window.scrollTo({ top: 0, behavior: 'auto' });
   }
   [].forEach.call(document.querySelectorAll('.fasce button[data-fascia]'), function(bt){
     bt.addEventListener('click', function(){

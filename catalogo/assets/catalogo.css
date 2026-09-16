@@ -7,10 +7,16 @@
 @font-face{font-family:'Montserrat';src:url('fonts/montserrat-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
 
 :root{
-  --rosso:#980000; --panna:#FCFFE5;
+  /* VERSIONE INVERTITA (Gio, 16/09): fondo panna, inchiostro rosso.
+     I due nomi restano quelli storici e sono i VALORI a essere scambiati,
+     come nel demo del sito: per tornare al rosso pieno si riscambiano queste
+     due righe e non si tocca altro. Coppia scelta da Gio: quella del
+     catalogo (#FCFFE5 / #980000), non quella del sito. */
+  --rosso:#FCFFE5; --panna:#980000;
   --barra-alta:56px;   /* testata */
-  --piede-alto:60px;   /* barra del preventivo */
-  --fondo:#980000; --testo:#FCFFE5; --fondo-foto:#6E0000;
+  --piede-alto:0px;    /* la barra del preventivo non c'e' piu' (Gio, 16/09) */
+  --fondo:#FCFFE5; --testo:#980000; --fondo-foto:#FCFFE5;
+  --m-foto:2.6cqw;     /* stacco della foto da destra, alto e basso */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -28,68 +34,85 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   position:fixed; top:0; left:0; right:0; z-index:60; height:var(--barra-alta);
   display:flex; align-items:center; gap:clamp(10px,2vw,22px);
   padding:0 clamp(12px,3vw,32px);
-  background:var(--rosso); border-bottom:1px solid rgba(252,255,229,.22);
+  /* Niente bordo, niente ombra, niente stacco di colore: la testata deve
+     sparire nel corpo della pagina come fa quella del sito ufficiale. */
+  background:var(--rosso);
 }
 .testata .ins{font-size:11px; letter-spacing:.22em; text-transform:uppercase; opacity:.8; white-space:nowrap}
 .testata .tit{font-size:clamp(14px,1.9vw,19px); font-weight:600; letter-spacing:.03em; white-space:nowrap}
 .testata .comandi{margin-left:auto; display:flex; align-items:center; gap:clamp(8px,1.6vw,18px)}
+/* I comandi sono testo, non scatole: l'unico segno e' la riga sotto, che
+   compare al passaggio. E' la stessa regola del nav del sito ufficiale. */
 .bott{
-  border:1px solid rgba(252,255,229,.5); padding:7px 13px; font-size:12px;
-  letter-spacing:.08em; text-transform:uppercase; font-weight:600; white-space:nowrap;
+  border:0; border-bottom:1px solid transparent; padding:7px 2px 4px;
+  font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+  white-space:nowrap; transition:border-color .25s;
 }
-.bott:hover,.bott[aria-expanded="true"]{background:var(--panna); color:var(--rosso)}
+.bott:hover,.bott[aria-expanded="true"]{border-bottom-color:currentColor}
 .ordine{display:flex; align-items:center; gap:7px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; opacity:.85}
 .ordine select{
   font:inherit; font-size:12px; letter-spacing:.02em; text-transform:none;
-  background:transparent; color:var(--panna); border:1px solid rgba(252,255,229,.45);
-  padding:6px 8px;
+  background:transparent; color:var(--panna); border:0; padding:6px 2px;
 }
-.ordine select option{background:#6E0000; color:var(--panna)}
+.ordine select option{background:var(--rosso); color:var(--panna)}
 
 /* ───────── il filtro a euro */
-.fasce{display:flex; align-items:center; gap:4px}
+.fasce{display:flex; align-items:center; gap:10px}
 .fasce button{
-  border:1px solid rgba(252,255,229,.4); padding:6px 8px; font-size:12px;
-  letter-spacing:-.04em; line-height:1; min-width:30px;
+  border:0; border-bottom:1px solid transparent; padding:6px 1px 4px;
+  font-size:12px; letter-spacing:-.04em; line-height:1; opacity:.55;
+  transition:opacity .2s, border-color .2s;
 }
-.fasce button[aria-pressed="true"]{background:var(--panna); color:var(--rosso); border-color:var(--panna)}
-.fasce .azzera{border-color:transparent; opacity:.7; font-size:11px; letter-spacing:.1em; text-transform:uppercase}
+.fasce button:hover{opacity:1}
+.fasce button[aria-pressed="true"]{opacity:1; border-bottom-color:currentColor; font-weight:700}
+.fasce .azzera{opacity:.55; font-size:11px; letter-spacing:.1em; text-transform:uppercase}
 
 /* ───────── il pannello dei produttori */
 .pannello-prod{
   position:fixed; top:var(--barra-alta); left:0; right:0; z-index:55;
-  background:#6E0000; border-bottom:1px solid rgba(252,255,229,.25);
+  background:var(--rosso);
   max-height:calc(100vh - var(--barra-alta) - var(--piede-alto)); overflow:auto;
-  padding:clamp(16px,3vw,28px) clamp(12px,3vw,32px);
+  padding:clamp(16px,3vw,28px) clamp(12px,3vw,32px) clamp(24px,4vw,40px);
   transform:translateY(-8px); opacity:0; visibility:hidden;
   transition:opacity .22s ease, transform .22s ease, visibility .22s;
 }
 .pannello-prod.aperto{transform:none; opacity:1; visibility:visible}
-.griglia{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; max-width:1400px; margin:0 auto}
-.card{display:block; text-decoration:none; background:var(--c-fondo); color:var(--c-testo); overflow:hidden; text-align:left}
-.card .im{aspect-ratio:4/3; background:var(--c-foto); display:flex; align-items:center; justify-content:center; overflow:hidden}
-.card .im img{width:100%; height:100%; object-fit:cover}
-.card .im.contain img{width:auto; height:76%; max-width:78%; object-fit:contain}
-.card .tx{padding:11px 13px 14px}
-.card .tx .oc{font-size:9px; letter-spacing:.2em; text-transform:uppercase; opacity:.7}
-.card .tx h3{margin:5px 0 4px; font-size:15px; font-weight:600}
+.griglia{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:18px; max-width:1400px; margin:0 auto}
+/* I riquadri sono IDENTICI per tutti: stessa cornice 4:3, stesso blocco di
+   testo. Le differenze di altezza che si vedevano non erano una scelta: le
+   faceva l'occhiello che andava a capo su due produttori su quattro
+   («PREDAZZO · VAL DI FIEMME», «CARATE BRIANZA · BRIANZA»). Qui sta su una
+   riga sola e taglia coi puntini, e la card cresce solo dove deve. */
+.card{
+  display:flex; flex-direction:column; text-align:left; text-decoration:none;
+  background:var(--c-fondo); color:var(--c-testo); overflow:hidden; padding:0;
+}
+.card .im{aspect-ratio:4/3; background:var(--c-foto); display:flex; align-items:center; justify-content:center; overflow:hidden; flex:none}
+.card .im img{width:100%; height:100%; object-fit:cover; display:block}
+.card .im.contain img{width:auto; height:70%; max-width:70%; object-fit:contain}
+.card .tx{padding:11px 0 0; display:flex; flex-direction:column; flex:1 1 auto}
+.card .tx .oc{font-size:9px; letter-spacing:.2em; text-transform:uppercase; opacity:.7;
+  display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.card .tx h3{margin:5px 0 4px; font-size:15px; font-weight:600; line-height:1.2}
 .card .tx .cn{font-size:12px; opacity:.75}
-.card .tx .pv{margin-top:7px; font-size:9px; letter-spacing:.12em; text-transform:uppercase;
-  border:1px solid currentColor; opacity:.62; padding:3px 5px; display:inline-block}
-.legenda{max-width:1400px; margin:20px auto 0; font-size:12px; line-height:1.7; opacity:.82}
-.legenda b{font-weight:600; letter-spacing:-.04em}
-.legenda .nb{display:block; margin-top:8px; opacity:.72; font-size:11.5px}
+.card .tx .eu{margin-top:5px; font-size:12.5px; font-weight:700; letter-spacing:-.06em}
+.card .tx .eu i{font-style:normal; font-weight:400; opacity:.6; letter-spacing:.02em; font-size:.88em}
+.card .tx .pv{margin-top:auto; padding-top:8px; font-size:9px; letter-spacing:.12em;
+  text-transform:uppercase; opacity:.62; display:block}
 
 /* ───────── il palco: 16:9, pannello a sinistra, foto a destra, e non si muove */
 .scena{position:relative}
 .palco{
   position:sticky; top:var(--barra-alta);
-  height:min(calc(100vh - var(--barra-alta) - var(--piede-alto)), calc((100vw - 2*clamp(12px,3vw,32px)) * 9 / 16));
-  max-width:1400px; margin:0 auto;
+  /* A BATTERE (Gio, 16/09): la pagina prende tutta la larghezza e si stira
+     con essa. Cade il tetto di 1400 px e cade il vincolo 16:9 del catalogo
+     di carta — a tutta larghezza l'altezza la detta lo schermo, non il
+     rapporto. Niente ombra: si sta flat. */
+  height:calc(100vh - var(--barra-alta) - var(--piede-alto));
+  width:100%; margin:0;
   container-type:inline-size;
   display:grid; grid-template-columns:1fr 1fr;
   overflow:hidden; background:var(--fondo);
-  box-shadow:0 12px 40px rgba(0,0,0,.34);
   transition:background .5s ease;
 }
 .pannello{
@@ -110,11 +133,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .marchio .scritta.vivo{opacity:1}
 
-/* la sfumatura in fondo dice che sotto c'e' altro, e stacca l'ultima riga dal richiamo */
+/* Sfumatura ai DUE capi (Gio, 16/09): le voci svaniscono sia quando salgono
+   dietro il marchio sia quando scendono dietro il richiamo, invece di essere
+   tagliate di netto contro gli ancoraggi che stanno fermi. */
 .finestra{
   flex:1 1 auto; overflow:hidden; padding-top:1.2cqw; min-height:0; position:relative;
-  -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - 3.2cqw), transparent 100%);
-          mask-image:linear-gradient(to bottom, #000 calc(100% - 3.2cqw), transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 2.6cqw, #000 calc(100% - 3.2cqw), transparent 100%);
+          mask-image:linear-gradient(to bottom, transparent 0, #000 2.6cqw, #000 calc(100% - 3.2cqw), transparent 100%);
 }
 .nastro{will-change:transform}
 .blocco{padding-bottom:6cqw}
@@ -132,7 +157,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .gruppo li::before{content:"\2022"; position:absolute; left:-1.5cqw; opacity:.9}
 .gruppo li .nome{flex:1 1 auto; min-width:0}
 .gruppo li .nota{opacity:.7; font-size:.84em}
-.gruppo li .eu{flex:0 0 auto; font-size:.82em; opacity:.5; letter-spacing:-.06em; font-weight:600}
+/* i € sulle singole righe sono stati tolti (Gio, 16/09): la fascia e' del
+   produttore, non della referenza. La regola .eu vive ora solo sulla card. */
 
 /* la copertina, che e' la prima schermata del nastro */
 .copertina{padding-bottom:6cqw}
@@ -151,15 +177,24 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .richiami a.vivo{opacity:1; pointer-events:auto}
 
-.foto{position:relative; background:var(--fondo-foto); overflow:hidden; transition:background .5s ease}
-.pacchetto{position:absolute; inset:0; opacity:0; transition:opacity .5s ease}
+/* La foto e' staccata da destra, alto e basso, e resta ATTACCATA a sinistra
+   al pannello: cosi' si vede lo sfondo intorno e il blocco testo-foto resta
+   un pezzo solo (Gio, 16/09). Il rettangolo e' lo stesso per tutte, che siano
+   ambientate o packshot: e' quello che tiene in riga le proporzioni. */
+.foto{position:relative; background:var(--fondo); overflow:hidden; transition:background .5s ease}
+.pacchetto{
+  position:absolute; inset:var(--m-foto) var(--m-foto) var(--m-foto) 0;
+  background:var(--fondo-foto); overflow:hidden;
+  opacity:0; transition:opacity .5s ease, background .5s ease;
+}
 .pacchetto.vivo{opacity:1}
 .pacchetto img{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   opacity:0; transition:opacity .9s ease;
 }
 .pacchetto img.vivo{opacity:1}
-.pacchetto.contain img{width:auto; height:84%; max-width:80%; object-fit:contain; inset:8% auto auto 50%; transform:translateX(-50%)}
+/* il packshot sta nello stesso rettangolo, solo contenuto invece che tagliato */
+.pacchetto.contain img{object-fit:contain; padding:2.2cqw}
 
 /* ───────── la barra a lettere */
 .lettere{
@@ -170,34 +205,36 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   font-size:12px; letter-spacing:.06em; font-weight:600; line-height:1;
   padding:5px 7px; opacity:.5; border-radius:2px;
 }
-.lettere button:hover{opacity:1; background:rgba(252,255,229,.16)}
+.lettere button:hover{opacity:1; text-decoration:underline; text-underline-offset:3px}
 .lettere button.attiva{opacity:1; background:var(--panna); color:var(--rosso)}
-.lettere button[disabled]{opacity:.16; cursor:default}
+.lettere button[disabled]{opacity:.16; cursor:default; text-decoration:none}
 
-/* ───────── piede e barra del preventivo */
+/* ───────── il piede, dove sta anche la legenda delle fasce */
 .piede{
-  padding:26px clamp(16px,4vw,40px) calc(30px + var(--piede-alto)); /* la barra non lo copre */
+  padding:30px clamp(16px,4vw,40px) 34px;
   max-width:1400px; margin:0 auto;
-  font-size:12.5px; line-height:1.65; opacity:.78;
+  font-size:12.5px; line-height:1.65; opacity:.8;
 }
-.preventivo{
-  position:fixed; left:0; right:0; bottom:0; z-index:60;
-  min-height:var(--piede-alto);
-  background:var(--panna); color:var(--rosso);
-  display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px;
-  padding:9px clamp(12px,3vw,28px) calc(9px + env(safe-area-inset-bottom,0px));
-  box-shadow:0 -6px 20px rgba(0,0,0,.28);
+/* la legenda sta a vista nel piede e non dentro il pannello dei produttori,
+   dove la vedeva solo chi lo apriva (Gio, 16/09) */
+.piede .legenda{margin:0 0 14px; font-size:13px; line-height:1.9; opacity:1}
+.piede .legenda b{font-weight:700; letter-spacing:-.07em; margin-right:3px}
+.piede .legenda .nb{display:block; margin-top:5px; opacity:.7; font-size:11.5px; line-height:1.55}
+
+/* ───────── i due bottoni: fluttuano, non stanno su una barra (Gio, 16/09).
+   Stanno a sinistra della barra a lettere per non finirci sopra. */
+.azioni{
+  position:fixed; right:46px; z-index:60;
+  bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  display:flex; gap:8px; align-items:center;
 }
-.preventivo .dice{font-size:clamp(12px,1.6vw,14.5px); font-weight:600; line-height:1.25; flex:1 1 200px; min-width:0}
-.preventivo .dice small{display:block; font-weight:400; opacity:.72; font-size:.84em}
-.preventivo .bottoni{margin-left:auto; display:flex; gap:8px; flex:0 0 auto}
-.preventivo a{
-  display:inline-flex; align-items:center; text-decoration:none; white-space:nowrap;
-  background:var(--rosso); color:var(--panna); font-weight:600;
-  font-size:clamp(12px,1.5vw,13.5px); padding:10px 14px; border:1px solid var(--rosso);
+.azioni a{
+  display:inline-flex; align-items:center; justify-content:center; text-decoration:none;
+  white-space:nowrap; font-weight:600; font-size:13.5px; letter-spacing:.02em;
+  padding:12px 18px; background:var(--panna); color:var(--rosso);
 }
-.preventivo a.vuoto{background:transparent; color:var(--rosso)}
-.preventivo a:hover{opacity:.88}
+.azioni a.vuoto{background:var(--rosso); color:var(--panna); box-shadow:inset 0 0 0 1px var(--panna)}
+.azioni a:hover{opacity:.85}
 
 /* ───────── senza JavaScript il nastro e' solo un elenco lungo */
 .nojs .palco{position:static; height:auto; aspect-ratio:auto; overflow:visible; display:block}
@@ -223,7 +260,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @media (max-width:860px){
   /* due righe di testata: a una sola i comandi uscivano dallo schermo
      (505 px in 336) e «tutto» finiva fuori, senza modo di spegnere il filtro */
-  :root{--barra-alta:94px; --piede-alto:64px}
+  :root{--barra-alta:94px; --piede-alto:0px; --m-foto:14px}
   .testata{flex-wrap:wrap; align-content:center; padding-top:6px; padding-bottom:6px; row-gap:6px}
   .testata .tit,.testata .ins{display:none}
   .testata .comandi{margin-left:0; width:100%; justify-content:space-between; flex-wrap:wrap; row-gap:6px}
@@ -234,7 +271,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     grid-template-columns:1fr; grid-template-rows:34% 1fr; max-width:none;
   }
   .foto{order:-1}
-  .pacchetto.contain img{height:80%; max-width:70%}
+  /* sul telefono la foto sta sopra: si stacca dai lati e dall'alto,
+     e resta attaccata in basso al pannello */
+  .pacchetto{inset:var(--m-foto) var(--m-foto) 0 var(--m-foto)}
+  .pacchetto.contain img{padding:12px}
   .pannello{padding:14px 18px 16px}
   .marchio{height:46px}
   .marchio img{max-width:52%}
@@ -255,14 +295,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .richiami a{font-size:11.5px}
   .lettere{right:2px; gap:0}
   .lettere button{font-size:9px; padding:2px 4px}
-  .preventivo .dice small{display:none}
+  .azioni{right:30px; bottom:calc(14px + env(safe-area-inset-bottom,0px)); gap:6px}
+  .azioni a{padding:11px 14px; font-size:12.5px}
 }
 @media (max-width:430px){
   .testata .comandi{gap:6px}
   .bott{padding:6px 9px; font-size:11px; letter-spacing:.04em}
   .fasce button{min-width:26px; padding:5px 4px; font-size:11px; letter-spacing:-.09em; white-space:nowrap}
   .ordine span{display:none}
-  .preventivo a{padding:9px 11px; font-size:12px}
+  .azioni a{padding:10px 12px; font-size:12px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
