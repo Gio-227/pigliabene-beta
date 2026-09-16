@@ -254,25 +254,25 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .azioni a.vuoto{background:var(--rosso); color:var(--panna); box-shadow:inset 0 0 0 1px var(--panna)}
 .azioni a:hover{opacity:.85}
 
-/* ───────── senza JavaScript il nastro e' solo un elenco lungo */
-.nojs .palco{position:static; height:auto; aspect-ratio:auto; overflow:visible; display:block}
+/* ───────── senza JavaScript il nastro e' solo un elenco lungo.
+   Marchi, richiami e foto sono QUATTRO pile sovrapposte tenute in ordine dal
+   JS: senza di lui non si mettono in fila, si accavallano. Invece di provare
+   a impaginarle si tolgono, e ogni elenco tiene la sua intestazione in chiaro
+   (.solo-nojs). Resta quello che serve davvero: chi c'e' e cosa vende. */
+.nojs .testata{position:static !important; height:auto !important}
+.nojs .pannello-prod{position:static !important; margin:0 0 24px}
+.nojs .palco{position:static !important; height:auto !important; overflow:visible !important; display:block !important}
 .nojs .pannello{padding:24px}
-.nojs .marchio{height:auto; display:flex; flex-wrap:wrap; gap:18px; justify-content:flex-start}
-.nojs .marchio img{position:static; max-height:54px; max-width:200px}
-.nojs .marchio .scritta{position:static; display:inline}
-.nojs .finestra{overflow:visible; mask-image:none; -webkit-mask-image:none}
-.nojs .richiami{height:auto; display:flex; flex-direction:column; gap:10px}
-.nojs .richiami a{position:static; justify-content:flex-start}
-.nojs .foto{display:none}
+.nojs .marchio,.nojs .richiami,.nojs .foto,.nojs .azioni{display:none !important}
+.nojs .finestra{overflow:visible !important; max-width:none; mask-image:none; -webkit-mask-image:none}
 .solo-nojs{display:none}
 .nojs .solo-nojs{
   display:block; margin:0 0 14px; font-size:22px; font-weight:700; letter-spacing:.02em;
   padding-bottom:8px; border-bottom:1px solid currentColor;
 }
 .nojs .blocco{padding-bottom:36px !important; border-bottom:1px solid rgba(252,255,229,.18); margin-bottom:30px}
-.nojs .marchio img,.nojs .richiami a,.nojs .pacchetto,.nojs .pacchetto img{opacity:1}
 .nojs .lettere,.nojs .fasce,.nojs .ordine,.nojs #btn-produttori{display:none}
-.nojs .pannello-prod{position:static; opacity:1; visibility:visible; transform:none; max-height:none}
+.nojs .pannello-prod{opacity:1 !important; visibility:visible !important; transform:none !important; max-height:none !important}
 
 /* ───────── telefono: il telaio si riorganizza, non si rimpicciolisce */
 @media (max-width:860px){
