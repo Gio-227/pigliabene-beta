@@ -12,10 +12,10 @@
      come nel demo del sito: per tornare al rosso pieno si riscambiano queste
      due righe e non si tocca altro. Coppia scelta da Gio: quella del
      catalogo (#FCFFE5 / #980000), non quella del sito. */
-  --rosso:#FCFFE5; --panna:#980000;
+  --rosso:#F7F4DC; --panna:#9B0E0E;
   --barra-alta:56px;   /* testata */
   --piede-alto:0px;    /* la barra del preventivo non c'e' piu' (Gio, 16/09) */
-  --fondo:#FCFFE5; --testo:#980000; --fondo-foto:#FCFFE5;
+  --fondo:#F7F4DC; --testo:#9B0E0E; --fondo-foto:#F7F4DC;
   --m-foto:clamp(14px,2.6cqw,40px);  /* stacco della foto da destra, alto e basso */
   /* IL TETTO AI CORPI (Gio, 16/09): le misure erano tutte in cqw e crescevano
      senza fine col monitor — a 1920 una voce d'elenco arrivava a 41 px. Ora
