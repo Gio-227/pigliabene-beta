@@ -38,8 +38,12 @@
   /* ---- scorrimento: la pagina scorre, il nastro trasla, il telaio sta fermo */
   var attivo = null, ticchetta = false;
   function muovi(){
-    var cima = scena.getBoundingClientRect().top - parseFloat(getComputedStyle(palco).top || 0);
-    var avanzamento = Math.min(Math.max(-cima, 0), Math.max(0, altezzaNastro - altezzaFinestra));
+    /* La testata e' fissa e non occupa flusso: la scena parte da 0 e il palco
+       e' gia' agganciato. Quindi l'avanzamento e' lo scroll puro: sottrarre
+       anche l'aggancio decapitava la copertina di 39 px al primo sguardo.
+       L'aggancio va contato in misura(), che e' un'altra cosa. */
+    var avanzamento = Math.min(Math.max(-scena.getBoundingClientRect().top, 0),
+                               Math.max(0, altezzaNastro - altezzaFinestra));
     nastro.style.transform = 'translateY(' + (-avanzamento) + 'px)';
     /* attivo = il produttore che occupa piu' finestra. E' la regola onesta:
        qualunque sia lo stacco, il telaio segue quello che si sta leggendo. */

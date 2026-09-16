@@ -209,6 +209,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .nojs .richiami{height:auto; display:flex; flex-direction:column; gap:10px}
 .nojs .richiami a{position:static; justify-content:flex-start}
 .nojs .foto{display:none}
+.solo-nojs{display:none}
+.nojs .solo-nojs{
+  display:block; margin:0 0 14px; font-size:22px; font-weight:700; letter-spacing:.02em;
+  padding-bottom:8px; border-bottom:1px solid currentColor;
+}
+.nojs .blocco{padding-bottom:36px !important; border-bottom:1px solid rgba(252,255,229,.18); margin-bottom:30px}
 .nojs .marchio img,.nojs .richiami a,.nojs .pacchetto,.nojs .pacchetto img{opacity:1}
 .nojs .lettere,.nojs .fasce,.nojs .ordine,.nojs #btn-produttori{display:none}
 .nojs .pannello-prod{position:static; opacity:1; visibility:visible; transform:none; max-height:none}
@@ -254,7 +260,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @media (max-width:430px){
   .testata .comandi{gap:6px}
   .bott{padding:6px 9px; font-size:11px; letter-spacing:.04em}
-  .fasce button{min-width:26px; padding:5px 5px; font-size:11px}
+  .fasce button{min-width:26px; padding:5px 4px; font-size:11px; letter-spacing:-.09em; white-space:nowrap}
   .ordine span{display:none}
   .preventivo a{padding:9px 11px; font-size:12px}
 }
