@@ -119,13 +119,13 @@
   function riordina(modo){
     var ordinati = blocchi.slice(1).sort(function(a, b){
       var A = piano.produttori[a.dataset.p], B = piano.produttori[b.dataset.p];
-      if (modo === 'alfabetico') return A.nome.localeCompare(B.nome, 'it');
+      if (modo === 'alfabetico') return A.chiave.localeCompare(B.chiave, 'it');
       if (modo === 'novita'){
         if (A.novita !== B.novita) return A.novita ? -1 : 1;
-        return A.nome.localeCompare(B.nome, 'it');
+        return A.chiave.localeCompare(B.chiave, 'it');
       }
       if (A.catOrdine !== B.catOrdine) return A.catOrdine - B.catOrdine;
-      return A.nome.localeCompare(B.nome, 'it');
+      return A.chiave.localeCompare(B.chiave, 'it');
     });
     ordinati.forEach(function(b){ nastro.appendChild(b); });
     blocchi = [].slice.call(nastro.children);
