@@ -111,10 +111,36 @@
     if (history.replaceState) history.replaceState(null, '', id === 'copertina' ? location.pathname : '#' + id);
   }
 
+  /* ---- le foto arrivano quando tocca al produttore, non tutte all'avvio.
+     Con sei foto a testa, caricarle subito porta la pagina da 1,8 a 7,5 MB —
+     e in pagina se ne vede UNA per volta. Ogni pacchetto parte con data-src:
+     si sveglia quando il suo produttore diventa attivo, e insieme a lui si
+     sveglia il prossimo, cosi' quando ci arrivi e' gia' pronto. */
+  function sveglia(id, soloLaPrima){
+    var pac = palco.querySelector('.pacchetto[data-p="' + id + '"]');
+    if (!pac) return;
+    var da = [].slice.call(pac.querySelectorAll('img[data-src]'));
+    if (soloLaPrima) da = da.slice(0, 1);   /* al prossimo basta la prima:
+                                               le altre le girera' il carosello */
+    da.forEach(function(im){
+      im.src = im.getAttribute('data-src');
+      im.removeAttribute('data-src');
+    });
+  }
+  function ilProssimo(id){
+    var vivi = blocchi.filter(function(b){ return !b.hidden; });
+    for (var i = 0; i < vivi.length - 1; i++)
+      if (vivi[i].dataset.p === id) return vivi[i + 1].dataset.p;
+    return null;
+  }
+
   /* ---- le immagini di un produttore girano da sole */
   var tempo = null;
   function avviaCarosello(id){
     if (tempo) { clearInterval(tempo); tempo = null; }
+    sveglia(id);
+    var pros = ilProssimo(id);
+    if (pros) setTimeout(function(){ sveglia(pros, true); }, 500);
     var pac = palco.querySelector('.pacchetto[data-p="' + id + '"]');
     if (!pac) return;
     var imgs = [].slice.call(pac.querySelectorAll('img'));
