@@ -7,3 +7,9 @@ _backups/
 # sito di produzione resterebbe senza casa. Su main e' gia' tracciato: la
 # riga qui sotto non lo tocca, impedisce solo di aggiungerlo per sbaglio altrove.
 CNAME
+
+# Demo e prove locali: restano sul disco, non sul sito pubblico
+*_demo_v*.html
+
+# Export della zona DNS: dato interno, mai in un repo pubblico
+*export-zona-DNS.txt
