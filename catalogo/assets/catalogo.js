@@ -68,18 +68,21 @@
        vista in alto. E' un segnale che si vede, non un calcolo di aree: con
        lo stacco corto due produttori restano un attimo in pagina insieme, e
        il cartiglio dice a chi appartiene quello che stai leggendo. */
-    var mira = avanzamento + altezzaFinestra * 0.42;
-    var id = mappa.length ? mappa[0].id : null;
+    /* IL TELAIO SEGUE CHI OCCUPA PIU' FINESTRA. E' la misura onesta di «di chi
+       sto leggendo», e con lo stacco corto funziona perche' in mezzo c'e' il
+       cartiglio a dire dove finisce uno e comincia l'altro. Agganciarlo invece
+       a una soglia fissa lasciava il telaio indietro: dopo la copertina per
+       177-251 px, e a meta' nastro per ~240. L'isteresi (il candidato deve
+       battere l'attuale di un dodicesimo di schermo) evita lo sfarfallio a
+       cavallo fra due. */
+    var a = avanzamento, b = avanzamento + altezzaFinestra;
+    var best = null, area = -1, attuale = -1;
     for (var i = 0; i < mappa.length; i++){
-      /* si passa al successivo quando il suo cartiglio ha superato il 42%
-         OPPURE quando il testo del precedente e' gia' uscito dall'alto: senza
-         la seconda condizione, dopo la copertina — che ha uno stacco alto una
-         finestra intera — si leggeva Castagna col telaio ancora della
-         copertina per 177-251 px di scorrimento. */
-      if (mappa[i].cima <= mira || (i > 0 && mappa[i - 1].fine <= avanzamento)) id = mappa[i].id;
-      else break;
+      var vis = Math.min(b, mappa[i].fine) - Math.max(a, mappa[i].cima);
+      if (mappa[i].id === attivo) attuale = vis;
+      if (vis > area){ area = vis; best = mappa[i].id; }
     }
-    if (id && id !== attivo) cambia(id);
+    if (best && best !== attivo && (attivo === null || area > attuale + altezzaFinestra / 12)) cambia(best);
   }
   function suScroll(){
     if (ticchetta) return;
