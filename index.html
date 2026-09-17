@@ -91,8 +91,6 @@
   a{color:inherit;text-decoration:none}
   footer a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
   footer .copy{flex-basis:100%}
-  /* Sotto i 640px non c e larghezza da distribuire: i blocchi tornano a sinistra. */
-  @media(max-width:640px){footer{justify-content:flex-start;row-gap:6px}}
 
   /* ---------- nav ---------- */
   header{
@@ -224,6 +222,10 @@
     section{padding:9vh var(--mx)}
     .label{margin-bottom:5vh}
     h2{margin-bottom:4vh}
+    /* Il footer non ha larghezza da distribuire: i blocchi tornano a sinistra.
+       Sta QUI e non accanto alla regola del footer: una media query scritta prima
+       della regola che vuole correggere perde il confronto e non fa niente. */
+    footer{justify-content:flex-start;row-gap:6px}
   }
 </style>
 
