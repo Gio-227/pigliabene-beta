@@ -16,7 +16,16 @@
   --barra-alta:56px;   /* testata */
   --piede-alto:0px;    /* la barra del preventivo non c'e' piu' (Gio, 16/09) */
   --fondo:#F7F4DC; --testo:#9B0E0E; --fondo-foto:#F7F4DC;
-  --m-foto:clamp(14px,2.6cqw,40px);  /* stacco della foto da destra, alto e basso */
+  /* UN SOLO MARGINE PER TUTTA LA PAGINA (Gio, 17/09: «attacco del bordo di
+     scrittura e fine dell'immagine, se li prendi insieme, non sono centrati»).
+     Era vero e si misurava: il bordo sinistro aveva TRE valori scritti a mano
+     — testata 32, pannello 44, piede 44 — e la colonna di lettura, centrata
+     nel pannello, spingeva il testo a 200 mentre l'immagine staccava di 40 da
+     destra: 160 px di sbilanciamento. Ora testata, pannello, piede e stacco
+     della foto vengono tutti da qui: il bordo di scrittura a sinistra e la
+     fine dell'immagine a destra sono lo stesso numero. */
+  --m-pagina:clamp(14px,2.6vw,40px);
+  --m-foto:var(--m-pagina);          /* stacco della foto da destra, alto e basso */
   /* IL TETTO AI CORPI (Gio, 16/09): le misure erano tutte in cqw e crescevano
      senza fine col monitor — a 1920 una voce d'elenco arrivava a 41 px. Ora
      ogni corpo e' un clamp col massimo intorno ai 16 pt, e la pagina si
@@ -40,7 +49,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .testata{
   position:fixed; top:0; left:0; right:0; z-index:60; height:var(--barra-alta);
   display:flex; align-items:center; gap:clamp(10px,2vw,22px);
-  padding:0 clamp(12px,3vw,32px);
+  padding:0 var(--m-pagina);
   /* Niente bordo, niente ombra, niente stacco di colore: la testata deve
      sparire nel corpo della pagina come fa quella del sito ufficiale. */
   background:var(--rosso);
@@ -125,13 +134,17 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .pannello{
   background:var(--fondo); color:var(--testo);
   display:flex; flex-direction:column;
-  padding:clamp(20px,3.1cqw,44px) clamp(18px,3.1cqw,44px) clamp(16px,2.4cqw,34px);
+  padding:clamp(20px,3.1cqw,44px) var(--m-pagina) clamp(16px,2.4cqw,34px);
   transition:background .5s ease, color .5s ease; min-height:0;
 }
-/* La colonna di lettura: sopra i 1400 px il pannello diventa largo e il testo
-   resterebbe appiccicato a sinistra con mezzo metro di vuoto a destra. Cosi'
-   invece il vuoto sta ai due lati, e a 1920 la pagina respira. */
-.marchio,.finestra,.richiami{width:100%; max-width:var(--colonna); margin-inline:auto}
+/* La colonna di lettura tiene la misura (le righe non si allungano all'infinito
+   col monitor), ma ATTACCA AL MARGINE DI PAGINA, non al centro del pannello.
+   Il 16/09 l'avevo centrata per distribuire il vuoto ai due lati: era giusto
+   guardando il solo pannello, sbagliato guardando la pagina intera, perche'
+   spostava il bordo di scrittura a 200 px mentre l'immagine stava a 40 dal
+   bordo opposto. Il vuoto che resta a destra delle righe non e' un buco: e'
+   il canale fra le due facciate, come sulla carta. */
+.marchio,.finestra,.richiami{width:100%; max-width:var(--colonna); margin-inline:0 auto}
 
 /* IL MARCHIO STA FERMO (Gio, 16/09): altezza e larghezza hanno un tetto, e si
    stringono solo quando lo schermo non gliene lascia abbastanza. */
@@ -246,7 +259,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* allineato al margine del pannello, non centrato in una colonna: centrato
    lasciava un vuoto a sinistra e spezzava la linea della pagina (Gio) */
 .piede{
-  padding:30px clamp(18px,3.1vw,44px) 34px;
+  padding:30px var(--m-pagina) 34px;
   max-width:none; margin:0;
   font-size:12.5px; line-height:1.65; opacity:.8;
 }
@@ -299,7 +312,7 @@ body.pannello-aperto .azioni,body.pannello-aperto .lettere{opacity:0; pointer-ev
 @media (max-width:860px){
   /* due righe di testata: a una sola i comandi uscivano dallo schermo
      (505 px in 336) e «tutto» finiva fuori, senza modo di spegnere il filtro */
-  :root{--barra-alta:108px; --piede-alto:0px; --m-foto:14px}
+  :root{--barra-alta:108px; --piede-alto:0px; --m-pagina:14px}
   .testata{flex-wrap:wrap; align-content:center; padding-top:6px; padding-bottom:6px; row-gap:6px}
   .testata .tit,.testata .ins{display:none}
   .testata .comandi{margin-left:0; width:100%; justify-content:space-between; flex-wrap:wrap; row-gap:6px}
@@ -314,7 +327,8 @@ body.pannello-aperto .azioni,body.pannello-aperto .lettere{opacity:0; pointer-ev
      e resta attaccata in basso al pannello */
   .pacchetto{inset:var(--m-foto) var(--m-foto) 0 var(--m-foto)}
   .pacchetto.contain img{padding:12px}
-  .pannello{padding:14px 18px 16px}
+  /* anche qui il testo attacca dove attacca la foto: erano 18 contro 14 */
+  .pannello{padding:14px var(--m-pagina) 16px}
   .marchio{height:46px}
   .marchio img{max-width:52%}
   .marchio .scritta{font-size:16px}
