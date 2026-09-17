@@ -243,9 +243,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .lettere button[disabled]{opacity:.16; cursor:default; text-decoration:none}
 
 /* ───────── il piede, dove sta anche la legenda delle fasce */
+/* allineato al margine del pannello, non centrato in una colonna: centrato
+   lasciava un vuoto a sinistra e spezzava la linea della pagina (Gio) */
 .piede{
-  padding:30px clamp(16px,4vw,40px) 34px;
-  max-width:1400px; margin:0 auto;
+  padding:30px clamp(18px,3.1vw,44px) 34px;
+  max-width:none; margin:0;
   font-size:12.5px; line-height:1.65; opacity:.8;
 }
 /* la legenda sta a vista nel piede e non dentro il pannello dei produttori,

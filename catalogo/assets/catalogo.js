@@ -19,11 +19,24 @@
        annuncia chi arriva. Cosi' lo scorrimento resta libero, il passaggio si
        vede, e il vuoto scende da ~10 schermate a ~3 sui 21 produttori. */
     var stacco = Math.round(altezzaFinestra * 0.35);
-    blocchi.forEach(function(b){ b.style.paddingBottom = stacco + 'px'; });
+    var vivi = blocchi.filter(function(b){ return !b.hidden; });
+    var pad = {};
+    vivi.forEach(function(b, i){
+      var p;
+      if (i === vivi.length - 1) p = 0;                    /* l'ultimo non ha nessuno dopo:
+                                                              lo stacco lasciava scorrere il
+                                                              testo in alto per niente */
+      else if (b.dataset.p === 'copertina') p = altezzaFinestra;  /* la copertina resta sola:
+                                                              sotto non si deve leggere gia'
+                                                              il produttore che segue */
+      else p = stacco;
+      pad[b.dataset.p] = p;
+      b.style.paddingBottom = p + 'px';
+    });
     altezzaNastro = nastro.scrollHeight;
-    mappa = blocchi.filter(function(b){ return !b.hidden; }).map(function(b){
+    mappa = vivi.map(function(b){
       return { id: b.dataset.p, cima: b.offsetTop,
-               fine: b.offsetTop + b.offsetHeight - stacco,   /* dove finisce il TESTO */
+               fine: b.offsetTop + b.offsetHeight - (pad[b.dataset.p] || 0),  /* fine del TESTO */
                fondo: b.offsetTop + b.offsetHeight };
     });
     var corsa = Math.max(0, altezzaNastro - altezzaFinestra);
