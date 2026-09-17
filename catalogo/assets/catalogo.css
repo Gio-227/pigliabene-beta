@@ -149,14 +149,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* IL MARCHIO STA FERMO (Gio, 16/09): altezza e larghezza hanno un tetto, e si
    stringono solo quando lo schermo non gliene lascia abbastanza. */
 .marchio{position:relative; height:clamp(46px,11cqw,92px); flex:none}
+/* E ATTACCA AL MARGINE, non al centro della colonna (Gio, 17/09). Centrati,
+   i quattro marchi partivano da 210, 210, 287 e 210: rientrati rispetto al
+   testo, e nemmeno allineati fra loro — cambiando produttore il marchio
+   saltava di 77 px. Da sinistra partono tutti dallo stesso punto, che e' lo
+   stesso del testo e della testata. Resta centrato in verticale. */
 .marchio img{
-  position:absolute; inset:0; margin:auto; max-height:100%;
+  position:absolute; left:0; top:0; bottom:0; margin:auto 0; max-height:100%;
   max-width:min(46%, 280px);
   object-fit:contain; opacity:0; transition:opacity .45s ease;
 }
 .marchio img.vivo{opacity:1}
 .marchio .scritta{
-  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:flex-start;
   font-size:clamp(16px,2.6cqw,25px); font-weight:600; letter-spacing:.06em; text-transform:uppercase;
   opacity:0; transition:opacity .45s ease;
 }
@@ -216,8 +221,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 .richiami{position:relative; flex:none; height:clamp(34px,4.4cqw,50px); margin-top:clamp(10px,1.2cqw,18px)}
 .richiami a{
-  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  text-align:center; opacity:0; transition:opacity .45s ease; pointer-events:none;
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:flex-start;
+  text-align:left; opacity:0; transition:opacity .45s ease; pointer-events:none;
   font-size:clamp(11px,1.45cqw,15px); font-weight:700; letter-spacing:.045em; text-transform:uppercase;
   text-decoration:underline; text-underline-offset:.35em; line-height:1.35;
 }
