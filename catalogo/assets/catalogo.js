@@ -19,13 +19,16 @@
        annuncia chi arriva. Cosi' lo scorrimento resta libero, il passaggio si
        vede, e il vuoto scende da ~10 schermate a ~3 sui 21 produttori. */
     var stacco = Math.round(altezzaFinestra * 0.35);
+    /* l'ultima riga del catalogo finiva sotto la sfumatura e non si leggeva
+       mai: all'ultimo blocco si lascia esattamente l'altezza della sfumatura */
+    var coda = Math.ceil(parseFloat(getComputedStyle(finestra).getPropertyValue('--sf-basso')) || 24) + 6;
     var vivi = blocchi.filter(function(b){ return !b.hidden; });
     var pad = {};
     vivi.forEach(function(b, i){
       var p;
-      if (i === vivi.length - 1) p = 0;                    /* l'ultimo non ha nessuno dopo:
-                                                              lo stacco lasciava scorrere il
-                                                              testo in alto per niente */
+      if (i === vivi.length - 1) p = coda;                 /* l'ultimo non ha nessuno dopo:
+                                                              solo quanto basta a uscire
+                                                              dalla sfumatura */
       else if (b.dataset.p === 'copertina') p = altezzaFinestra;  /* la copertina resta sola:
                                                               sotto non si deve leggere gia'
                                                               il produttore che segue */
@@ -68,7 +71,13 @@
     var mira = avanzamento + altezzaFinestra * 0.42;
     var id = mappa.length ? mappa[0].id : null;
     for (var i = 0; i < mappa.length; i++){
-      if (mappa[i].cima <= mira) id = mappa[i].id; else break;
+      /* si passa al successivo quando il suo cartiglio ha superato il 42%
+         OPPURE quando il testo del precedente e' gia' uscito dall'alto: senza
+         la seconda condizione, dopo la copertina — che ha uno stacco alto una
+         finestra intera — si leggeva Castagna col telaio ancora della
+         copertina per 177-251 px di scorrimento. */
+      if (mappa[i].cima <= mira || (i > 0 && mappa[i - 1].fine <= avanzamento)) id = mappa[i].id;
+      else break;
     }
     if (id && id !== attivo) cambia(id);
   }
@@ -140,10 +149,14 @@
   function chiudiPannello(){
     pannelloProd.classList.remove('aperto');
     bottProd.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('pannello-aperto');
   }
   bottProd.addEventListener('click', function(){
     var ap = pannelloProd.classList.toggle('aperto');
     bottProd.setAttribute('aria-expanded', ap ? 'true' : 'false');
+    /* i bottoni flottanti stanno sopra tutto: a pannello aperto coprivano la
+       prima card, quindi mentre il pannello e' aperto si tolgono di mezzo */
+    document.body.classList.toggle('pannello-aperto', ap);
   });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') chiudiPannello(); });
 

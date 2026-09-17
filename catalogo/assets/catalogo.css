@@ -98,14 +98,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .card .im img{width:100%; height:100%; object-fit:cover; display:block}
 .card .im.contain img{width:auto; height:70%; max-width:70%; object-fit:contain}
 .card .tx{padding:11px 0 0; display:flex; flex-direction:column; flex:1 1 auto}
-.card .tx .oc{font-size:9px; letter-spacing:.2em; text-transform:uppercase; opacity:.7;
+.card .tx .oc{font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; opacity:.85;
   display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .card .tx h3{margin:5px 0 4px; font-size:15px; font-weight:600; line-height:1.2}
 .card .tx .cn{font-size:12px; opacity:.75}
 .card .tx .eu{margin-top:5px; font-size:12.5px; font-weight:700; letter-spacing:-.06em}
 .card .tx .eu i{font-style:normal; font-weight:400; opacity:.6; letter-spacing:.02em; font-size:.88em}
-.card .tx .pv{margin-top:auto; padding-top:8px; font-size:9px; letter-spacing:.12em;
-  text-transform:uppercase; opacity:.62; display:block}
+.card .tx .pv{margin-top:auto; padding-top:8px; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; opacity:.8; display:block}
 
 /* ───────── il palco: 16:9, pannello a sinistra, foto a destra, e non si muove */
 .scena{position:relative}
@@ -189,7 +189,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .gruppo li[hidden]{display:none}
 .gruppo li::before{content:"\2022"; position:absolute; left:clamp(-16px,-1.5cqw,-11px); opacity:.9}
 .gruppo li .nome{flex:1 1 auto; min-width:0}
-.gruppo li .nota{opacity:.7; font-size:.84em}
+.gruppo li .nota{opacity:.82; font-size:.84em}   /* a .7 il contrasto scendeva a 4,36:1 */
 /* i € sulle singole righe sono stati tolti (Gio, 16/09): la fascia e' del
    produttore, non della referenza. La regola .eu vive ora solo sulla card. */
 
@@ -271,6 +271,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .azioni a.vuoto{background:var(--rosso); color:var(--panna); box-shadow:inset 0 0 0 1px var(--panna)}
 .azioni a:hover{opacity:.85}
+body.pannello-aperto .azioni,body.pannello-aperto .lettere{opacity:0; pointer-events:none}
 
 /* ───────── senza JavaScript il nastro e' solo un elenco lungo.
    Marchi, richiami e foto sono QUATTRO pile sovrapposte tenute in ordine dal
@@ -289,14 +290,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   padding-bottom:8px; border-bottom:1px solid currentColor;
 }
 .nojs .blocco{padding-bottom:36px !important; border-bottom:1px solid rgba(252,255,229,.18); margin-bottom:30px}
-.nojs .lettere,.nojs .fasce,.nojs .ordine,.nojs #btn-produttori{display:none}
-.nojs .pannello-prod{opacity:1 !important; visibility:visible !important; transform:none !important; max-height:none !important}
+/* senza JS i comandi non fanno niente e le card sono bottoni morti: si toglie
+   tutto, e la testata tiene il titolo invece di restare vuota */
+.nojs .lettere,.nojs .fasce,.nojs .ordine,.nojs #btn-produttori,.nojs .pannello-prod{display:none !important}
+.nojs .testata .tit,.nojs .testata .ins{display:inline !important}
 
 /* ───────── telefono: il telaio si riorganizza, non si rimpicciolisce */
 @media (max-width:860px){
   /* due righe di testata: a una sola i comandi uscivano dallo schermo
      (505 px in 336) e «tutto» finiva fuori, senza modo di spegnere il filtro */
-  :root{--barra-alta:94px; --piede-alto:0px; --m-foto:14px}
+  :root{--barra-alta:108px; --piede-alto:0px; --m-foto:14px}
   .testata{flex-wrap:wrap; align-content:center; padding-top:6px; padding-bottom:6px; row-gap:6px}
   .testata .tit,.testata .ins{display:none}
   .testata .comandi{margin-left:0; width:100%; justify-content:space-between; flex-wrap:wrap; row-gap:6px}
@@ -331,8 +334,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .copertina .giu{font-size:11px; margin-top:12px}
   .richiami{height:34px; margin-top:10px}
   .richiami a{font-size:11.5px}
-  .lettere{right:2px; gap:0}
-  .lettere button{font-size:9px; padding:2px 4px}
+  /* La barra a lettere sul telefono era 15x13 px per tasto, contrasto 2,7:1, e
+     con due «C» (Castagna e Colzani) indistinguibili: col dito non si centra.
+     Sparisce, perche' «Tutti i produttori» fa la stessa cosa e si tocca. */
+  .lettere{display:none}
+  /* comandi alti almeno 36 px: prima erano 22-29 e col dito non si prendono */
+  .bott{padding:10px 13px}
+  .ordine select{padding:9px 8px}
+  .fasce button{padding:10px 6px}
   /* Sul telefono in basso c'e' il richiamo «clicca qui», e i due bottoni ci
      finivano sopra: si leggeva «CLICCA QU». Salgono sulla foto, che sta in
      alto e ha spazio, e non coprono piu' una riga di testo. */
