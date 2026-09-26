@@ -1,268 +1,204 @@
 (function(){
   'use strict';
   document.documentElement.classList.remove('nojs');
-  var scena = document.getElementById('scena');
-  var palco = document.getElementById('palco');
-  var finestra = document.getElementById('finestra');
-  var nastro = document.getElementById('nastro');
-  var blocchi = [].slice.call(nastro.children);
-  var piano = (window.CATALOGO || {});
-  var menoMoto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var menoMoto = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var main = document.getElementById('catalogo');
+  var sezioni = [].slice.call(main.querySelectorAll('.prod'));
+  var piano = (window.CATALOGO || {}).produttori || {};
+  var testata = document.querySelector('.testata');
+  function barra(){ return testata ? testata.offsetHeight : 0; }
 
-  /* ---- misura: quanto e' alto il nastro, e quanto deve scorrere la pagina */
-  var mappa = [], altezzaNastro = 0, altezzaFinestra = 0;
-  function misura(){
-    altezzaFinestra = finestra.clientHeight;
-    /* LA VIA DI MEZZO (Gio, 16/09 sera). Lo stacco era alto quanto la finestra
-       per non far leggere due produttori insieme, ma lasciava troppo vuoto.
-       Ora e' un terzo, e a separarli non e' il nulla: e' il cartiglio che
-       annuncia chi arriva. Cosi' lo scorrimento resta libero, il passaggio si
-       vede, e il vuoto scende da ~10 schermate a ~3 sui 21 produttori. */
-    var stacco = Math.round(altezzaFinestra * 0.35);
-    /* l'ultima riga del catalogo finiva sotto la sfumatura e non si leggeva
-       mai: all'ultimo blocco si lascia esattamente l'altezza della sfumatura */
-    var coda = Math.ceil(parseFloat(getComputedStyle(finestra).getPropertyValue('--sf-basso')) || 24) + 6;
-    var vivi = blocchi.filter(function(b){ return !b.hidden; });
-    var pad = {};
-    vivi.forEach(function(b, i){
-      var p;
-      if (i === vivi.length - 1) p = coda;                 /* l'ultimo non ha nessuno dopo:
-                                                              solo quanto basta a uscire
-                                                              dalla sfumatura */
-      else if (b.dataset.p === 'copertina') p = altezzaFinestra;  /* la copertina resta sola:
-                                                              sotto non si deve leggere gia'
-                                                              il produttore che segue */
-      else p = stacco;
-      pad[b.dataset.p] = p;
-      b.style.paddingBottom = p + 'px';
-    });
-    altezzaNastro = nastro.scrollHeight;
-    mappa = vivi.map(function(b){
-      return { id: b.dataset.p, cima: b.offsetTop,
-               fine: b.offsetTop + b.offsetHeight - (pad[b.dataset.p] || 0),  /* fine del TESTO */
-               fondo: b.offsetTop + b.offsetHeight };
-    });
-    var corsa = Math.max(0, altezzaNastro - altezzaFinestra);
-    /* la scena deve essere alta abbastanza da far arrivare in cima l'ultima
-       riga: il palco resta appiccicato sotto la testata, quindi va contato
-       anche quello, o la coda del catalogo non si vede mai */
-    /* la barra in fondo non c'e' piu': i bottoni fluttuano e non rubano altezza */
-    var utile = Math.max(palco.offsetHeight + parseFloat(getComputedStyle(palco).top || 0),
-                         window.innerHeight);
-    scena.style.height = (corsa + utile) + 'px';
-    muovi();
-  }
-
-  /* ---- scorrimento: la pagina scorre, il nastro trasla, il telaio sta fermo */
-  var attivo = null, ticchetta = false;
-  function muovi(){
-    /* La testata e' fissa e non occupa flusso: la scena parte da 0 e il palco
-       e' gia' agganciato. Quindi l'avanzamento e' lo scroll puro: sottrarre
-       anche l'aggancio decapitava la copertina di 39 px al primo sguardo.
-       L'aggancio va contato in misura(), che e' un'altra cosa. */
-    var avanzamento = Math.min(Math.max(-scena.getBoundingClientRect().top, 0),
-                               Math.max(0, altezzaNastro - altezzaFinestra));
-    nastro.style.transform = 'translateY(' + (-avanzamento) + 'px)';
-    /* Il telaio cambia quando il CARTIGLIO del produttore che arriva ha
-       superato il 42% della finestra, cioe' quando il suo nome e' bene in
-       vista in alto. E' un segnale che si vede, non un calcolo di aree: con
-       lo stacco corto due produttori restano un attimo in pagina insieme, e
-       il cartiglio dice a chi appartiene quello che stai leggendo. */
-    /* IL TELAIO SEGUE CHI OCCUPA PIU' FINESTRA. E' la misura onesta di «di chi
-       sto leggendo», e con lo stacco corto funziona perche' in mezzo c'e' il
-       cartiglio a dire dove finisce uno e comincia l'altro. Agganciarlo invece
-       a una soglia fissa lasciava il telaio indietro: dopo la copertina per
-       177-251 px, e a meta' nastro per ~240. L'isteresi (il candidato deve
-       battere l'attuale di un dodicesimo di schermo) evita lo sfarfallio a
-       cavallo fra due. */
-    var a = avanzamento, b = avanzamento + altezzaFinestra;
-    var best = null, area = -1, attuale = -1;
-    for (var i = 0; i < mappa.length; i++){
-      var vis = Math.min(b, mappa[i].fine) - Math.max(a, mappa[i].cima);
-      if (mappa[i].id === attivo) attuale = vis;
-      if (vis > area){ area = vis; best = mappa[i].id; }
+  /* ---- le foto. La prima di ogni produttore ha gia' il suo src (lazy): si vede
+     anche senza JS. Le altre partono con data-src e si svegliano quando la
+     galleria entra in vista; il carosello gira solo per la galleria visibile. */
+  function sveglia(sez, tutte){
+    var imgs = sez.querySelectorAll('.galleria img[data-src]');
+    for (var i = 0; i < imgs.length; i++){
+      imgs[i].src = imgs[i].getAttribute('data-src');
+      imgs[i].removeAttribute('data-src');
+      if (!tutte) break;
     }
-    if (best && best !== attivo && (attivo === null || area > attuale + altezzaFinestra / 12)) cambia(best);
   }
-  function suScroll(){
-    if (ticchetta) return;
-    ticchetta = true;
-    requestAnimationFrame(function(){ ticchetta = false; muovi(); });
-  }
-
-  /* ---- il cambio: marchio, richiamo, foto e colori si sostituiscono */
-  function cambia(id){
-    attivo = id;
-    var v = piano.produttori[id] || piano.produttori['copertina'];
-    if (v){
-      palco.style.setProperty('--fondo', v.fondo);
-      palco.style.setProperty('--testo', v.testo);
-      palco.style.setProperty('--fondo-foto', v.fondoFoto);
-    }
-    ['.marchio img', '.marchio .scritta', '.richiami a', '.pacchetto'].forEach(function(sel){
-      [].forEach.call(palco.querySelectorAll(sel), function(el){
-        el.classList.toggle('vivo', el.dataset.p === id);
-      });
-    });
-    [].forEach.call(document.querySelectorAll('.lettere button'), function(b){
-      b.classList.toggle('attiva', b.dataset.p === id);
-    });
-    avviaCarosello(id);
-    if (history.replaceState) history.replaceState(null, '', id === 'copertina' ? location.pathname : '#' + id);
-  }
-
-  /* ---- le foto arrivano quando tocca al produttore, non tutte all'avvio.
-     Con sei foto a testa, caricarle subito porta la pagina da 1,8 a 7,5 MB —
-     e in pagina se ne vede UNA per volta. Ogni pacchetto parte con data-src:
-     si sveglia quando il suo produttore diventa attivo, e insieme a lui si
-     sveglia il prossimo, cosi' quando ci arrivi e' gia' pronto. */
-  function sveglia(id, soloLaPrima){
-    var pac = palco.querySelector('.pacchetto[data-p="' + id + '"]');
-    if (!pac) return;
-    var da = [].slice.call(pac.querySelectorAll('img[data-src]'));
-    if (soloLaPrima) da = da.slice(0, 1);   /* al prossimo basta la prima:
-                                               le altre le girera' il carosello */
-    da.forEach(function(im){
-      im.src = im.getAttribute('data-src');
-      im.removeAttribute('data-src');
-    });
-  }
-  function ilProssimo(id){
-    var vivi = blocchi.filter(function(b){ return !b.hidden; });
-    for (var i = 0; i < vivi.length - 1; i++)
-      if (vivi[i].dataset.p === id) return vivi[i + 1].dataset.p;
-    return null;
-  }
-
-  /* ---- le immagini di un produttore girano da sole */
-  var tempo = null;
-  function avviaCarosello(id){
-    if (tempo) { clearInterval(tempo); tempo = null; }
-    sveglia(id);
-    var pros = ilProssimo(id);
-    if (pros) setTimeout(function(){ sveglia(pros, true); }, 500);
-    var pac = palco.querySelector('.pacchetto[data-p="' + id + '"]');
-    if (!pac) return;
-    var imgs = [].slice.call(pac.querySelectorAll('img'));
-    if (!imgs.length) return;
-    imgs.forEach(function(im, i){ im.classList.toggle('vivo', i === 0); });
-    if (imgs.length < 2 || menoMoto) return;
+  var giri = {};
+  function passo(sez, avanti){
+    var imgs = [].slice.call(sez.querySelectorAll('.galleria img'));
+    var punti = [].slice.call(sez.querySelectorAll('.punti i'));
+    if (imgs.length < 2) return;
     var k = 0;
-    tempo = setInterval(function(){
-      imgs[k].classList.remove('vivo');
-      k = (k + 1) % imgs.length;
-      imgs[k].classList.add('vivo');
-    }, 3000);
+    for (var i = 0; i < imgs.length; i++) if (imgs[i].classList.contains('vivo')) { k = i; break; }
+    var n = (k + (avanti === false ? imgs.length - 1 : 1)) % imgs.length;
+    if (!imgs[n].getAttribute('src')) return;
+    imgs[k].classList.remove('vivo'); imgs[n].classList.add('vivo');
+    if (punti[k]) punti[k].classList.remove('vivo');
+    if (punti[n]) punti[n].classList.add('vivo');
   }
-  palco.addEventListener('mouseenter', function(){ if (tempo){ clearInterval(tempo); tempo = null; } });
-  palco.addEventListener('mouseleave', function(){ if (attivo) avviaCarosello(attivo); });
+  function avvia(sez){
+    sveglia(sez, true);
+    if (giri[sez.id] || menoMoto) return;
+    giri[sez.id] = setInterval(function(){ passo(sez, true); }, 3800);
+  }
+  function ferma(sez){ if (giri[sez.id]){ clearInterval(giri[sez.id]); delete giri[sez.id]; } }
+  function prossima(sez){
+    var vivi = sezioni.filter(function(s){ return !s.hidden; });
+    var i = vivi.indexOf(sez);
+    return (i >= 0 && i < vivi.length - 1) ? vivi[i + 1] : null;
+  }
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(voci){
+      voci.forEach(function(v){
+        var sez = v.target.parentNode;
+        while (sez && !(sez.classList && sez.classList.contains('prod'))) sez = sez.parentNode;
+        if (!sez) return;
+        if (v.isIntersecting){ avvia(sez); var nx = prossima(sez); if (nx) sveglia(nx, false); }
+        else ferma(sez);
+      });
+    }, { rootMargin: '150px 0px' });
+    sezioni.forEach(function(s){ var g = s.querySelector('.galleria'); if (g) io.observe(g); });
+  } else {
+    sezioni.forEach(function(s){ sveglia(s, true); });
+  }
+  /* toccare la foto la fa andare avanti: sul telefono e' il gesto naturale */
+  sezioni.forEach(function(s){
+    var g = s.querySelector('.galleria');
+    if (g) g.addEventListener('click', function(){ ferma(s); passo(s, true); });
+  });
 
-  /* ---- saltare a un produttore */
-  function vaiA(id){
-    var b = blocchi.filter(function(x){ return x.dataset.p === id && !x.hidden; })[0];
-    if (!b) return;
-    var y = scena.offsetTop + b.offsetTop;
-    window.scrollTo({ top: y, behavior: menoMoto ? 'auto' : 'smooth' });
+  /* ---- chi sto leggendo: aggiorna l'indirizzo e l'indice, senza far saltare niente */
+  var attiva = null, ticchetta = false;
+  function quale(){
+    ticchetta = false;
+    var y = barra() + 10, trovata = null;
+    for (var i = 0; i < sezioni.length; i++){
+      var s = sezioni[i];
+      if (s.hidden) continue;
+      var r = s.getBoundingClientRect();
+      if (r.top <= y && r.bottom > y){ trovata = s; break; }
+    }
+    var id = trovata ? trovata.id : null;
+    if (id === attiva) return;
+    attiva = id;
+    if (history.replaceState) history.replaceState(null, '', id ? '#' + id : location.pathname);
+    [].forEach.call(document.querySelectorAll('.indice a'), function(a){
+      if (a.getAttribute('data-vai') === id) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
   }
-  [].forEach.call(document.querySelectorAll('[data-vai]'), function(el){
-    el.addEventListener('click', function(e){
+  window.addEventListener('scroll', function(){
+    if (!ticchetta){ ticchetta = true; requestAnimationFrame(quale); }
+  }, { passive: true });
+
+  function vaiA(id, liscio){
+    var s = document.getElementById(id);
+    if (!s || s.hidden) return;
+    var y = s.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - barra() + 1;
+    try { window.scrollTo({ top: y, behavior: (liscio && !menoMoto) ? 'smooth' : 'auto' }); }
+    catch (e) { window.scrollTo(0, y); }
+  }
+
+  /* ---- i due pannelli: indice dei produttori e filtro a € */
+  var bProd = document.getElementById('btn-produttori'), pProd = document.getElementById('pannello-produttori');
+  var bFil = document.getElementById('btn-filtro'), pFil = document.getElementById('filtro');
+  var desktop = window.matchMedia('(min-width: 860px)');
+  function stato(){
+    var aperto = pProd.classList.contains('aperto') || (pFil.classList.contains('aperto') && !desktop.matches);
+    document.body.classList.toggle('pannello-aperto', aperto);
+  }
+  function apri(p, b, si){
+    p.classList.toggle('aperto', si);
+    if (b) b.setAttribute('aria-expanded', si ? 'true' : 'false');
+    if (si && p === pProd){
+      [].forEach.call(pProd.querySelectorAll('img[data-src]'), function(im){
+        im.src = im.getAttribute('data-src'); im.removeAttribute('data-src');
+      });
+    }
+    stato();
+  }
+  bProd.addEventListener('click', function(e){
+    e.stopPropagation();
+    apri(pFil, bFil, false);
+    apri(pProd, bProd, !pProd.classList.contains('aperto'));
+  });
+  bFil.addEventListener('click', function(e){
+    e.stopPropagation();
+    apri(pProd, bProd, false);
+    apri(pFil, bFil, !pFil.classList.contains('aperto'));
+  });
+  [].forEach.call(document.querySelectorAll('[data-chiudi]'), function(b){
+    b.addEventListener('click', function(){ apri(pProd, bProd, false); apri(pFil, bFil, false); });
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){ apri(pProd, bProd, false); apri(pFil, bFil, false); }
+  });
+  document.addEventListener('click', function(e){
+    if (pFil.classList.contains('aperto') && !desktop.matches && !pFil.contains(e.target)) apri(pFil, bFil, false);
+  });
+  [].forEach.call(document.querySelectorAll('.indice a'), function(a){
+    a.addEventListener('click', function(e){
       e.preventDefault();
-      chiudiPannello();
-      vaiA(el.dataset.vai);
+      apri(pProd, bProd, false);
+      vaiA(a.getAttribute('data-vai'), true);
     });
   });
-
-  /* ---- il pannello dei produttori */
-  var bottProd = document.getElementById('btn-produttori');
-  var pannelloProd = document.getElementById('pannello-produttori');
-  function chiudiPannello(){
-    pannelloProd.classList.remove('aperto');
-    bottProd.setAttribute('aria-expanded', 'false');
-    document.body.classList.remove('pannello-aperto');
-  }
-  bottProd.addEventListener('click', function(){
-    var ap = pannelloProd.classList.toggle('aperto');
-    bottProd.setAttribute('aria-expanded', ap ? 'true' : 'false');
-    /* i bottoni flottanti stanno sopra tutto: a pannello aperto coprivano la
-       prima card, quindi mentre il pannello e' aperto si tolgono di mezzo */
-    document.body.classList.toggle('pannello-aperto', ap);
-  });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') chiudiPannello(); });
 
   /* ---- l'ordine dei produttori */
   var selOrdine = document.getElementById('ordine');
+  var indice = document.querySelector('.indice');
+  function chiave(id){ return (piano[id] && piano[id].chiave) || id; }
   function riordina(modo){
-    var ordinati = blocchi.slice(1).sort(function(a, b){
-      var A = piano.produttori[a.dataset.p], B = piano.produttori[b.dataset.p];
-      if (modo === 'alfabetico') return A.chiave.localeCompare(B.chiave, 'it');
-      if (modo === 'novita'){
-        if (A.novita !== B.novita) return A.novita ? -1 : 1;
-        return A.chiave.localeCompare(B.chiave, 'it');
-      }
-      if (A.catOrdine !== B.catOrdine) return A.catOrdine - B.catOrdine;
-      return A.chiave.localeCompare(B.chiave, 'it');
+    var ord = sezioni.slice().sort(function(a, b){
+      var A = piano[a.id] || {}, B = piano[b.id] || {};
+      if (modo === 'novita' && A.novita !== B.novita) return A.novita ? -1 : 1;
+      if (modo === 'categoria' && A.catOrdine !== B.catOrdine) return A.catOrdine - B.catOrdine;
+      return chiave(a.id).localeCompare(chiave(b.id), 'it');
     });
-    ordinati.forEach(function(b){ nastro.appendChild(b); });
-    blocchi = [].slice.call(nastro.children);
-    /* anche la barra a lettere segue l'ordine, se no indica il posto sbagliato */
-    var rail = document.querySelector('.lettere');
-    ordinati.forEach(function(b){
-      var bt = rail.querySelector('button[data-p="' + b.dataset.p + '"]');
-      if (bt) rail.appendChild(bt);
+    ord.forEach(function(s){
+      main.appendChild(s);
+      var li = indice.querySelector('li[data-p="' + s.id + '"]');
+      if (li) indice.appendChild(li);
     });
-    misura();
+    sezioni = ord;
+    window.scrollTo(0, 0);
   }
   if (selOrdine) selOrdine.addEventListener('change', function(){ riordina(selOrdine.value); });
 
-  /* ---- il filtro a euro. La fascia sta sul PRODUTTORE, non sull'articolo
-     (Gio, 16/09): il filtro quindi nasconde produttori interi, mai singole
-     righe. Fascia 0 = nessuna referenza con costo in matrice: non si nasconde
-     mai, perche' sparire da un filtro non e' la stessa cosa che non esserci. */
+  /* ---- il filtro a €. La fascia e' del PRODUTTORE (Gio, 16/09): si nascondono
+     produttori interi. Fascia 0 = senza costi in matrice: non sparisce mai. */
   var scelte = {};
-  function applicaFiltro(){
-    var attive = Object.keys(scelte).filter(function(k){ return scelte[k]; }).map(Number);
-    blocchi.forEach(function(b){
-      if (b.dataset.p === 'copertina'){ b.hidden = false; return; }
-      var f = Number(b.dataset.f || 0);
-      b.hidden = !(!attive.length || f === 0 || attive.indexOf(f) >= 0);
+  var lblStato = bFil.querySelector('.stato');
+  function applica(){
+    var att = Object.keys(scelte).filter(function(k){ return scelte[k]; }).map(Number).sort();
+    sezioni.forEach(function(s){
+      var f = Number(s.getAttribute('data-f') || 0);
+      s.hidden = !(!att.length || f === 0 || att.indexOf(f) >= 0);
+      var li = indice.querySelector('li[data-p="' + s.id + '"]');
+      if (li) li.hidden = s.hidden;
     });
-    [].forEach.call(document.querySelectorAll('.lettere button'), function(bt){
-      var b = blocchi.filter(function(x){ return x.dataset.p === bt.dataset.p; })[0];
-      bt.disabled = !!(b && b.hidden);
-    });
-    [].forEach.call(document.querySelectorAll('.card'), function(c){
-      var b = blocchi.filter(function(x){ return x.dataset.p === c.dataset.vai; })[0];
-      c.hidden = !!(b && b.hidden);
-    });
-    misura();
-    /* se il produttore che si stava guardando e' sparito, si riparte da capo */
-    var vivo = blocchi.filter(function(x){ return x.dataset.p === attivo && !x.hidden; })[0];
-    if (!vivo) window.scrollTo({ top: 0, behavior: 'auto' });
+    if (lblStato) lblStato.textContent = att.length ? att.map(function(n){ return new Array(n + 1).join('€'); }).join(' ') : 'tutte';
+    var vivo = attiva && document.getElementById(attiva);
+    if (!vivo || vivo.hidden) window.scrollTo(0, 0);
+    quale();
   }
-  [].forEach.call(document.querySelectorAll('.fasce button[data-fascia]'), function(bt){
-    bt.addEventListener('click', function(){
-      var f = bt.dataset.fascia;
+  [].forEach.call(document.querySelectorAll('.filtro button[data-fascia]'), function(b){
+    b.addEventListener('click', function(){
+      var f = b.getAttribute('data-fascia');
       scelte[f] = !scelte[f];
-      bt.setAttribute('aria-pressed', scelte[f] ? 'true' : 'false');
-      applicaFiltro();
+      b.setAttribute('aria-pressed', scelte[f] ? 'true' : 'false');
+      applica();
     });
   });
-  var azzera = document.querySelector('.fasce .azzera');
+  var azzera = document.querySelector('.filtro .azzera');
   if (azzera) azzera.addEventListener('click', function(){
     scelte = {};
-    [].forEach.call(document.querySelectorAll('.fasce button[data-fascia]'), function(bt){
-      bt.setAttribute('aria-pressed', 'false');
-    });
-    applicaFiltro();
+    [].forEach.call(document.querySelectorAll('.filtro button[data-fascia]'), function(b){ b.setAttribute('aria-pressed', 'false'); });
+    applica();
   });
 
-  window.addEventListener('scroll', suScroll, { passive: true });
-  window.addEventListener('resize', misura);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(misura);
-  [].forEach.call(document.images, function(im){
-    if (!im.complete) im.addEventListener('load', misura, { once: true });
-  });
-  misura();
-  cambia('copertina');
-  if (location.hash) setTimeout(function(){ vaiA(location.hash.slice(1)); }, 60);
+  /* ---- all'arrivo con un indirizzo #produttore */
+  if (location.hash && location.hash.length > 1){
+    var id = decodeURIComponent(location.hash.slice(1));
+    var vai = function(){ vaiA(id, false); };
+    setTimeout(vai, 30);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(vai);
+  }
+  quale();
 })();
