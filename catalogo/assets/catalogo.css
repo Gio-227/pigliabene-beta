@@ -111,8 +111,8 @@ main{padding-top:var(--barra)}
 .gruppo li{font-size:var(--corpo);line-height:1.35;padding:7px 0;border-bottom:1px solid var(--velo)}
 .nm{min-width:0}
 .fm{flex:0 1 auto;max-width:48%;text-align:right;font-size:.87em;white-space:nowrap}
-/* un formato lungo («in corda · s.v. intero o metà») sul telefono va a capo
-   sotto il nome, a sinistra: a destra si spezzava su due righe strette */
+/* un formato lungo («in corda · s.v. intero o metà») va a capo sotto il nome,
+   a sinistra: a destra si spezzava su due righe strette, su pc come sul telefono */
 .gt,.gruppo li{flex-wrap:wrap}
 .fm.lungo{white-space:normal;flex-basis:100%;max-width:none;text-align:left;margin-top:1px}
 .gt .fm.lungo{margin-top:3px}
@@ -183,8 +183,6 @@ body.pannello-aperto .azioni{display:none}
   .corpo{padding:20px 0 56px;max-width:640px}
   .nota{font-size:14.5px}
   .gt{font-size:12.5px}
-  .gt,.gruppo li{flex-wrap:nowrap}
-  .fm.lungo{flex-basis:auto;max-width:48%;text-align:right;margin-top:0}
   .copertina .foto{grid-column:2;grid-row:1;position:-webkit-sticky;position:sticky;top:calc(var(--barra) + var(--m));align-self:start;
     margin:var(--m) 0;height:calc(100vh - var(--barra) - 2 * var(--m));aspect-ratio:auto}
   .copertina .testo{grid-column:1;grid-row:1;align-self:center;padding:0 0 40px;max-width:34em}
