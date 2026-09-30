@@ -193,6 +193,16 @@ body.pannello-aperto .azioni{display:none}
   .azioni{left:auto;right:var(--m);bottom:calc(var(--m) + env(safe-area-inset-bottom,0px));padding:0;background:none;border:0}
   .azioni a{flex:none;padding:0 18px}
 }
+/* telefono in orizzontale (Gio, 30/09): lo schermo e' basso, quindi la testa del produttore
+   scorre via, la barra dei bottoni torna in fondo alla pagina, la foto sta dentro lo schermo
+   e il filtro scorre invece di uscire di sotto. L'iPad resta com'e' (Gio: «lascia cosi'»). */
+@media (max-width:859px) and (max-height:520px) and (orientation:landscape){
+  .testa{position:relative;top:auto}
+  .galleria{max-height:calc(100vh - var(--barra) - 24px);max-height:calc(100dvh - var(--barra) - 24px)}
+  .azioni{position:static;border-top:0;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+  .piede{padding-bottom:18px}
+  .filtro.aperto{max-height:calc(100vh - var(--barra));max-height:calc(100dvh - var(--barra));overflow-y:auto;-webkit-overflow-scrolling:touch}
+}
 @media (hover:hover){
   .indice a:hover .nm,.richiamo a:hover{text-decoration-thickness:2px}
   .azioni a:hover{opacity:.88}
