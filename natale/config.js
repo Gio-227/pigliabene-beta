@@ -11,13 +11,17 @@ window.PB_NATALE = {
   EMAIL: "bottegapigliabene@gmail.com",
   WHATSAPP: "3905751694910",
 
-  // Condizioni decise da Gio (05/10/2026, 01:45): scaglioni di quantità fino al 30/10,
-  // −7 % pagamento anticipato fino al 15/11, poi niente sconti.
+  // Condizioni decise da Gio (05/10/2026, 01:45 e 14:04): scaglioni di quantità fino al 30/10
+  // (contano solo le confezioni prese in almeno 25 pezzi uguali), −7 % pagamento anticipato
+  // su tutto l'ordine fino al 15/11.
   SCAGLIONI_FINO: "2026-10-30",
   ANTICIPATO_FINO: "2026-11-15",
 
-  // Da decidere (Gio): ultimo giorno per ordinare, consegna, validità dei prezzi della scheda PDF.
-  CHIUSURA_ORDINI: "",
-  CONSEGNA: "",
-  PREZZI_VALIDI_FINO: ""
+  // Gio (05/10/2026, 14:20): il 15/11 chiudono le promozioni e gli ordini online, solo aziende;
+  // dopo si ordina in bottega, secondo disponibilità. Al cliente: «chiusura promozioni il 15/11».
+  CHIUSURA_ORDINI: "2026-11-15",
+  PREZZI_VALIDI_FINO: "2026-11-15",
+
+  // Consegna: non ancora decisa. Vuoto = la riga non compare (né sulla pagina né nella scheda PDF).
+  CONSEGNA: ""
 };

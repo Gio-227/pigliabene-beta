@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v1.0 | Generato: 2026-10-05 12:58 CEST | Da: sessione cloud porta-catalogo-natale (05/10) -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v1.1 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-05 14:45 CEST (v1.1 — il messaggio dice le scadenze delle promozioni, lette da ../config.js) | Da: sessione cloud porta-catalogo-natale (05/10) -->
 <!-- Per Gio (o Nic): scrivi il nome dell'azienda e ottieni il link «Preparato per…» da mandare in giornata.
      Pagina di servizio: noindex, nessun link punta qui. Non salva niente e non manda niente da sola:
      tutto si calcola nel browser. -->
@@ -72,17 +72,30 @@
   </form>
   <p class="piccolo">Il nome compare nella pagina come testo semplice. Chi riceve il link può inoltrarlo: non è una password.</p>
 </main>
+<script src="../config.js"></script>
 <script>
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
+  /* le scadenze delle promozioni, dalle stesse date della porta (config.js) */
+  var C = window.PB_NATALE || {}, MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  function d(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : null; }
+  function scrivi(x) { var y = new Date(x); return y.getUTCDate() + ' ' + MESI[y.getUTCMonth()]; }
+  var oggi = (function () { try { return d(new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())); } catch (e) { var n = new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()); } })();
+  var dSc = d(C.SCAGLIONI_FINO || '2026-10-30'), dAn = d(C.ANTICIPATO_FINO || '2026-11-15');
+  function scadenze() {
+    if (dSc !== null && oggi <= dSc) return 'Fino al ' + scrivi(dSc) + ' ci sono gli sconti di quantità (da 25 confezioni uguali); fino al ' + scrivi(dAn) + ' il −7 % pagando in anticipo.';
+    if (dAn !== null && oggi <= dAn) return 'Fino al ' + scrivi(dAn) + ' il −7 % pagando in anticipo: quel giorno chiudono le promozioni e gli ordini online.';
+    return '';
+  }
   var base = new URL('../', location.href).href;
   var toccato = false;
   function pulisci(s) { return s.replace(/[\u0000-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim().slice(0, 80); }
   function link(nome) { return base + (nome ? '?per=' + encodeURIComponent(nome) + '&da=link' : '?da=link'); }
   function messaggio(nome, l) {
     return 'Buongiorno! Ecco i regali aziendali di Natale di Piglia Bene' + (nome ? ', preparati per ' + nome : '') +
-      ': ' + l + '\nDentro trovi le confezioni pronte e il catalogo dei nostri produttori. Per qualsiasi cosa rispondi pure qui.';
+      ': ' + l + '\nDentro trovi le confezioni pronte, il conto degli sconti e il catalogo dei nostri produttori.' +
+      (scadenze() ? '\n' + scadenze() : '') + '\nPer qualsiasi cosa rispondi pure qui.';
   }
   function numero(s) {
     var d = (s || '').replace(/[^\d+]/g, '').replace(/^\+/, '').replace(/^00/, '');
