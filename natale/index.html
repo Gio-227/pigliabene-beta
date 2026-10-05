@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — porta di Natale 2026 | v1.1 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-05 14:27 CEST (v1.1 — regola sconti di Gio: contano solo le confezioni prese in almeno 25 pezzi uguali, −7 % anticipato su tutto; 15/11 chiusura promozioni e ordini online; «Fai il conto»; consegna nascosta finché non c'è) | Da: sessione cloud porta-catalogo-natale (05/10) | fascicolo: pigliabene-sito-online + natale-2026 -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — porta di Natale 2026 | v1.1 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-05 14:56 CEST (v1.2 — Gio 14:50: confezioni, prezzi, «Fai il conto» e catalogo si aprono solo dopo l'email; aperto ricordato nel browser) - 2026-10-05 14:27 CEST (v1.1 — regola sconti di Gio: contano solo le confezioni prese in almeno 25 pezzi uguali, −7 % anticipato su tutto; 15/11 chiusura promozioni e ordini online; «Fai il conto»; consegna nascosta finché non c'è) | Da: sessione cloud porta-catalogo-natale (05/10) | fascicolo: pigliabene-sito-online + natale-2026 -->
 <!-- La porta pubblica del Natale: solo materiale di Piglia Bene (niente foto né loghi dei produttori).
      Il catalogo resta sul beta, noindex. Il modulo manda la richiesta all'Apps Script di Gio
      (URL in config.js → ENDPOINT); finché ENDPOINT è vuoto apre una mail già scritta.
@@ -160,6 +160,13 @@
   .esempi li b{font-weight:700}
   @media (min-width:620px){.esempi li{grid-template-columns:minmax(0,19em) minmax(0,1fr)}}
 
+  /* ---------- il cancello: confezioni e prezzi dopo l'email (Gio, 05/10/2026) ---------- */
+  .chiuso{border:var(--spesso) solid var(--rosso);padding:clamp(20px,3vw,32px);display:grid;gap:14px;max-width:760px}
+  .chiuso p{max-width:58ch}
+  .chiuso .lucchetto{font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:13px}
+  .aperto-azioni{border-left:var(--spesso) solid var(--rosso);padding:6px 0 6px 18px;display:grid;gap:14px}
+  .aperto-azioni p{font-weight:600}
+
   /* ---------- fai il conto: stessa regola del Database (pagina Ordini) ---------- */
   .calcola{margin-top:clamp(28px,4vw,44px);border:var(--spesso) solid var(--rosso);background:var(--carta);padding:clamp(18px,3vw,30px)}
   .calcola h3{font-weight:700;text-transform:uppercase;font-size:clamp(21px,2.6vw,26px);line-height:1.1;margin-bottom:6px}
@@ -240,7 +247,7 @@
 <div class="per" id="per" hidden>
   <div class="giro">
     <p>Preparato per <b id="per-nome"></b></p>
-    <a class="btn" id="per-catalogo" href="https://gio-227.github.io/pigliabene-beta/catalogo/">Apri il catalogo</a>
+    <a class="btn" id="per-catalogo" href="#catalogo">Vedi confezioni e prezzi</a>
   </div>
 </div>
 
@@ -251,7 +258,7 @@
       <h1>Regali aziendali di Natale 2026</h1>
       <p class="chi">Piglia Bene è un'enoteca e vineria con catering a Sansepolcro. I regali li prepariamo con i produttori artigiani che abbiamo scelto uno per uno.</p>
       <div class="bottoni">
-        <a class="btn pieno" href="#catalogo">Ricevi il catalogo</a>
+        <a class="btn pieno" href="#catalogo">Vedi confezioni e prezzi</a>
         <a class="btn js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4.5 20l1.2-3.7A8 8 0 1 1 8.4 19z"/></svg>Scrivici su WhatsApp</a>
       </div>
     </div>
@@ -284,8 +291,8 @@
       </div>
       <div class="strada">
         <h3>Su misura dal catalogo</h3>
-        <p>21 produttori e circa 285 referenze da cui scegliere. Il preventivo te lo prepariamo noi.</p>
-        <a href="#catalogo">Ricevi il catalogo</a>
+        <p>21 produttori e circa 285 referenze da cui scegliere, con i prezzi. Il preventivo te lo prepariamo noi.</p>
+        <a href="#catalogo">Vedi il catalogo con i prezzi</a>
       </div>
     </div>
   </div>
@@ -294,6 +301,12 @@
 <section id="confezioni" aria-labelledby="confezioni-h">
   <div class="giro">
     <h2 id="confezioni-h">Le confezioni pronte</h2>
+    <div class="chiuso" id="chiuso">
+      <p class="lucchetto">Riservato alle aziende</p>
+      <p>Dieci confezioni pronte, a prezzo chiuso, e il catalogo completo dei nostri produttori con i prezzi. Le vedi lasciandoci la tua email: si aprono subito, qui.</p>
+      <div class="bottoni"><a class="btn pieno" href="#catalogo">Lascia la tua email</a></div>
+    </div>
+    <div id="riservato" hidden>
 <!-- CANVAS:INIZIO -->
 <!-- generato da genera-canvas-porta.py il 05/10/2026 14:30 · matrice 05/10/2026 h14:03 · 10 approvate su 10 · non modificare a mano -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="pacco" viewBox="0 0 583 655.8"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo3YThhZjNjNC0zY2I1LTQzOTktOGVmMy1hMjAxMzA4MWFlNDQAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaIeuEwqj3mhH6CfDwS0NY+EAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDpiYWE3Y2FlYS0yMDY4LTRhNTUtYmE5YS1kNjdlYWI5NzU1NmRscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNolgQcOpLBYivmz/JEVmi5KgAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFgg2MbQF6b6txQjuG/gydygZdOzt2TPpCdaALt1hzHHfcKkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaFNU0XKRYQNQajo68y1AoxQAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBcC3gUZnnW2b+RtTPock3nWt1ocK+KD5mFsy3mzB3f7mRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBidZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjdhOGFmM2M0LTNjYjUtNDM5OS04ZWYzLWEyMDEzMDgxYWU0NC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmViZTk3ZTExLTgxOTQtNGIzYi05NmE4LWIxODJkZDk4YjRjYXJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDYxtAXpvq3FCO4b+DJ3KBl07O3ZM+kJ1oAu3WHMcd9wqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggF7BAcAQejSAMHeTH0W9DgzDV23NzqYx6IHoGX3nDwDyiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggSSeV+At4bj9DQxOIMId438N0nQZp+upfmicvgtck8BF0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQB+jkfkvnb/xG77IwCnx42/jK2DDYDd3AXJm5lDuqe636Ox3SeSN+FcT4KdCasvQoqfBSah2RsJ401zblo4tkV0=</c2pa:manifest></metadata><path fill="currentColor" fill-rule="nonzero" d="M 346.5,590.5 L 347.3,570.3 C 348.4,562.4 348,554.9 347.5,546.9 L 348.3,533.5 L 348.8,500.2 L 349.3,488.6 L 348.1,466.5 L 348,454.5 L 348.2,443 L 348.3,421.5 C 348.4,415.5 348.1,409.9 347.8,403.9 L 346.8,387.3 C 346.3,378.7 346.1,370.6 346.7,362 C 347,357.3 346,352.4 346.6,347.8 C 347.3,343.5 347.1,339.8 346.7,335.3 C 346.3,331.1 348,326.4 347.9,322.1 L 347.7,305.6 L 336,303.8 L 321.2,300.3 L 293.3,295.9 L 278.9,294.1 C 270.3,292.9 262.5,291.4 254.2,288.8 C 241.3,284.7 228.3,282.1 215.1,279.6 L 204.9,277.7 L 188.1,274.8 L 188.1,282.8 L 188.3,300.2 L 187.8,318 L 187.9,329.7 L 187.4,349.3 L 185.9,363.4 L 185.4,368.9 L 185.3,388.4 L 184.9,408.2 L 185.2,430.6 L 186,441.9 C 186.7,452.2 184.9,462.4 184.5,472.8 L 183.8,491.8 L 183.8,519.7 L 184.5,537.4 L 184.5,561.1 C 184,567.7 183.8,574.2 184.3,580.6 L 218.1,588.9 L 239.1,595.1 L 252.3,599.7 L 271.8,605.6 L 292.2,610.6 L 311.1,616.3 C 322.7,619.7 333.4,624.3 345.8,626.4 C 347.9,613.7 344.7,602.7 346.5,590.5 M 374.6,581.4 L 374.1,607.7 L 374.8,619.7 L 385.2,612.5 L 414.9,592 L 441.8,572.3 L 449.5,566.5 L 459.2,559.8 C 462.2,557.8 466.1,556.1 468.6,553.4 C 469.5,549.5 469,545 468.8,540.9 L 468.3,531.1 L 468.9,504.2 L 469.1,488.6 L 469.9,476.5 L 470.4,459 L 470.1,438 L 470,428.5 L 469.9,415.2 C 471,395.5 471.3,376.6 470.2,356.9 C 469.9,352.1 471.7,347.1 471.6,342.3 L 471.5,326.5 C 471.5,319.2 471.4,312.3 472.1,305 C 473.4,296.4 472.4,288.2 472.5,279.6 C 472.6,270.2 473.2,261.2 472.3,251.8 C 463.3,255.5 455.6,260.7 447.1,265.3 L 419.2,280.4 L 412.1,284.2 C 404,288.5 395.9,292.4 387.5,296.2 L 374.5,302.2 L 373.7,309.6 L 374,322.7 L 374.4,341.8 C 373.2,348.5 373,355.1 373.8,361.9 C 374.5,367.8 373.8,373.2 374,379.1 L 374.6,398 C 374.9,405.1 376.5,411.9 376.3,419.1 L 375.8,434.2 L 375.8,444.3 L 375.6,463.2 L 376.2,471 L 376.5,478.9 C 376.8,486.8 376.6,494.1 376.1,502 L 375.4,514 C 375.1,518.9 375.6,523.7 375.5,528.6 L 375.4,541.9 C 375.3,551.9 376,561.5 375.3,571.6 Z M 156,512.4 L 156.2,490.7 L 157.1,481.1 L 158,459.5 L 158.7,444.3 L 158,426.6 L 157.5,411.4 L 158.1,394.9 L 157.7,382.3 C 157.4,373.7 158,365.5 158.8,356.9 L 159.6,346.7 L 160.4,332.2 L 160.8,320.5 L 161.1,301.8 L 161.6,289.7 L 161.7,279.6 L 161.5,269.6 C 154.9,268.7 148.3,266.7 141.7,265 L 130.1,262 L 119.4,259 L 110,256.9 L 94.6,253.1 L 81.8,250.1 C 78.7,249.4 75.6,247.7 72.6,246.9 L 60.8,243.6 L 52.2,241.2 L 44.6,239.2 L 27.1,234.5 C 28.1,242.7 28.2,249.6 27.9,257.4 L 27.4,270.2 L 27.6,294.8 L 27,308.1 C 26.6,317 26.1,325.2 26.6,334.1 C 27,340.2 27.1,345.8 28.2,351.9 C 28.9,355.6 28,359.5 28.3,363.2 L 29.5,378.5 L 31.6,399.3 L 31.5,418.3 L 31.8,436.6 L 31.9,456.4 L 31.3,469.3 L 31.4,480.4 L 32,496.2 C 32.3,502.7 31.2,508.8 32.1,515.2 C 32.9,521 33,526.3 32.9,532.2 L 54.3,538.6 L 75.8,545.6 L 104.4,555.6 L 120.2,561.4 L 146.3,568.8 L 156.4,571.9 L 156.8,564.6 L 156.8,546.9 L 156.9,536.8 L 156.2,525.9 Z M 495.1,534.1 L 503.5,528.1 L 524.8,512.1 L 531.2,507.6 L 541.8,499.9 L 551.1,493 L 552,465.8 L 551.5,439.2 L 552.2,406.9 L 554.1,372.1 L 554,358.8 L 553.4,336.7 L 553.4,320.8 L 554,311.9 L 554.8,296.1 C 554.6,287.9 555.5,280.4 556.6,272.4 L 556.7,263.9 L 557.6,250 L 559.1,220.7 L 559.6,205.9 L 538.8,217.6 L 521.9,226.6 L 514.7,230.9 L 498.4,239.1 L 497.6,249.8 L 497.5,263.3 L 497.9,272.6 L 498.1,284.1 L 498,299.9 C 497.3,310.6 496.6,320.8 497.4,331.6 C 497.9,338 497.3,343.8 496.2,350.1 C 494.9,356.9 496.6,363.9 496.3,370.8 L 495.2,394.9 L 495.6,409.7 L 495.2,424.7 C 494.9,434.9 494.7,444.9 495.8,455.1 C 496.6,463 495.5,470.6 495.3,478.5 L 494.8,496.9 L 494.9,508.3 C 494.9,517 493.8,525.6 495.1,534.1 M 333.5,277.8 C 341.5,279.3 349,280.1 356.6,281 C 358.8,281.2 362.3,279.5 364.1,278.7 L 377.2,272.6 L 385.9,268.6 L 395.3,264.6 L 413.9,254.8 L 426.9,248.2 L 437.2,242.6 C 445.2,238.3 452.5,233.2 460.7,229.5 L 470.4,225.1 L 448.5,216.8 L 443.1,215.1 L 422,208.4 L 407.9,204.2 L 394.2,199.3 L 383.8,195.8 L 368.1,191.4 L 353.4,188.3 C 347.9,187.2 343.2,185.7 337.8,184.2 L 329.9,182.1 L 320.3,180.3 L 331.6,194.3 L 336.2,199.8 C 344.6,208.9 353.4,217.6 363.2,225.1 C 366.6,227.6 368.7,229.4 369.7,233.7 C 370.9,238.9 369.3,243.2 364.9,246.3 C 358.7,250.6 352,249.4 346,244.9 L 334.6,236.1 L 314.4,218.4 C 305.6,209.9 298.3,200.8 291.1,190.9 C 289.5,188.8 286.4,187 284.5,185.3 L 278.1,191.2 C 272.3,196.6 267,201.9 260.8,206.9 L 252.8,213.4 L 243.2,220.9 L 231.3,229.4 L 198.6,252.1 L 205.4,253.3 L 232.7,258.7 L 267,266.8 L 286,269.9 L 304,272.3 Z M 517.3,186.3 L 506.5,184 L 499.1,182 L 487.6,179.5 L 473.3,176.7 C 467.6,174.8 461.8,174.1 455.8,173.2 L 436,170.2 L 421.4,166.6 L 412.6,164.5 L 381.7,157.9 L 370.2,161.2 L 356.6,164.3 L 395.8,174.4 L 416.6,180.9 L 429.1,184.8 L 457.9,193.9 L 480.3,201.8 C 486.7,204.1 492.5,206 495.6,212.9 L 508.6,205.8 L 517,201 L 537.7,190.6 Z M 224.2,204.8 C 231.5,199.1 238.7,194.4 245.6,188.5 L 234.7,192.2 L 222,196.6 L 210.9,199.6 L 199.7,202.4 L 187.8,205 C 183.5,205.9 179.2,209.4 174.6,207.9 L 169,206.1 C 165.6,205 164.1,201.7 164.1,198.3 C 161.1,194.7 161.3,189.3 165.2,186.5 C 166.9,181.7 171.5,179.8 176.5,179.5 C 184.7,179.1 192.4,176.3 200.3,174.4 C 205.9,173 211.4,172 216.9,170 L 234.5,163.4 C 226.3,162.2 219,162.3 211.8,159.3 L 191.8,151 L 173.1,157.4 C 168.6,158.9 164.1,161.3 160,163.7 C 151.4,168.8 143.1,172.9 133.7,176.2 L 122.9,181.1 C 118.4,183.2 114.6,185.4 109.7,186.5 C 104.6,187.7 100.4,191 95.6,193 L 79.6,199.9 L 46.3,214 L 83.1,224 C 87.7,225.3 91.8,227.8 96.5,228.3 L 107.9,230.8 L 120.1,233.9 L 139,238.4 L 150.3,241.7 L 167.2,245.2 L 195.6,226 L 211.9,214.4 Z M 307,143.4 C 321.8,143.7 335.1,142.1 348.6,138.7 L 357.6,136.5 C 377.6,131.5 400,125.2 415.7,112.3 L 430,100.5 C 432.4,98.5 433.8,95.4 435.4,92.6 C 438,88.1 439.9,83.5 439.8,78.2 C 439.7,72.3 439.8,66.3 436.7,61.1 C 433,55 426.7,51.5 420.6,48.1 L 413.7,44.2 C 410.6,42.4 406.6,40.3 402.9,41.2 L 395.8,43 C 390.9,44.2 386.4,47 382.1,49.5 L 374.5,54 C 366.8,58.6 359.7,64.4 353.8,71.2 L 347.9,77.9 L 330.7,100 L 327.2,105.9 L 323.7,112.1 L 319,119.9 L 315.6,126.7 Z M 239,137.2 L 261.6,141.2 L 260.7,133.4 C 259.8,125.5 254.7,118.7 252.9,109.2 C 251.5,102.3 249.1,95.7 245.3,89.7 L 231.7,67.9 L 226.8,59.9 C 224.4,55.9 221,51.9 217.6,48.5 L 208.8,40.1 C 205.4,36.8 201.4,33.6 197,31.7 L 189.2,28.2 C 184,25.9 179.1,26.5 173.8,28 C 169.1,29.3 164.7,30.6 160.4,33 C 153.2,37.1 146,41.8 141.9,49.2 C 140.3,52 139.4,56.1 138.9,59.4 C 138.6,61.7 139.2,65 139.7,67.5 C 141.7,78.6 147.9,91.6 155.9,99.3 C 159.4,102.7 163.4,105.5 167.4,108 L 176.4,113.6 L 192.8,120.8 C 199.6,122.9 205.8,125.8 212.2,129.2 L 220,132.2 C 226.1,134.6 232.4,136.1 239,137.2 M 381.2,643.3 C 378.5,645.9 375.2,647.6 371.9,649.2 C 370.1,652.1 367.4,653.9 364.1,654.8 C 360.8,656.1 357.7,656.2 354.5,654.6 C 352.2,653.5 349.7,652.9 347.3,652.3 L 330.8,648 L 321,645 L 300.2,638.5 L 283.5,633.7 L 272.9,631 L 257.6,626.7 C 253.2,625.5 249.3,623.9 245,622.3 L 238.7,619.8 L 230.1,616.9 L 220.9,613.9 L 212,611.3 L 199.7,607.9 L 189.4,605.5 L 182.4,603.8 L 171.7,602.1 C 168.3,601.5 166,600 163,599.1 L 131.8,589.9 C 128,588.7 124.3,588.2 120.8,586.1 C 117.9,584.3 114.4,584.5 111.4,583.4 L 86.2,573.9 L 78.4,571 L 70.9,568.4 L 61.5,565.1 L 53.9,562.5 L 34.5,556.5 C 29.9,555.1 25.5,553.5 20.6,553.2 C 16.6,552.9 12.3,550.9 10,547.5 L 7.2,543.3 C 5.1,540.3 6,536.9 6.5,533.5 C 7.4,528.1 5.9,522.7 5.9,517.1 L 6,493.7 L 6.1,488.6 L 6.2,473 C 6.2,467 6,461.7 6.5,455.7 C 7.1,447.8 6.2,439.8 6.3,432 L 6.3,420.6 L 6.1,405 L 5.6,389.2 L 4.3,376.6 L 3.7,364.5 L 3,356.2 L 1.9,345.4 L 0.8,332.8 C 0.2,325.5 0.6,318.6 1,311.3 L 1.8,298.6 L 2.2,279 L 2.5,263.2 L 2.3,241.2 L 1.4,225.9 C -0.2,223.5 -0.4,220.8 0.7,218.1 C -0.4,215 0.6,212.3 1.7,209.6 C 4,204.2 7.9,202.1 13.7,201.3 C 19.1,200.6 24.8,198.1 29.7,195.7 L 37.2,192.1 C 44,188.9 50.8,186 57.9,183.2 L 70.1,178.4 L 79.2,174.8 C 83.4,173.1 87.4,171.5 91.3,169.1 C 95.7,166.5 100.1,164.9 105.1,163.8 C 109.8,162.7 114,160.8 118.5,158.9 L 128.2,154.9 L 137.3,151.8 L 147.7,147.5 L 168.2,139.6 C 159.5,135.8 152,131.6 144.9,126.3 L 136.5,118.8 C 133,115.8 130,112.5 127.7,108.5 L 121.3,97.7 L 116.7,88.4 C 114.9,84.7 113.7,80.9 112.8,77 L 110.7,67.6 C 109.6,62.8 109.6,58.2 111,53.4 L 113.9,44.3 C 117.1,33.9 124.5,25.9 133.4,19.9 L 144.4,12.4 C 153.6,6.1 168.7,1.7 180.2,0.1 C 183.8,-0.4 187.6,1.1 191,1.3 C 196,1.6 200,2.1 204.4,4.6 L 213.5,9.9 C 217,11.9 219.8,13.4 222.8,16 L 233.4,25 L 240.6,31.9 C 242.7,34 244.6,36.2 246.3,38.7 L 250.4,44.8 C 255.2,52 259.7,59.2 263.9,66.8 L 273.4,83.8 C 276.4,89.2 278.2,93.9 279,100 C 279.5,103.2 281.7,106.8 282.8,109.9 L 288.1,124.7 L 293.7,115 L 296.5,109.5 L 300.4,102.6 L 313.4,81.4 L 322,70.3 C 324.1,67.6 326.8,64.5 329.2,61.9 L 335.3,55.2 L 345.3,45.6 L 354.9,37.4 L 364,31.3 L 372.7,26 L 385,20.6 C 402.3,12.9 415.4,14.9 430.8,24.5 L 441,30.9 C 448.5,35.5 455.8,40.9 460.1,49.2 C 464.6,57.9 466.1,68.3 465.1,77.9 L 464.4,83.9 C 463.6,91.9 460.5,99.8 456.5,106.8 C 449.1,119.9 430.5,134.2 416.7,141.9 C 415.8,142.5 416,142.7 416.9,142.6 L 428.6,145.3 L 441.6,148.1 L 456.4,150.3 L 471.2,152.7 C 477.4,153.8 483,156.5 489.4,156.8 L 503,159.3 L 513.4,161.7 C 517.6,163.6 522,164.2 526.7,164.1 C 540.5,170 554.4,166.1 567.8,172.4 C 571.3,171.5 574.4,172.6 577.1,174.8 C 584.4,179.7 580.3,186.2 582,189.9 C 583.9,194 582.8,196.6 581.2,200.6 C 580.6,202.3 580.8,205.8 580.7,208 L 580.3,220.8 L 581,242.2 L 580.6,246.7 C 580.8,257.4 581.5,267.7 579.8,278.3 C 578.4,287.8 578,296.6 578.6,306.2 L 578.4,323.8 C 578.3,328.8 577.6,333.5 577.7,338.5 L 577.9,349.2 L 578.3,357.6 L 578.9,368.3 L 578,398.7 L 577.3,413.4 L 576.9,439.9 C 577.8,446.1 577.9,452.1 576.9,458.2 C 578.2,465.4 577.6,472.3 577.3,479.4 L 576.6,494.4 C 576.4,498.7 577.1,503.3 572.9,506.4 C 571.5,509.7 567.9,511.7 564.3,512.4 L 541.8,528.5 L 530.2,537.1 L 520.1,544.8 L 512.8,550.1 L 490.9,566.2 C 488.3,570.9 484.2,574.2 479.1,575.3 L 468.2,581.6 C 460.2,586.2 452.7,591.6 445.6,597.6 C 438.3,603.8 431.3,608.9 422.9,613.6 C 411,620.2 401.2,629.3 390.1,637 C 386.9,639.1 383.9,640.6 381.2,643.3"/></symbol></svg>
@@ -341,6 +354,7 @@
     </div>
     <div class="canvas-nota"><p>Prezzi IVA esclusa, riservati ad aziende e partite IVA. La busta è compresa.</p><a class="btn" href="canvas-natale-2026.pdf?v=4d52aab0">Scarica la scheda (PDF)</a></div>
 <!-- CANVAS:FINE -->
+    </div>
   </div>
 </section>
 
@@ -383,9 +397,17 @@
 <section id="catalogo" aria-labelledby="catalogo-h">
   <div class="giro modulo-giro">
     <div>
-      <h2 id="catalogo-h">Ricevi il catalogo</h2>
-      <p class="sotto-h2" style="color:inherit">Il catalogo completo, senza prezzi: 21 produttori, referenza per referenza, da sfogliare sul telefono o sul computer. Lascia i tuoi dati e ti mandiamo il link per email.</p>
+      <h2 id="catalogo-h">Vedi confezioni e prezzi</h2>
+      <p class="sotto-h2" style="color:inherit">Le dieci confezioni pronte e il catalogo completo dei nostri 21 produttori, con i prezzi per le aziende (+ IVA). Lascia i tuoi dati: si aprono subito, qui sopra.</p>
       <p class="altri">Preferisci scrivere tu? <a class="js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener">WhatsApp 0575 1694910</a> o <a href="mailto:bottegapigliabene@gmail.com">bottegapigliabene@gmail.com</a>.</p>
+    </div>
+    <div class="aperto-azioni" id="aperto-azioni" hidden>
+      <p>Confezioni e prezzi sono aperti.</p>
+      <div class="bottoni">
+        <a class="btn pieno" href="#confezioni">Vedi le confezioni</a>
+        <a class="btn" id="apri-catalogo" href="#" target="_blank" rel="noopener">Apri il catalogo con i prezzi</a>
+        <a class="btn" id="apri-pdf" href="canvas-natale-2026.pdf" target="_blank" rel="noopener">Scarica la scheda (PDF)</a>
+      </div>
     </div>
     <form id="modulo" novalidate>
       <div class="riga2">
@@ -415,12 +437,12 @@
         <textarea id="f-msg" name="messaggio" maxlength="1000" placeholder="Per esempio: quando vi servono, a chi sono destinati, un budget a persona."></textarea></div>
       <div class="esca" aria-hidden="true"><label for="f-sito">Non compilare questo campo</label><input type="text" id="f-sito" name="sito" tabindex="-1" autocomplete="off"></div>
       <div class="campo">
-        <label class="spunta"><input type="checkbox" id="f-privacy" name="privacy" required aria-describedby="e-privacy"> <span>Ho letto l'<a href="../privacy/#catalogo" target="_blank" rel="noopener">informativa privacy</a>: i miei dati servono a mandarmi il catalogo e a ricontattarmi per il preventivo. <span class="obb">*</span></span></label>
+        <label class="spunta"><input type="checkbox" id="f-privacy" name="privacy" required aria-describedby="e-privacy"> <span>Ho letto l'<a href="../privacy/#catalogo" target="_blank" rel="noopener">informativa privacy</a>: i miei dati servono a mostrarmi confezioni e prezzi, a mandarmi il catalogo e a ricontattarmi per il preventivo. <span class="obb">*</span></span></label>
         <p class="errore" id="e-privacy">Serve la spunta per mandarti il catalogo.</p>
       </div>
       <label class="spunta"><input type="checkbox" id="f-agg" name="aggiornamenti"> <span>Voglio ricevere gli aggiornamenti di Piglia Bene per le aziende (facoltativo, ci si cancella quando si vuole).</span></label>
       <input type="hidden" name="origine" id="f-origine" value="sito">
-      <div class="bottoni"><button class="btn pieno" type="submit" id="invia">Ricevi il catalogo</button></div>
+      <div class="bottoni"><button class="btn pieno" type="submit" id="invia">Vedi confezioni e prezzi</button></div>
       <p class="piccolo">* obbligatorio</p>
       <div class="esito" id="esito" role="status" aria-live="polite"></div>
     </form>
@@ -479,7 +501,6 @@
 
   /* --- link personale: ?per=Nome Azienda (testo, mai HTML) --- */
   var cat = (C.CATALOGO_URL || 'https://gio-227.github.io/pigliabene-beta/catalogo/') + '?da=' + encodeURIComponent(origine);
-  $('per-catalogo').href = cat;
   if (per) {
     $('per-nome').textContent = per;
     $('per').hidden = false;
@@ -535,8 +556,10 @@
   /* --- fai il conto: la stessa regola della pagina Ordini del Database (Gio, 05/10/2026) ---
      contano solo le confezioni prese in almeno 25 pezzi; lo scaglione si legge sulla loro somma e vale solo su di loro;
      −7 % pagamento anticipato su tutto, dopo lo scaglione. Dopo la chiusura delle promozioni il conto non si mostra. */
-  (function () {
+  function preparaConto() {
     var box = $('calcola'), arts = document.querySelectorAll('article.canvas[data-prezzo]');
+    if (box && box.getAttribute('data-pronto')) return;
+    if (box) box.setAttribute('data-pronto', '1');
     var chiuse = (dAn !== null && oggi > dAn) || (dCh !== null && oggi > dCh);
     if (!box || !arts.length || chiuse) return;
     var entroSc = dSc !== null && oggi <= dSc;
@@ -596,7 +619,28 @@
       testo.push('Totale indicativo: ' + euro(netto) + ' IVA esclusa (' + origine + ')');
       wa.href = linkWA(testo.join('\n')); wa.hidden = false;
     }
-  })();
+  }
+
+  /* --- il cancello (Gio, 05/10/2026 14:50): confezioni, prezzi, conto e catalogo dopo l'email ---
+     Si ricorda nel browser; ?aperto=1 arriva solo dalla mail che manda l'Apps Script. È un cancello
+     di cortesia per raccogliere i contatti, non una protezione: i file restano pubblici a chi ha l'indirizzo. */
+  var CHIAVE = 'pbNatale2026Aperto';
+  function giaAperto() {
+    if (q.get('aperto') === '1') return true;
+    try { return localStorage.getItem(CHIAVE) === '1'; } catch (e) { return false; }
+  }
+  function apri(scorri) {
+    try { localStorage.setItem(CHIAVE, '1'); } catch (e) { }
+    $('riservato').hidden = false; $('chiuso').hidden = true;
+    $('aperto-azioni').hidden = false; if (!scorri) $('modulo').hidden = true;   // dopo l'invio il modulo resta, per il messaggio
+    $('apri-catalogo').href = cat;
+    var pdf = document.querySelector('.canvas-nota a[href*=".pdf"]'); if (pdf) $('apri-pdf').href = pdf.getAttribute('href');
+    $('per-catalogo').href = cat; $('per-catalogo').target = '_blank'; $('per-catalogo').rel = 'noopener';
+    $('per-catalogo').textContent = 'Apri il catalogo';
+    preparaConto();
+    if (scorri) { var h = $('confezioni'); if (h && h.scrollIntoView) h.scrollIntoView(); }
+  }
+  if (giaAperto()) apri(false);
 
   /* --- modulo «Ricevi il catalogo» --- */
   var f = $('modulo'), esito = $('esito'), invia = $('invia');
@@ -649,7 +693,7 @@
     return 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Catalogo di Natale 2026 — ' + d.azienda) +
       '&body=' + encodeURIComponent(righe.join('\r\n'));
   }
-  function attesa(on) { invia.disabled = on; invia.textContent = on ? 'Invio in corso…' : 'Ricevi il catalogo'; }
+  function attesa(on) { invia.disabled = on; invia.textContent = on ? 'Invio in corso…' : 'Vedi confezioni e prezzi'; }
 
   f.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -659,8 +703,9 @@
 
     if (!C.ENDPOINT) {   // modalità posta: finché Gio non attiva l'Apps Script
       var m = mailto(d);
+      apri(true);
       location.href = m;
-      mostra('Si è aperta la tua posta con la richiesta già scritta: premi Invia e ti rispondiamo col catalogo. Non si è aperta? Scrivici su WhatsApp.', waRichiesta(d), m);
+      mostra('Confezioni e catalogo sono aperti. Si è aperta anche la tua posta con la richiesta: premi Invia e ti ricontattiamo noi.', waRichiesta(d), m);
       return;
     }
     attesa(true);
@@ -671,14 +716,15 @@
       .then(function (r) { return r.json(); })
       .then(function (j) {
         clearTimeout(timer); attesa(false);
-        if (j && j.ok) { mostra('Fatto: ti abbiamo scritto. Non arriva? Guarda anche nello spam, oppure scrivici su WhatsApp.', waRichiesta(d)); f.reset(); }
-        else { mostra('Non è partita: ' + ((j && j.errore) || 'errore sconosciuto') + '. Scrivici su WhatsApp e te lo mandiamo noi.', waRichiesta(d), mailto(d)); }
+        apri(true);
+        if (j && j.ok) { mostra('Fatto: confezioni e catalogo sono aperti, e ti abbiamo scritto anche per email (guarda nello spam se non arriva).', waRichiesta(d)); f.reset(); }
+        else { mostra('Confezioni e catalogo sono aperti, ma la mail non è partita: ' + ((j && j.errore) || 'errore sconosciuto') + '. Scrivici su WhatsApp.', waRichiesta(d), mailto(d)); }
       })
       .catch(function () {
         // la risposta non si legge (rete o CORS): si riprova alla cieca; il foglio scarta i doppioni entro 10 minuti
         fetch(C.ENDPOINT, { method: 'POST', body: corpo, mode: 'no-cors' })
-          .then(function () { clearTimeout(timer); attesa(false); mostra('Richiesta inviata. Se fra qualche minuto non trovi la mail (guarda anche nello spam), scrivici su WhatsApp.', waRichiesta(d)); f.reset(); })
-          .catch(function () { clearTimeout(timer); attesa(false); mostra('Non riusciamo a inviare dal sito. Scrivici su WhatsApp o mandaci la mail già pronta.', waRichiesta(d), mailto(d)); });
+          .then(function () { clearTimeout(timer); attesa(false); apri(true); mostra('Fatto: confezioni e catalogo sono aperti. Ti scriviamo anche per email (guarda nello spam se non arriva).', waRichiesta(d)); f.reset(); })
+          .catch(function () { clearTimeout(timer); attesa(false); apri(true); mostra('Confezioni e catalogo sono aperti, ma non riusciamo a inviare dal sito: scrivici su WhatsApp o mandaci la mail già pronta.', waRichiesta(d), mailto(d)); });
       });
   });
 })();

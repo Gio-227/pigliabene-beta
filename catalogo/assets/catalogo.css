@@ -115,6 +115,11 @@ main{padding-top:var(--barra)}
    a sinistra: a destra si spezzava su due righe strette, su pc come sul telefono */
 .gt,.gruppo li{flex-wrap:wrap}
 .fm.lungo{white-space:normal;flex-basis:100%;max-width:none;text-align:left;margin-top:1px}
+/* i prezzi + IVA (05/10/2026): a destra dopo il formato; col formato lungo restano sulla riga del nome */
+.gruppo li .fm{margin-left:auto}
+.gruppo li .pz{order:2;margin-left:auto;flex:0 0 auto;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.gruppo li .fm:not(.lungo) + .pz{margin-left:0}
+.gruppo li .fm.lungo{order:3;margin-left:0}
 .gt .fm.lungo{margin-top:3px}
 .nt{font-size:.84em}
 .nt::before{content:" · "}

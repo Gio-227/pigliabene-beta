@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v1.1 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-05 14:27 CEST (v1.1 — il messaggio dice le scadenze delle promozioni, lette da ../config.js) | Da: sessione cloud porta-catalogo-natale (05/10) -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v1.1 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-05 14:56 CEST (v1.2 — il messaggio dice che confezioni e prezzi si vedono lasciando l'email) - 2026-10-05 14:27 CEST (v1.1 — il messaggio dice le scadenze delle promozioni, lette da ../config.js) | Da: sessione cloud porta-catalogo-natale (05/10) -->
 <!-- Per Gio (o Nic): scrivi il nome dell'azienda e ottieni il link «Preparato per…» da mandare in giornata.
      Pagina di servizio: noindex, nessun link punta qui. Non salva niente e non manda niente da sola:
      tutto si calcola nel browser. -->
@@ -43,7 +43,7 @@
 <body>
 <main>
   <h1>Link personale per un'azienda</h1>
-  <p class="sotto">Scrivi il nome dell'azienda: la pagina di Natale si apre con «Preparato per…» e il bottone diretto al catalogo, senza modulo. Questa pagina non è collegata da nessuna parte e non salva niente.</p>
+  <p class="sotto">Scrivi il nome dell'azienda: la pagina di Natale si apre con «Preparato per…» e il nome già scritto nel modulo: all'azienda resta da lasciare l'email, poi vede confezioni, prezzi e catalogo. Questa pagina non è collegata da nessuna parte e non salva niente.</p>
   <form id="f" onsubmit="return false">
     <div>
       <label for="azienda">Nome dell'azienda</label>
@@ -94,7 +94,7 @@
   function link(nome) { return base + (nome ? '?per=' + encodeURIComponent(nome) + '&da=link' : '?da=link'); }
   function messaggio(nome, l) {
     return 'Buongiorno! Ecco i regali aziendali di Natale di Piglia Bene' + (nome ? ', preparati per ' + nome : '') +
-      ': ' + l + '\nDentro trovi le confezioni pronte, il conto degli sconti e il catalogo dei nostri produttori.' +
+      ': ' + l + '\nLasciando la tua email vedi subito le confezioni pronte, il conto degli sconti e il catalogo dei nostri produttori, con i prezzi per le aziende.' +
       (scadenze() ? '\n' + scadenze() : '') + '\nPer qualsiasi cosa rispondi pure qui.';
   }
   function numero(s) {
