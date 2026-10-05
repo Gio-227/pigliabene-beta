@@ -17,7 +17,7 @@ window.PB_NATALE = {
   SCAGLIONI_FINO: "2026-10-30",
   ANTICIPATO_FINO: "2026-11-15",
 
-  // Gio (05/10/2026, 14:20): il 15/11 chiudono le promozioni e gli ordini online, solo aziende;
+  // Gio (05/10/2026, 14:1x): il 15/11 chiudono le promozioni e gli ordini online, solo aziende;
   // dopo si ordina in bottega, secondo disponibilità. Al cliente: «chiusura promozioni il 15/11».
   CHIUSURA_ORDINI: "2026-11-15",
   PREZZI_VALIDI_FINO: "2026-11-15",
