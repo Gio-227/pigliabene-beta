@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v1.0 | Generato: 2026-10-05 12:58 CEST | Da: sessione cloud porta-catalogo-natale (05/10) -->
+<!-- Per Gio (o Nic): scrivi il nome dell'azienda e ottieni il link «Preparato per…» da mandare in giornata.
+     Pagina di servizio: noindex, nessun link punta qui. Non salva niente e non manda niente da sola:
+     tutto si calcola nel browser. -->
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Link personale · porta di Natale · Piglia Bene</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#9B0E0E">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<style>
+  @font-face{font-family:'Montserrat';src:url('../../media/fonts/montserrat-500.woff2') format('woff2');font-weight:500;font-display:swap}
+  @font-face{font-family:'Montserrat';src:url('../../media/fonts/montserrat-600.woff2') format('woff2');font-weight:600;font-display:swap}
+  @font-face{font-family:'Montserrat';src:url('../../media/fonts/montserrat-700.woff2') format('woff2');font-weight:700;font-display:swap}
+  :root{--panna:#F7F4DC;--rosso:#9B0E0E;--tenue:#AD3C37;--spesso:5px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{background:var(--panna);color:var(--rosso);font:500 17px/1.55 'Montserrat',system-ui,sans-serif;padding:clamp(24px,5vw,56px) clamp(16px,5vw,56px) 64px}
+  main{max-width:680px;margin:0 auto}
+  :focus-visible{outline:3px solid var(--rosso);outline-offset:3px}
+  h1{font-weight:700;text-transform:uppercase;font-size:clamp(26px,5vw,38px);line-height:1.08;margin-bottom:12px}
+  .sotto{color:var(--tenue);margin-bottom:28px;max-width:58ch}
+  form{display:grid;gap:18px;border:var(--spesso) solid var(--rosso);padding:clamp(18px,3vw,28px);background:#FFFDF2}
+  label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+  .aiuto{display:block;font-weight:500;font-size:14px;color:var(--tenue);margin-top:4px}
+  input,textarea{width:100%;font:500 17px/1.4 'Montserrat',sans-serif;color:var(--rosso);background:#fff;border:2px solid var(--rosso);border-radius:0;
+       padding:11px 12px;min-height:48px;-webkit-appearance:none;appearance:none}
+  textarea{min-height:120px;resize:vertical}
+  input[readonly]{background:var(--panna);font-size:15px}
+  .bottoni{display:flex;flex-wrap:wrap;gap:10px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border:2.5px solid var(--rosso);
+       font:700 13px/1.2 'Montserrat',sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;
+       background:transparent;color:var(--rosso)}
+  .btn.pieno{background:var(--rosso);color:var(--panna)}
+  .btn[aria-disabled=true]{opacity:.45;pointer-events:none}
+  .esito{font-weight:600;min-height:1.5em}
+  .piccolo{font-size:14px;color:var(--tenue);margin-top:22px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Link personale per un'azienda</h1>
+  <p class="sotto">Scrivi il nome dell'azienda: la pagina di Natale si apre con «Preparato per…» e il bottone diretto al catalogo, senza modulo. Questa pagina non è collegata da nessuna parte e non salva niente.</p>
+  <form id="f" onsubmit="return false">
+    <div>
+      <label for="azienda">Nome dell'azienda</label>
+      <input id="azienda" type="text" maxlength="80" autocomplete="off" placeholder="Per esempio: Rossi Srl">
+    </div>
+    <div>
+      <label for="cell">Cellulare del cliente <span class="aiuto">Facoltativo: se lo scrivi, WhatsApp apre direttamente la sua chat.</span></label>
+      <input id="cell" type="tel" inputmode="tel" maxlength="20" autocomplete="off" placeholder="333 1234567">
+    </div>
+    <div>
+      <label for="msg">Messaggio</label>
+      <textarea id="msg"></textarea>
+      <span class="aiuto">Si scrive da solo finché non lo modifichi tu.</span>
+    </div>
+    <div>
+      <label for="link">Il link</label>
+      <input id="link" type="text" readonly>
+    </div>
+    <div class="bottoni">
+      <button class="btn pieno" type="button" id="copia">Copia il link</button>
+      <a class="btn" id="wa" href="#" target="_blank" rel="noopener">Manda su WhatsApp</a>
+      <a class="btn" id="mail" href="#">Manda per email</a>
+      <a class="btn" id="prova" href="#" target="_blank" rel="noopener">Prova la pagina</a>
+    </div>
+    <p class="esito" id="esito" role="status" aria-live="polite"></p>
+  </form>
+  <p class="piccolo">Il nome compare nella pagina come testo semplice. Chi riceve il link può inoltrarlo: non è una password.</p>
+</main>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var base = new URL('../', location.href).href;
+  var toccato = false;
+  function pulisci(s) { return s.replace(/[\u0000-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim().slice(0, 80); }
+  function link(nome) { return base + (nome ? '?per=' + encodeURIComponent(nome) + '&da=link' : '?da=link'); }
+  function messaggio(nome, l) {
+    return 'Buongiorno! Ecco i regali aziendali di Natale di Piglia Bene' + (nome ? ', preparati per ' + nome : '') +
+      ': ' + l + '\nDentro trovi le confezioni pronte e il catalogo dei nostri produttori. Per qualsiasi cosa rispondi pure qui.';
+  }
+  function numero(s) {
+    var d = (s || '').replace(/[^\d+]/g, '').replace(/^\+/, '').replace(/^00/, '');
+    if (!d) return '';
+    if (/^3\d{8,9}$/.test(d) || /^0\d{5,10}$/.test(d)) d = '39' + d;
+    return /^\d{8,15}$/.test(d) ? d : '';
+  }
+  function aggiorna() {
+    var nome = pulisci($('azienda').value), l = link(nome);
+    $('link').value = l;
+    if (!toccato) $('msg').value = messaggio(nome, l);
+    var m = $('msg').value, n = numero($('cell').value);
+    $('wa').href = 'https://wa.me/' + n + '?text=' + encodeURIComponent(m);
+    $('mail').href = 'mailto:?subject=' + encodeURIComponent('Regali aziendali di Natale 2026 · Piglia Bene') + '&body=' + encodeURIComponent(m);
+    $('prova').href = l;
+    var vuoto = !nome;
+    ['wa', 'mail', 'prova'].forEach(function (id) { $(id).setAttribute('aria-disabled', vuoto ? 'true' : 'false'); });
+    $('esito').textContent = vuoto ? 'Scrivi il nome dell’azienda per avere il link.' : '';
+  }
+  $('azienda').addEventListener('input', aggiorna);
+  $('cell').addEventListener('input', aggiorna);
+  $('msg').addEventListener('input', function () { toccato = true; aggiorna(); });
+  $('copia').addEventListener('click', function () {
+    var l = $('link').value;
+    function fatto() { $('esito').textContent = 'Link copiato.'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(l).then(fatto, function () { $('link').select(); document.execCommand('copy'); fatto(); });
+    } else { $('link').select(); document.execCommand('copy'); fatto(); }
+  });
+  aggiorna();
+})();
+</script>
+</body>
+</html>
