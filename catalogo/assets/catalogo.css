@@ -119,6 +119,7 @@ main{padding-top:var(--barra)}
 .gruppo li .fm{margin-left:auto}
 .gruppo li .pz{order:2;margin-left:auto;flex:0 0 auto;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
 .gruppo li .fm:not(.lungo) + .pz{margin-left:0}
+.gruppo li .pz small{font-weight:500;font-size:.78em}
 .gruppo li .fm.lungo{order:3;margin-left:0}
 .gt .fm.lungo{margin-top:3px}
 .nt{font-size:.84em}
