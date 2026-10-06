@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — porta di Natale 2026 | v1.1 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-05 14:56 CEST (v1.2 — Gio 14:50: confezioni, prezzi, «Fai il conto» e catalogo si aprono solo dopo l'email; aperto ricordato nel browser) - 2026-10-05 14:27 CEST (v1.1 — regola sconti di Gio: contano solo le confezioni prese in almeno 25 pezzi uguali, −7 % anticipato su tutto; 15/11 chiusura promozioni e ordini online; «Fai il conto»; consegna nascosta finché non c'è) | Da: sessione cloud porta-catalogo-natale (05/10) | fascicolo: pigliabene-sito-online + natale-2026 -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — porta di Natale 2026 | v1.1 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-06 20:36 CEST (v1.3 — telefono: prezzi su una riga anche a 320 px, testata in orizzontale su due colonne, numero di telefono intero) - 2026-10-05 14:56 CEST (v1.2 — Gio 14:50: confezioni, prezzi, «Fai il conto» e catalogo si aprono solo dopo l'email; aperto ricordato nel browser) - 2026-10-05 14:27 CEST (v1.1 — regola sconti di Gio: contano solo le confezioni prese in almeno 25 pezzi uguali, −7 % anticipato su tutto; 15/11 chiusura promozioni e ordini online; «Fai il conto»; consegna nascosta finché non c'è) | Da: sessione cloud porta-catalogo-natale (05/10) | fascicolo: pigliabene-sito-online + natale-2026 -->
 <!-- La porta pubblica del Natale: solo materiale di Piglia Bene (niente foto né loghi dei produttori).
      Il catalogo resta sul beta, noindex. Il modulo manda la richiesta all'Apps Script di Gio
      (URL in config.js → ENDPOINT); finché ENDPOINT è vuoto apre una mail già scritta.
@@ -84,6 +84,12 @@
   .marchio{display:block;color:var(--rosso);text-decoration:none;max-width:560px}
   .marchio .lettera{display:block;width:100%;height:auto}
   .marchio .logo{display:block;width:44%;height:auto;margin:clamp(10px,2vw,18px) 0 0 auto}
+  /* Telefono in orizzontale: il marchio a tutta larghezza riempiva il primo schermo da solo,
+     titolo e bottoni arrivavano due schermate più giù. Qui marchio e titolo stanno affiancati. */
+  @media (min-width:560px) and (max-width:899px) and (max-height:520px){
+    .testata{padding:24px 0 32px}
+    .testata .giro{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:32px}
+  }
   h1{font-weight:700;text-transform:uppercase;font-size:clamp(28px,5.2vw,52px);line-height:1.04;letter-spacing:.005em;text-wrap:balance}
   .chi{margin:18px 0 28px;max-width:46ch;font-size:clamp(17px,1.7vw,19px)}
   @media (min-width:900px){
@@ -129,9 +135,14 @@
   .canvas .q{font-weight:700}
   .canvas .da{display:block;margin-top:2px;font-size:14px;color:var(--tenue);font-weight:500}
   .canvas .prezzo{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
-  .canvas .prezzo b{font-weight:700;font-size:clamp(40px,6vw,56px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .canvas .prezzo b{font-weight:700;font-size:clamp(40px,6vw,56px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
   .canvas .prezzo span{font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:var(--rosso);color:var(--panna);padding:4px 8px}
   .canvas .regalo{width:72px;height:auto;color:var(--rosso);justify-self:end}
+  /* 320-380 px: «68,00 €» non ci stava accanto al pacco e l'euro andava a capo. */
+  @media (max-width:380px){
+    .canvas .prezzo b{font-size:34px}
+    .canvas .regalo{width:60px}
+  }
   @media (min-width:760px){
     .canvas .c-corpo{column-gap:32px}
     .canvas ul{grid-column:1;grid-row:1/3}
@@ -225,7 +236,7 @@
   .esito:empty{display:none}
   .esito .bottoni{margin-top:12px}
   .altri{font-size:15px}
-  .altri a{font-weight:600}
+  .altri a{font-weight:600;white-space:nowrap}
 
   /* ---------- piede ---------- */
   footer{border-top:var(--spesso) solid var(--rosso);padding:40px 0 56px;font-size:13px;line-height:1.9;color:var(--tenue)}

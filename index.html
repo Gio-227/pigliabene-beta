@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Cowork v1.0 | Feel Good srl | Landing page Piglia Bene — v0.4 (veste invertita: fondo panna, inchiostro rosso) | 2026-09-17 12:35 CEST | Opus 5 | fascicolo: pigliabene-sito-online (branch main = produzione) -->
+<!-- Cowork v1.0 | Feel Good srl | Landing page Piglia Bene — v0.5 (testata anche sul telefono: Chi siamo, Servizi, Contatti e il bottone Natale; gli ancoraggi si fermano sotto la testata) | 2026-10-06 20:36 CEST | v0.4 (veste invertita: fondo panna, inchiostro rosso) 2026-09-17 12:35 CEST | fascicolo: pigliabene-sito-online (branch main = produzione) -->
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -94,16 +94,48 @@
 
   /* ---------- nav ---------- */
   header{
-    display:flex;justify-content:space-between;align-items:center;
+    display:flex;align-items:center;gap:8px clamp(16px,3vw,40px);
     padding:28px var(--mx);
     position:sticky;top:0;background:var(--rosso);z-index:10;
   }
   .logo{display:inline-block;color:var(--panna);line-height:0}
   .logo svg{display:block;height:60px;width:auto}
-  nav{display:flex;gap:clamp(16px,3vw,40px);font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600}
-  nav a{border-bottom:1px solid transparent;padding-bottom:3px;transition:border-color .25s}
+  nav{display:flex;align-items:center;gap:clamp(16px,3vw,40px);margin-left:auto;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600}
+  nav a{border-bottom:1px solid transparent;padding:4px 0 3px;transition:border-color .25s}
   nav a:hover{border-color:var(--panna)}
-  @media(max-width:640px){nav{display:none}}
+  /* Natale (Gio, 06/10/2026): il bottone pieno che porta alla porta dei regali aziendali. */
+  a.natale{
+    display:inline-flex;align-items:center;flex:none;min-height:44px;padding:0 18px;
+    background:var(--panna);color:var(--rosso);
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+    transition:background .25s;
+  }
+  a.natale:hover{background:#7d0b0b}
+
+  /* Gli ancoraggi si fermano sotto la testata, che resta appiccicata in alto:
+     senza, «Chi siamo», «Servizi» e «Contatti» finivano sotto la testata.
+     --hh è l'altezza della testata: chi cambia una misura qui sotto, rifà il conto. */
+  :root{--hh:116px}                        /* 28 + logo 60 + 28 */
+  html{scroll-padding-top:var(--hh)}
+
+  /* Telefono in orizzontale e finestre basse: una riga sola, più bassa. */
+  @media(min-width:521px) and (max-width:640px),(min-width:521px) and (max-height:500px){
+    :root{--hh:64px}                       /* 10 + logo 44 + 10 */
+    header{padding:10px var(--mx)}
+    .logo svg{height:44px}
+    nav{font-size:11px;letter-spacing:.14em;gap:clamp(14px,2.4vw,28px)}
+    a.natale{font-size:11px;letter-spacing:.14em;padding:0 14px}
+  }
+  /* Telefono in verticale: logo e Natale sopra, Chi siamo · Servizi · Contatti sotto. */
+  @media(max-width:520px){
+    :root{--hh:101px}                      /* 10 + 44 + 6 + filo 1 + 40 */
+    header{flex-wrap:wrap;padding:10px var(--mx) 0;row-gap:6px}
+    .logo svg{height:44px}
+    a.natale{margin-left:auto;font-size:11px;letter-spacing:.14em;padding:0 16px}
+    nav{order:3;flex-basis:100%;margin-left:0;justify-content:space-between;gap:8px;
+        border-top:1px solid var(--panna-soft);font-size:11px;letter-spacing:.14em}
+    nav a{display:block;padding:12px 0;line-height:16px;border-bottom:0}
+  }
 
   /* ---------- hero ---------- */
   .hero{
@@ -337,6 +369,7 @@
     <a href="#servizi">Servizi</a>
     <a href="#contatti">Contatti</a>
   </nav>
+  <a class="natale" href="natale/?da=home">Natale</a>
 </header>
 
 <!-- HERO -->
