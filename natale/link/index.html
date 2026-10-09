@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v2.0 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-09 CEST (v2.0 — Gio 09/10: link pulito pigliabene.it/natale/Nome-Azienda; la mail parte da Piglia Bene (bottegapigliabene@gmail.com) col logo, attraverso lo script di Gio, con un PIN; stessa veste del sito) - 2026-10-05 14:56 CEST (v1.2) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v2.1 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-09 18:05 CEST (v2.1 — il messaggio dice la regola nuova: si sfoglia tutto, i prezzi con i dati) - 2026-10-09 CEST (v2.0 — Gio 09/10: link pulito pigliabene.it/natale/Nome-Azienda; la mail parte da Piglia Bene (bottegapigliabene@gmail.com) col logo, attraverso lo script di Gio, con un PIN; stessa veste del sito) - 2026-10-05 14:56 CEST (v1.2) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI -->
 <!-- Per Nicola, Gio o Nic: scrivi il nome dell'azienda e ottieni il link «Preparato per…» da mandare in giornata.
      Pagina di servizio: noindex, nessun link punta qui. Non salva niente e manda la mail solo se premi il bottone,
      attraverso lo script di Gio (config.js → ENDPOINT) e col PIN: senza, la mail la mandi dalla tua posta. -->
@@ -55,7 +55,7 @@
 <main>
   <p class="kicker">Piglia Bene · Natale 2026 · pagina di servizio</p>
   <h1>Link personale<br>per un'azienda</h1>
-  <p class="sotto">Scrivi il nome dell'azienda: ottieni il link pulito <b>pigliabene.it/natale/Nome-Azienda</b>, che apre la pagina di Natale con «Preparato per…» e l'azienda già scritta nel modulo. Questa pagina non è collegata da nessuna parte e non salva niente.</p>
+  <p class="sotto">Scrivi il nome dell'azienda: ottieni il link pulito <b>pigliabene.it/natale/Nome-Azienda</b>, che apre la pagina di Natale con «Preparato per…» e l'azienda già scritta nella finestra dei dati (confezioni e catalogo si sfogliano liberamente, i prezzi arrivano con i dati). Questa pagina non è collegata da nessuna parte e non salva niente.</p>
   <form id="f" onsubmit="return false">
     <div class="due">
       <div>
@@ -140,7 +140,7 @@
   function link(sl) { return sl ? base + '/' + sl : base + '/?da=link'; }
   function messaggio(nome, l, ref) {
     return (ref ? 'Buongiorno ' + ref + '!' : 'Buongiorno!') + ' Ecco i regali aziendali di Natale di Piglia Bene' + (nome ? ', preparati per ' + nome : '') +
-      ': ' + l + '\nLasciando i tuoi dati vedi subito le confezioni pronte, il conto degli sconti e il catalogo dei nostri produttori, con i prezzi per le aziende.' +
+      ': ' + l + '\nSfoglia le confezioni pronte e il catalogo dei nostri produttori; lasciando i tuoi dati vedi anche i prezzi per le aziende e il conto degli sconti.' +
       (scadenze() ? '\n' + scadenze() : '') + '\nPer qualsiasi cosa rispondi pure qui.';
   }
   function numero(s) {
