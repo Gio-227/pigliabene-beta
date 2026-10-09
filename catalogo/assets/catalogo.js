@@ -202,3 +202,72 @@
   }
   quale();
 })();
+
+/* ───────── i prezzi dopo i dati (Gio, 09/10/2026 17:16) — stessa regola di natale/porta.js.
+   Senza dati si sfoglia tutto e i prezzi restano coperti; con ?aperto=1 (da chi ha già lasciato i dati sulla pagina
+   di Natale) o con il segno nel browser si vedono subito. Il modulo manda i dati allo script di Gio (natale/config.js → ENDPOINT);
+   se non c'è, i prezzi si aprono lo stesso. */
+(function(){
+  'use strict';
+  var C = window.PB_NATALE || {};
+  var $ = function(id){ return document.getElementById(id); };
+  var q = new URLSearchParams(location.search), body = document.body, t0 = Date.now();
+  var CHIAVE = 'pbNatale2026Aperto';
+  function giaAperto(){ if (q.get('aperto') === '1') return true; try { return localStorage.getItem(CHIAVE) === '1'; } catch(e){ return false; } }
+  function ricorda(){ try { localStorage.setItem(CHIAVE, '1'); } catch(e){} }
+  var per = (q.get('per') || '').replace(/[\u0000-\u001f\u007f<>]/g,'').replace(/-/g,' ').replace(/\s+/g,' ').trim().slice(0,80);
+  var da = (q.get('da') || '').toLowerCase(); if (!/^[a-z0-9-]{1,20}$/.test(da)) da = ''; if (per && !da) da = 'link';
+  var origine = da || 'catalogo';
+  /* i link in fondo portano con sé nome, origine e via libera */
+  function coda(url, conAperto){ var p = []; if (per) p.push('per=' + encodeURIComponent(per.replace(/\s+/g,'-'))); if (da) p.push('da=' + encodeURIComponent(da)); if (conAperto && giaAperto()) p.push('aperto=1'); return url + (p.length ? '?' + p.join('&') : ''); }
+  var vc = $('vai-confezioni'), vn = $('vai-natale');
+  function sistemaLink(){ if (vc) vc.href = coda('../natale/confezioni/', true); if (vn) vn.href = coda('../natale/', false); }
+  sistemaLink();
+  function scopri(){ body.classList.remove('senza-prezzi'); ricorda(); sistemaLink(); }
+  if (giaAperto()) scopri(); else body.classList.add('senza-prezzi');
+
+  var cancello = $('cancello');
+  function apri(){ if (!cancello) return; if (typeof cancello.showModal === 'function') { if (!cancello.open) cancello.showModal(); } else cancello.setAttribute('open',''); var primo = cancello.querySelector('input[type=text]'); if (primo && !primo.value) primo.focus(); }
+  function chiudi(){ if (!cancello) return; if (typeof cancello.close === 'function' && cancello.open) cancello.close(); else cancello.removeAttribute('open'); }
+  [].forEach.call(document.querySelectorAll('[data-apri-cancello]'), function(b){ b.addEventListener('click', apri); });
+  [].forEach.call(document.querySelectorAll('[data-chiudi-cancello]'), function(b){ b.addEventListener('click', chiudi); });
+  if (cancello) cancello.addEventListener('click', function(e){ if (e.target === cancello) chiudi(); });
+  document.addEventListener('click', function(e){ if (!body.classList.contains('senza-prezzi')) return; var pz = e.target.closest && e.target.closest('.pz'); if (pz) { e.preventDefault(); apri(); } });
+
+  var f = $('modulo'); if (!f) return;
+  var esito = $('esito'), invia = $('invia');
+  if (per && $('f-azienda')) $('f-azienda').value = per;
+  $('f-origine').value = origine;
+  var reMail = /^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[a-z]{2,}$/i;
+  var emailObbl = !(per && C.EMAIL_FACOLTATIVA_CON_LINK);
+  function campo(id){ return $(id).closest('.campo'); }
+  function segna(id, ok){ var c = campo(id); if (c) c.classList.toggle('campo-err', !ok); $(id).setAttribute('aria-invalid', ok ? 'false' : 'true'); return ok; }
+  function dati(){
+    var r = f.querySelector('input[name=quantita]:checked');
+    return { nome: $('f-nome').value.trim(), azienda: $('f-azienda').value.trim(), email: $('f-email').value.trim(), telefono: $('f-tel').value.trim(),
+      quantita: r ? r.value : '', messaggio: '', privacy: $('f-privacy').checked, aggiornamenti: $('f-agg').checked, origine: origine, per: per, porta: 'catalogo',
+      sito: $('f-sito').value, pagina: location.pathname, ua: (navigator.userAgent || '').slice(0,300), t: Date.now() - t0 };
+  }
+  function valida(d){
+    var ok = true, primo = null;
+    [['f-nome', !!d.nome], ['f-azienda', !!d.azienda], ['f-email', emailObbl ? reMail.test(d.email) : (!d.email || reMail.test(d.email))], ['f-privacy', d.privacy]].forEach(function(x){ if (!segna(x[0], x[1])) { ok = false; if (!primo) primo = x[0]; } });
+    if (primo) $(primo).focus();
+    return ok;
+  }
+  function mostra(t){ esito.textContent = t; }
+  function attesa(on){ invia.disabled = on; invia.textContent = on ? 'Un momento…' : 'Vedi i prezzi'; }
+  function dopo(){ chiudi(); scopri(); }
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var d = dati();
+    if (!valida(d)) { mostra('Mancano dei dati: li trovi segnati sopra.'); return; }
+    if (d.sito || !C.ENDPOINT) { dopo(); return; }
+    attesa(true);
+    var corpo = JSON.stringify(d);
+    var ctrl = ('AbortController' in window) ? new AbortController() : null;
+    var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, 15000);
+    fetch(C.ENDPOINT, { method: 'POST', body: corpo, headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctrl ? ctrl.signal : undefined })
+      .then(function(r){ return r.json(); }).then(function(){ clearTimeout(timer); attesa(false); dopo(); })
+      .catch(function(){ fetch(C.ENDPOINT, { method: 'POST', body: corpo, mode: 'no-cors' }).then(function(){ clearTimeout(timer); attesa(false); dopo(); }).catch(function(){ clearTimeout(timer); attesa(false); dopo(); }); });
+  });
+})();

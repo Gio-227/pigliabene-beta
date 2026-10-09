@@ -1,4 +1,4 @@
-/* Catalogo Natale Piglia Bene — generato da genera-catalogo.py v3, non a mano.
+/* Catalogo Natale Piglia Bene — generato da genera-catalogo.py v3.7, non a mano.
    Un produttore = una sezione. La pagina scorre normale; dentro la sezione
    restano appiccicate la testa (logo, referenze, fascia) e, su pc, la foto.
    Finita la sezione se ne vanno insieme: il cambio di produttore e' netto. */
@@ -216,4 +216,70 @@ body.pannello-aperto .azioni{display:none}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .galleria img{transition:none}
+}
+
+/* ───────── i prezzi dopo i dati (Gio, 09/10/2026): si sfoglia tutto, i prezzi restano coperti e un avviso ridotto resta a vista */
+body.senza-prezzi .pz{position:relative;color:transparent;user-select:none;cursor:pointer}
+body.senza-prezzi .pz small{color:transparent}
+body.senza-prezzi .pz::after{content:'€ ·· vedi';position:absolute;right:0;top:50%;transform:translateY(-50%);color:var(--inchiostro);
+  font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;border-bottom:1px solid currentColor;line-height:1.4}
+.avviso-prezzi{display:none}
+body.senza-prezzi .avviso-prezzi{position:fixed;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom,0px));z-index:58;display:flex;align-items:center;gap:10px;
+  padding:9px var(--m);background:var(--inchiostro);color:var(--carta);font-size:13px;line-height:1.3;font-weight:600}
+.avviso-prezzi p{margin:0;flex:1}
+.avviso-prezzi button{flex:none;min-height:40px;padding:0 14px;background:var(--carta);color:var(--inchiostro);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+body.pannello-aperto .avviso-prezzi{display:none}
+body.senza-prezzi .piede{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+@media (min-width:860px){
+  body.senza-prezzi .piede{padding-bottom:110px}
+  body.senza-prezzi .avviso-prezzi{left:var(--m);right:auto;bottom:calc(var(--m) + env(safe-area-inset-bottom,0px));max-width:440px;padding:11px 12px 11px 16px;box-shadow:0 0 0 2px var(--carta);font-size:14px}
+}
+/* la finestra dei dati: stessa di natale/ (porta.js), nei colori del catalogo */
+dialog.cancello{border:5px solid var(--inchiostro);background:var(--carta);color:var(--inchiostro);padding:0;max-width:min(92vw,640px);width:100%;margin:auto}
+dialog.cancello::backdrop{background:rgba(155,14,14,.55)}
+.cancello-dentro{padding:clamp(18px,3vw,32px)}
+.cancello-testa{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:8px;font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:700}
+.cancello .chiudi{font:700 12px/1 'Montserrat',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:8px 0}
+.cancello h2{margin:0 0 8px;font-size:clamp(24px,3vw,32px);line-height:1.05;font-weight:700;letter-spacing:-.01em}
+.cancello .perche{margin:0 0 18px;font-size:14px;line-height:1.5;max-width:52ch}
+.cancello .perche b{font-weight:700}
+form.modulo{display:grid;gap:14px}
+.modulo .riga2{display:grid;gap:14px}
+@media (min-width:560px){.modulo .riga2{grid-template-columns:1fr 1fr}}
+.modulo label,.modulo legend{display:block;font-weight:600;font-size:13px;margin-bottom:5px}
+.modulo .obb{font-weight:500;opacity:.75}
+.modulo input[type=text],.modulo input[type=email],.modulo input[type=tel]{width:100%;font:500 16px/1.4 'Montserrat',sans-serif;color:var(--inchiostro);background:#FFFDF2;border:2px solid var(--inchiostro);border-radius:0;padding:10px 12px;min-height:46px;-webkit-appearance:none;appearance:none}
+.modulo fieldset{border:0;margin:0;padding:0}
+.modulo .scelte{display:flex;flex-wrap:wrap;gap:8px}
+.modulo .scelte label{margin:0;display:inline-flex;align-items:center;gap:8px;border:2px solid var(--inchiostro);padding:8px 12px;min-height:42px;font-weight:600;cursor:pointer;background:#FFFDF2;font-size:13px}
+.modulo .scelte input{accent-color:var(--inchiostro);width:18px;height:18px;margin:0}
+.modulo .scelte label:has(input:checked){background:var(--inchiostro);color:var(--carta)}
+.modulo .spunta{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:13.5px;line-height:1.45;margin:0;cursor:pointer}
+.modulo .spunta input{flex:none;width:20px;height:20px;margin:1px 0 0;accent-color:var(--inchiostro)}
+.modulo .esca{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.modulo .errore{display:none;font-size:12.5px;font-weight:600;margin-top:5px}
+.modulo .campo-err .errore{display:block}
+.modulo .campo-err input{border-width:3px}
+.modulo .invia{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;background:var(--inchiostro);color:var(--carta);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.modulo .invia:disabled{opacity:.5}
+.modulo .piccolo{font-size:12px;margin:0;opacity:.8}
+.modulo .esito{font-size:13.5px;font-weight:600;border-left:4px solid var(--inchiostro);padding-left:12px}
+.modulo .esito:empty{display:none}
+
+/* ───────── il piede come il sito (Gio, 09/10): condizioni, le porte, poi la riga di Feel Good */
+.piede{border-top:0;padding-top:0}
+.piede .legenda{padding-top:26px;border-top:1px solid var(--inchiostro)}
+.piede .cond-riga{margin:14px 0 0;font-size:14px;line-height:1.6;max-width:62ch}
+.piede .cond-riga b{font-weight:700}
+.porte-fondo{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 34px}
+.porte-fondo a{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 22px;text-decoration:none;
+  font-weight:700;font-size:12px;letter-spacing:.22em;text-transform:uppercase;border:2.5px solid var(--inchiostro);background:var(--inchiostro);color:var(--carta)}
+.porte-fondo a.vuoto{background:transparent;color:var(--inchiostro)}
+.piede-sito{border-top:5px solid var(--inchiostro);padding:22px 0 0;display:flex;flex-wrap:wrap;gap:2px 32px;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;line-height:2.2;opacity:.85}
+.piede-sito .copy{flex-basis:100%}
+.piede-sito a{text-decoration:underline;text-underline-offset:3px}
+@media (min-width:860px){
+  .piede-sito{justify-content:space-between}
+  .porte-fondo a{padding:0 28px}
 }

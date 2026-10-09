@@ -1,4 +1,4 @@
-/* Cowork v1.0 | Feel Good srl | Script comune delle pagine di Natale (natale/, natale/confezioni/) | v2.0 | 2026-10-09 CEST
+/* Cowork v1.0 | Feel Good srl | Script comune delle pagine di Natale (natale/, natale/confezioni/) | v2.1 | 2026-10-09 CEST (v2.1 — Gio 17:16: le porte si aprono senza dati; i prezzi restano coperti finché non si lasciano i dati, con l'avviso fisso; «Fai il conto» e la scheda PDF arrivano con i prezzi)
    Fa quattro cose: legge da dove arriva chi visita (?da=, link personale), tiene acceso il punto giusto in testata,
    gestisce il cancello (confezioni, prezzi e catalogo dopo i dati: Gio, 05/10/2026) e il conto delle confezioni.
    Niente chiamate a terzi: l'unica è al modulo di Gio (ENDPOINT in config.js), e solo quando si preme Invia. */
@@ -204,10 +204,10 @@
     try { return localStorage.getItem(CHIAVE) === '1'; } catch (e) { return false; }
   }
   function ricorda() { try { localStorage.setItem(CHIAVE, '1'); } catch (e) { } }
-  var catalogo = (C.CATALOGO_URL || 'https://gio-227.github.io/pigliabene-beta/catalogo/') + '?da=' + encodeURIComponent(origine);
+  var catalogo = (C.CATALOGO_URL || 'https://gio-227.github.io/pigliabene-beta/catalogo/');
   var confezioni = (C.CONFEZIONI_URL || 'confezioni/');
-  function conCoda(url) {   // il nome dell'azienda e l'origine viaggiano con chi passa la porta
-    var p = []; if (slug) p.push('per=' + encodeURIComponent(slug)); if (da) p.push('da=' + encodeURIComponent(da));
+  function conCoda(url, conAperto) {   // il nome dell'azienda, l'origine e, se c'è, il via libera ai prezzi viaggiano con chi passa la porta
+    var p = []; if (slug) p.push('per=' + encodeURIComponent(slug)); if (da) p.push('da=' + encodeURIComponent(da)); if (conAperto && giaAperto()) p.push('aperto=1');
     return url + (p.length ? (url.indexOf('?') >= 0 ? '&' : '?') + p.join('&') : '');
   }
   /* porte: data-porta="confezioni" | "catalogo" */
@@ -220,30 +220,39 @@
   function apriCancello(porta) {
     destinazione = porta || null;
     if (!cancello) return;
-    var titolo = $('cancello-h'); if (titolo) titolo.textContent = porta === 'catalogo' ? 'Apri il catalogo' : porta === 'confezioni' ? 'Apri le confezioni' : 'Vedi confezioni e prezzi';
+    var titolo = $('cancello-h'); if (titolo) titolo.textContent = 'Vedi i prezzi';
     if (typeof cancello.showModal === 'function') { if (!cancello.open) cancello.showModal(); }
     else cancello.setAttribute('open', '');
     var primo = cancello.querySelector('input:not([type=hidden]):not([type=checkbox]):not([type=radio])'); if (primo && !primo.value) primo.focus();
   }
   function chiudiCancello() { if (!cancello) return; if (typeof cancello.close === 'function' && cancello.open) cancello.close(); else cancello.removeAttribute('open'); }
-  Array.prototype.forEach.call(document.querySelectorAll('[data-porta]'), function (a) {
-    var porta = a.getAttribute('data-porta');
-    if (porta === 'catalogo') { a.href = catalogo; a.target = '_blank'; a.rel = 'noopener'; }
-    else if (porta === 'confezioni') a.href = conCoda(confezioni);
-    a.addEventListener('click', function (e) {
-      if (porta === 'confezioni-qui') { e.preventDefault(); apriCancello('confezioni'); return; }   // pagina confezioni aperta senza passare dalla stanza
-      if (giaAperto()) return;            // cancello già passato: il link si apre normalmente
-      e.preventDefault(); apriCancello(porta);
+  /* le porte si aprono senza dati (Gio, 09/10/2026 17:16): si sfoglia tutto, i prezzi arrivano con i dati */
+  function sistemaPorte() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-porta]'), function (a) {
+      var porta = a.getAttribute('data-porta');
+      if (porta === 'catalogo') { a.href = conCoda(catalogo, true); a.target = '_blank'; a.rel = 'noopener'; }
+      else if (porta === 'confezioni') a.href = conCoda(confezioni, true);
     });
+  }
+  sistemaPorte();
+  Array.prototype.forEach.call(document.querySelectorAll('[data-apri-cancello]'), function (b) { b.addEventListener('click', function () { apriCancello(''); }); });
+  /* un prezzo coperto, se lo tocchi, apre la finestra dei dati */
+  document.addEventListener('click', function (e) {
+    if (!body.classList.contains('senza-prezzi')) return;
+    var pz = e.target.closest && e.target.closest('.canvas .prezzo'); if (pz) { e.preventDefault(); apriCancello(''); }
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-chiudi-cancello]'), function (b) { b.addEventListener('click', chiudiCancello); });
   if (cancello) cancello.addEventListener('click', function (e) { if (e.target === cancello) chiudiCancello(); });
 
-  /* pagina confezioni: aperta solo se il cancello è passato */
+  /* pagina confezioni: tutto a vista; i prezzi, il conto e la scheda PDF dopo i dati */
+  function scopri() {
+    body.classList.remove('senza-prezzi');
+    var av = $('avviso-prezzi'); if (av) av.hidden = true;
+    preparaConto();
+  }
   if (pagina === 'confezioni') {
-    var ris = $('riservato'), chiuso = $('chiuso');
-    if (giaAperto()) { if (ris) ris.hidden = false; if (chiuso) chiuso.hidden = true; preparaConto(); }
-    else { if (ris) ris.hidden = true; if (chiuso) chiuso.hidden = false; }
+    if (giaAperto()) { ricorda(); scopri(); }
+    else body.classList.add('senza-prezzi');
   }
 
   /* --- il modulo del cancello --- */
@@ -279,12 +288,10 @@
       });
     });
     function mostra(testo) { esito.textContent = ''; var p = document.createElement('p'); p.textContent = testo; esito.appendChild(p); }
-    function attesa(on) { invia.disabled = on; invia.textContent = on ? 'Un momento…' : 'Apri'; }
+    function attesa(on) { invia.disabled = on; invia.textContent = on ? 'Un momento…' : 'Vedi i prezzi'; }
     function dopo() {
-      ricorda();
-      if (pagina === 'confezioni') { chiudiCancello(); $('riservato').hidden = false; $('chiuso').hidden = true; preparaConto(); var h = $('confezioni-h'); if (h && h.scrollIntoView) h.scrollIntoView(); return; }
-      if (destinazione === 'catalogo') { chiudiCancello(); window.open(catalogo, '_blank', 'noopener'); var ap = $('aperto-azioni'); if (ap) ap.hidden = false; return; }
-      vaiA('confezioni');
+      ricorda(); chiudiCancello(); scopri(); sistemaPorte();
+      mostra('Fatto: prezzi, conto e scheda sono aperti.');
     }
     f.addEventListener('submit', function (e) {
       e.preventDefault();

@@ -1,4 +1,4 @@
-/* Cowork v1.0 | Feel Good srl | Foglio di stile delle pagine di Natale (natale/, natale/confezioni/) | v2.0 | 2026-10-09 CEST
+/* Cowork v1.0 | Feel Good srl | Foglio di stile delle pagine di Natale (natale/, natale/confezioni/) | v2.1 | 2026-10-09 CEST (v2.1 — Gio 17:16: si sfoglia tutto senza dati, i prezzi restano coperti e un avviso ridotto resta a vista; porta 02 in fondo alle confezioni più visibile)
    Stessa cornice della home (testata, piede, Arsenica Light nei titoli, Montserrat nel resto, fondo panna e inchiostro rosso).
    Le variabili hanno i nomi "invertiti" come nella home del 17/09: --rosso è il FONDO (panna), --panna è l'INCHIOSTRO (rosso).
    Dopo una modifica: il link al foglio porta ?v=<sha1 breve del contenuto>, altrimenti il browser serve il CSS vecchio. */
@@ -254,12 +254,29 @@ form.modulo{display:grid;gap:16px}
 .esito .bottoni{margin-top:12px}
 .modulo .piccolo{font-size:13px}
 
-/* ---------- chiuso: quando la pagina riservata viene aperta senza passare dalla stanza ---------- */
-.chiuso{border-top:var(--spesso) solid var(--panna);padding-top:clamp(20px,3vw,32px);max-width:62ch;display:grid;gap:16px}
-.chiuso .lucchetto{font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--panna-soft)}
-.chiuso p{font-size:clamp(16px,1.6vw,19px)}
-.chiuso .cta{justify-self:start}
-@media(max-width:520px){.chiuso .cta{justify-self:stretch}}
+/* ---------- i prezzi dopo i dati (Gio, 09/10/2026): si sfoglia tutto, i prezzi restano coperti e l'avviso resta a vista ---------- */
+body.senza-prezzi .canvas .prezzo b{color:transparent;position:relative;user-select:none}
+body.senza-prezzi .canvas .prezzo b::after{content:'vedi il prezzo ›';position:absolute;left:0;top:50%;transform:translateY(-50%);color:var(--panna);font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;white-space:nowrap;cursor:pointer;border-bottom:2px solid var(--panna);padding-bottom:2px}
+body.senza-prezzi .canvas .prezzo span{display:none}
+body.senza-prezzi #calcola,body.senza-prezzi .canvas-nota .cta{display:none!important}
+.avviso-prezzi{display:none}
+body.senza-prezzi .avviso-prezzi{
+  position:fixed;left:max(14px,env(safe-area-inset-left));right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:21;
+  display:flex;align-items:center;gap:12px;padding:10px 12px 10px 16px;background:var(--panna);color:var(--rosso);box-shadow:0 0 0 3px var(--rosso);
+  font-size:13px;line-height:1.3;font-weight:600;
+}
+.avviso-prezzi p{margin:0;flex:1}
+.avviso-prezzi button{flex:none;min-height:40px;padding:0 14px;background:var(--rosso);color:var(--panna);border:0;cursor:pointer;font:700 11px/1 'Montserrat',sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.avviso-prezzi button:hover{background:#fff}
+@media(min-width:760px){
+  body.senza-prezzi .avviso-prezzi{right:auto;max-width:440px;bottom:max(18px,env(safe-area-inset-bottom));left:max(18px,env(safe-area-inset-left));padding:12px 14px 12px 18px;font-size:14px}
+}
+@media(max-width:759px){body.senza-prezzi .wa-fisso{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 70px)}body.senza-prezzi{padding-bottom:150px}}
+
+/* ---------- la porta accanto, in fondo alla pagina (Gio, 09/10: più visibile) ---------- */
+.porta-fondo{border-top:var(--spesso) solid var(--panna);padding-top:clamp(24px,4vw,48px);display:grid;gap:18px;max-width:76ch}
+.porta-fondo p{font-size:clamp(16px,1.6vw,19px)}
+.porta-fondo .bottoni{margin-top:8px}
 
 /* ---------- WhatsApp sempre a portata, su tutti gli schermi (Gio, 09/10/2026) ---------- */
 .wa-fisso{

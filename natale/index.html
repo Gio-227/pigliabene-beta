@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — la stanza di Natale 2026 (porta) | v2.0 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-09 CEST (v2.0 — Gio 09/10: stessa cornice della home (testata, piede, Arsenica), il nome dell'azienda in testa, pagina corta con due porte (confezioni → confezioni/, catalogo), cancello in finestra senza posta che si apre da sola, link puliti /natale/<azienda>, WhatsApp sempre a vista) - 2026-10-06 20:36 CEST (v1.3) - 2026-10-05 14:56 CEST (v1.2 — cancello) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI | fascicolo: pigliabene-sito-online + natale-2026 -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — la stanza di Natale 2026 (porta) | v2.1 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-09 17:40 CEST (v2.1 — Gio 17:16: le porte si aprono senza dati, i prezzi arrivano con i dati nelle pagine delle porte) - 2026-10-09 CEST (v2.0 — Gio 09/10: stessa cornice della home (testata, piede, Arsenica), il nome dell'azienda in testa, pagina corta con due porte (confezioni → confezioni/, catalogo), cancello in finestra senza posta che si apre da sola, link puliti /natale/<azienda>, WhatsApp sempre a vista) - 2026-10-06 20:36 CEST (v1.3) - 2026-10-05 14:56 CEST (v1.2 — cancello) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI | fascicolo: pigliabene-sito-online + natale-2026 -->
 <!-- La stanza: tutto quello che serve per scegliere quale porta aprire. Le confezioni stanno in confezioni/, il catalogo dove dice config.js.
      Stile e script comuni: natale.css e porta.js (col ?v= dell'impronta: cambiano insieme al contenuto).
      Il modulo manda la richiesta all'Apps Script di Gio (config.js → ENDPOINT); se è vuoto la porta si apre lo stesso e nessuna posta si apre da sola.
@@ -22,7 +22,7 @@
 <meta property="og:image:height" content="630">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-<link rel="stylesheet" href="natale.css?v=9537e5c7">
+<link rel="stylesheet" href="natale.css?v=21aeae16">
 </head>
 <body data-pagina="stanza">
 
@@ -61,14 +61,14 @@
       <p class="numero">01</p>
       <h3>Confezioni<br>pronte</h3>
       <p>Dieci confezioni che componiamo noi con i nostri produttori, a prezzo chiuso: da 18 a 68 € più IVA, busta compresa. Scegli quale e quante; con «Fai il conto» vedi subito gli sconti.</p>
-      <p class="nota">Riservate alle aziende · si aprono lasciando i tuoi dati</p>
+      <p class="nota">Si sfogliano liberamente · i prezzi si vedono lasciando i tuoi dati</p>
       <a class="cta pieno" href="confezioni/" data-porta="confezioni">Apri le confezioni</a>
     </div>
     <div class="porta">
       <p class="numero">02</p>
       <h3>Su misura<br>dal catalogo</h3>
       <p>Ventuno produttori e circa 285 referenze, con i prezzi per le aziende. Scegli tu i prodotti: il preventivo te lo prepariamo noi.</p>
-      <p class="nota">Si apre in una pagina a parte</p>
+      <p class="nota">Si apre in una pagina a parte · i prezzi si vedono lasciando i tuoi dati</p>
       <a class="cta" href="#" data-porta="catalogo">Apri il catalogo</a>
     </div>
   </div>
@@ -109,52 +109,6 @@
   </dl>
 </section>
 
-<!-- IL CANCELLO: una finestra sopra la pagina (Gio, 05/10/2026: confezioni, prezzi e catalogo dopo i dati; 09/10: niente posta che si apre da sola) -->
-<dialog class="cancello" id="cancello" aria-labelledby="cancello-h">
-  <div class="cancello-dentro">
-    <div class="cancello-testa">
-      <p class="label" style="margin:0;flex:1">Riservato alle aziende</p>
-      <button type="button" class="chiudi" data-chiudi-cancello>Chiudi</button>
-    </div>
-    <h2 id="cancello-h">Vedi confezioni e prezzi</h2>
-    <p class="perche">Confezioni, prezzi e catalogo sono riservati alle aziende. Lascia i tuoi dati: <b>si aprono subito</b>, e ti ricontattiamo solo per il preventivo.</p>
-    <form id="modulo" class="modulo" novalidate>
-      <div class="riga2">
-        <div class="campo"><label for="f-nome">Nome e cognome <span class="obb">*</span></label>
-          <input type="text" id="f-nome" name="nome" autocomplete="name" required maxlength="100" aria-describedby="e-nome">
-          <p class="errore" id="e-nome">Scrivi nome e cognome.</p></div>
-        <div class="campo"><label for="f-azienda">Azienda <span class="obb">*</span></label>
-          <input type="text" id="f-azienda" name="azienda" autocomplete="organization" required maxlength="120" aria-describedby="e-azienda">
-          <p class="errore" id="e-azienda">Scrivi il nome dell'azienda.</p></div>
-      </div>
-      <div class="riga2">
-        <div class="campo"><label for="f-email">Email <span class="obb">*</span></label>
-          <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required maxlength="160" aria-describedby="e-email">
-          <p class="errore" id="e-email">Scrivi un indirizzo email valido.</p></div>
-        <div class="campo"><label for="f-tel">Telefono</label>
-          <input type="tel" id="f-tel" name="telefono" autocomplete="tel" inputmode="tel" maxlength="40"></div>
-      </div>
-      <fieldset>
-        <legend>Quante confezioni pensi di regalare?</legend>
-        <div class="scelte">
-          <label><input type="radio" name="quantita" value="meno di 10"> meno di 10</label>
-          <label><input type="radio" name="quantita" value="10–50"> 10–50</label>
-          <label><input type="radio" name="quantita" value="oltre 50"> oltre 50</label>
-        </div>
-      </fieldset>
-      <div class="esca" aria-hidden="true"><label for="f-sito">Non compilare questo campo</label><input type="text" id="f-sito" name="sito" tabindex="-1" autocomplete="off"></div>
-      <div class="campo">
-        <label class="spunta"><input type="checkbox" id="f-privacy" name="privacy" required aria-describedby="e-privacy"> <span>Ho letto l'<a href="../privacy/#catalogo" target="_blank" rel="noopener" style="text-decoration:underline">informativa privacy</a>: i miei dati servono a mostrarmi confezioni e prezzi, a mandarmi il catalogo e a ricontattarmi per il preventivo. <span class="obb">*</span></span></label>
-        <p class="errore" id="e-privacy">Serve la spunta per aprire.</p>
-      </div>
-      <label class="spunta"><input type="checkbox" id="f-agg" name="aggiornamenti"> <span>Voglio ricevere gli aggiornamenti di Piglia Bene per le aziende (facoltativo, ci si cancella quando si vuole).</span></label>
-      <input type="hidden" name="origine" id="f-origine" value="sito">
-      <div class="bottoni"><button class="cta pieno" type="submit" id="invia">Apri</button></div>
-      <p class="piccolo">* obbligatorio</p>
-      <div class="esito" id="esito" role="status" aria-live="polite"></div>
-    </form>
-  </div>
-</dialog>
 
 <footer class="piede">
   <span>Piglia Bene · Feel Good S.r.l. — Via Giordano Bruno 47, Sansepolcro (AR)</span>
@@ -166,6 +120,6 @@
 <a class="wa-fisso js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4.5 20l1.2-3.7A8 8 0 1 1 8.4 19z"/></svg>WhatsApp</a>
 
 <script src="config.js?v=7d868334"></script>
-<script src="porta.js?v=0ebcd1c9"></script>
+<script src="porta.js?v=c3f9fdd5"></script>
 </body>
 </html>

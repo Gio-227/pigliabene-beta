@@ -7,7 +7,7 @@
 <meta name="description" content="Il catalogo di Natale di Piglia Bene: i nostri artigiani del gusto, referenza per referenza, con i prezzi per le aziende.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#F7F4DC">
-<link rel="stylesheet" href="assets/catalogo.css?v=d4285aab">
+<link rel="stylesheet" href="assets/catalogo.css?v=35d1b39f">
 </head>
 <body>
 <header class="testata">
@@ -54,7 +54,7 @@
 <div class="testo">
 <p class="kick">Sempre i soliti noti? Ovviamente no.</p>
 <h1>A Natale<br>Piglia Bene.</h1>
-<p>I nostri artigiani del gusto, uno per uno.<br>Niente prezzi: gli € dicono la fascia, il listino te lo mandiamo noi.</p>
+<p>I nostri artigiani del gusto, uno per uno.<br>I prezzi per le aziende si aprono lasciando i tuoi dati; il preventivo lo prepariamo noi.</p>
 <p class="piccolo">Anteprima — 21 produttori, 285 referenze.</p>
 <p class="giu">Scorri per sfogliare ↓</p>
 </div>
@@ -778,10 +778,15 @@
 
 <footer class="piede">
 <p class="legenda">Fasce di spesa, per produttore: <b>€</b> fino a 10 € · <b>€€</b> 10-15 € · <b>€€€</b> 15-25 € · <b>€€€€</b> 25-50 € · <b>€€€€€</b> oltre 50 €.
-<span class="nb">Prezzi IVA esclusa (+ IVA), riservati alle aziende, validi per gli ordini fino al 15 novembre 2026. Gli € del filtro dicono la fascia di spesa della selezione di un produttore.</span></p>
-<strong>Piglia Bene</strong> — enoteca e vineria con catering, via Giordano Bruno 47, Sansepolcro (AR).
-Feel Good S.r.l. · P.IVA 02434040511 · <a href="https://www.pigliabene.it">www.pigliabene.it</a><br>
-Anteprima di lavorazione del catalogo di Natale 2026: le pagine non sono indicizzate e i contenuti possono cambiare.
+<span class="nb">Gli € del filtro dicono la fascia di spesa della selezione di un produttore.</span></p>
+<p class="cond-riga"><b>−7 % con pagamento anticipato</b> su tutto l'ordine fino al <b>15 novembre</b>, giorno in cui chiudono le promozioni e gli ordini online. Prezzi IVA esclusa (+ IVA), riservati alle aziende; il preventivo su misura lo prepariamo noi.</p>
+<div class="porte-fondo"><a href="../natale/confezioni/" id="vai-confezioni">Vedi le confezioni pronte</a><a class="vuoto" href="../natale/" id="vai-natale">Torna alla pagina di Natale</a></div>
+<div class="piede-sito">
+<span>Piglia Bene · Feel Good S.r.l. — Via Giordano Bruno 47, Sansepolcro (AR)</span>
+<span>P.IVA e C.F. 02434040511 · REA AR-213209 · Capitale sociale € 10.000,00 i.v.</span>
+<span>bottegapigliabene@gmail.com · <a href="../privacy/">Privacy</a></span>
+<span class="copy">© 2026 Feel Good S.r.l.</span>
+</div>
 </footer>
 
 <div class="azioni">
@@ -789,7 +794,40 @@ Anteprima di lavorazione del catalogo di Natale 2026: le pagine non sono indiciz
 <a class="vuoto" href="mailto:bottegapigliabene@gmail.com?subject=Catalogo%20Natale%202026%20%E2%80%94%20richiesta%20preventivo">Scrivici</a>
 </div>
 
+<div class="avviso-prezzi" id="avviso-prezzi" role="status">
+<p>Inserisci i dati aziendali per vedere i prezzi.</p>
+<button type="button" data-apri-cancello>Inserisci i dati</button>
+</div>
+
+<dialog class="cancello" id="cancello" aria-labelledby="cancello-h">
+<div class="cancello-dentro">
+<div class="cancello-testa"><span>Riservato alle aziende</span><button type="button" class="chiudi" data-chiudi-cancello>Chiudi</button></div>
+<h2 id="cancello-h">Vedi i prezzi</h2>
+<p class="perche">I prezzi del catalogo sono riservati alle aziende. Lascia i tuoi dati: <b>si aprono subito</b>, e ti ricontattiamo solo per il preventivo.</p>
+<form id="modulo" class="modulo" novalidate>
+<div class="riga2">
+<div class="campo"><label for="f-nome">Nome e cognome <span class="obb">*</span></label><input type="text" id="f-nome" name="nome" autocomplete="name" required maxlength="100" aria-describedby="e-nome"><p class="errore" id="e-nome">Scrivi nome e cognome.</p></div>
+<div class="campo"><label for="f-azienda">Azienda <span class="obb">*</span></label><input type="text" id="f-azienda" name="azienda" autocomplete="organization" required maxlength="120" aria-describedby="e-azienda"><p class="errore" id="e-azienda">Scrivi il nome dell'azienda.</p></div>
+</div>
+<div class="riga2">
+<div class="campo"><label for="f-email">Email <span class="obb">*</span></label><input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required maxlength="160" aria-describedby="e-email"><p class="errore" id="e-email">Scrivi un indirizzo email valido.</p></div>
+<div class="campo"><label for="f-tel">Telefono</label><input type="tel" id="f-tel" name="telefono" autocomplete="tel" inputmode="tel" maxlength="40"></div>
+</div>
+<fieldset><legend>Quante confezioni pensi di regalare?</legend>
+<div class="scelte"><label><input type="radio" name="quantita" value="meno di 10"> meno di 10</label><label><input type="radio" name="quantita" value="10–50"> 10–50</label><label><input type="radio" name="quantita" value="oltre 50"> oltre 50</label></div></fieldset>
+<div class="esca" aria-hidden="true"><label for="f-sito">Non compilare questo campo</label><input type="text" id="f-sito" name="sito" tabindex="-1" autocomplete="off"></div>
+<div class="campo"><label class="spunta"><input type="checkbox" id="f-privacy" name="privacy" required aria-describedby="e-privacy"> <span>Ho letto l'<a href="../privacy/#catalogo" target="_blank" rel="noopener">informativa privacy</a>: i miei dati servono a mostrarmi i prezzi, a mandarmi il catalogo e a ricontattarmi per il preventivo. <span class="obb">*</span></span></label><p class="errore" id="e-privacy">Serve la spunta per vedere i prezzi.</p></div>
+<label class="spunta"><input type="checkbox" id="f-agg" name="aggiornamenti"> <span>Voglio ricevere gli aggiornamenti di Piglia Bene per le aziende (facoltativo, ci si cancella quando si vuole).</span></label>
+<input type="hidden" name="origine" id="f-origine" value="catalogo">
+<div><button class="invia" type="submit" id="invia">Vedi i prezzi</button></div>
+<p class="piccolo">* obbligatorio</p>
+<div class="esito" id="esito" role="status" aria-live="polite"></div>
+</form>
+</div>
+</dialog>
+
 <script>window.CATALOGO={"produttori": {"guido-castagna": {"chiave": "Castagna", "novita": false, "catOrdine": 2}, "corilu": {"chiave": "Corilu", "novita": false, "catOrdine": 3}, "monograno-felicetti": {"chiave": "Felicetti", "novita": false, "catOrdine": 4}, "riserva-san-massimo": {"chiave": "Riserva San Massimo", "novita": false, "catOrdine": 5}, "riso-buono": {"chiave": "Riso Buono", "novita": false, "catOrdine": 5}, "dallatana": {"chiave": "Dallatana", "novita": false, "catOrdine": 6}, "scianca": {"chiave": "Scianca", "novita": false, "catOrdine": 6}, "scianca-terrabrada": {"chiave": "TerraBrada", "novita": false, "catOrdine": 6}, "le-tamerici": {"chiave": "Tamerici", "novita": false, "catOrdine": 8}, "colzani": {"chiave": "Colzani", "novita": false, "catOrdine": 11}, "armatore-cetara": {"chiave": "Armatore", "novita": false, "catOrdine": 99}, "forno-brisa": {"chiave": "Brisa", "novita": true, "catOrdine": 99}, "infermentum": {"chiave": "Infermentum", "novita": false, "catOrdine": 99}, "inkonserva": {"chiave": "InKonserva", "novita": false, "catOrdine": 99}, "marificio": {"chiave": "Marificio", "novita": false, "catOrdine": 99}, "casa-marrazzo": {"chiave": "Marrazzo", "novita": false, "catOrdine": 99}, "materia": {"chiave": "Materia", "novita": false, "catOrdine": 99}, "quintosapore": {"chiave": "Quintosapore", "novita": false, "catOrdine": 99}, "re-garum": {"chiave": "Re.Garum", "novita": false, "catOrdine": 99}, "niko-romito": {"chiave": "Romito", "novita": false, "catOrdine": 99}, "smokin-brothers": {"chiave": "Smokin", "novita": false, "catOrdine": 99}}};</script>
-<script src="assets/catalogo.js?v=d4285aab"></script>
+<script src="../natale/config.js"></script>
+<script src="assets/catalogo.js?v=35d1b39f"></script>
 </body>
 </html>
