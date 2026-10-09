@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<!-- Cowork v1.0 | Feel Good srl | Pagina 404 | 2026-08-31 CEST | Opus 5 | fascicolo: pigliabene-sito-online -->
+<!-- Cowork v1.0 | Feel Good srl | Pagina 404 | v1.1 2026-10-09 CEST (rimando dei link puliti /natale/Nome-Azienda alla stanza di Natale) | 2026-08-31 CEST | fascicolo: pigliabene-sito-online -->
 <!-- GitHub Pages serve questo file da solo per ogni indirizzo che non esiste.
      Percorsi ASSOLUTI ovunque: un 404 può comparire a qualunque profondità
      (/pippo/pluto/), e i percorsi relativi si romperebbero. -->
 <html lang="it">
 <head>
 <meta charset="UTF-8">
+<script>
+/* /natale/Nome-Azienda → la stanza di Natale con «Preparato per Nome Azienda»: il link pulito dei clienti (Gio, 09/10/2026).
+   GitHub Pages non ha regole di riscrittura: ogni indirizzo che non esiste arriva qui, e da qui si va subito alla pagina giusta.
+   Esclusi: i nomi con estensione (file mancanti davvero) e le cartelle vere della porta. */
+(function () {
+  var m = /^(.*\/natale)\/([^\/?#]+)\/?$/.exec(location.pathname);
+  if (m && !/\.[a-z0-9]{2,5}$/i.test(m[2]) && ['link', 'confezioni', 'canvas-bozza'].indexOf(m[2].toLowerCase()) < 0) {
+    location.replace(m[1] + '/?per=' + m[2] + '&da=link' + location.hash);
+  }
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Questa pagina non c'è — Piglia Bene</title>
 <meta name="robots" content="noindex, follow">

@@ -1,83 +1,122 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v1.1 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-05 14:56 CEST (v1.2 — il messaggio dice che confezioni e prezzi si vedono lasciando l'email) - 2026-10-05 14:27 CEST (v1.1 — il messaggio dice le scadenze delle promozioni, lette da ../config.js) | Da: sessione cloud porta-catalogo-natale (05/10) -->
-<!-- Per Gio (o Nic): scrivi il nome dell'azienda e ottieni il link «Preparato per…» da mandare in giornata.
-     Pagina di servizio: noindex, nessun link punta qui. Non salva niente e non manda niente da sola:
-     tutto si calcola nel browser. -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v2.0 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-09 CEST (v2.0 — Gio 09/10: link pulito pigliabene.it/natale/Nome-Azienda; la mail parte da Piglia Bene (bottegapigliabene@gmail.com) col logo, attraverso lo script di Gio, con un PIN; stessa veste del sito) - 2026-10-05 14:56 CEST (v1.2) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI -->
+<!-- Per Nicola, Gio o Nic: scrivi il nome dell'azienda e ottieni il link «Preparato per…» da mandare in giornata.
+     Pagina di servizio: noindex, nessun link punta qui. Non salva niente e manda la mail solo se premi il bottone,
+     attraverso lo script di Gio (config.js → ENDPOINT) e col PIN: senza, la mail la mandi dalla tua posta. -->
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Link personale · porta di Natale · Piglia Bene</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#9B0E0E">
+<meta name="theme-color" content="#F7F4DC">
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <style>
   @font-face{font-family:'Montserrat';src:url('../../media/fonts/montserrat-500.woff2') format('woff2');font-weight:500;font-display:swap}
   @font-face{font-family:'Montserrat';src:url('../../media/fonts/montserrat-600.woff2') format('woff2');font-weight:600;font-display:swap}
   @font-face{font-family:'Montserrat';src:url('../../media/fonts/montserrat-700.woff2') format('woff2');font-weight:700;font-display:swap}
-  :root{--panna:#F7F4DC;--rosso:#9B0E0E;--tenue:#AD3C37;--spesso:5px}
+  @font-face{font-family:'Arsenica';src:url('../../media/fonts/ArsenicaTrial-Light.ttf') format('truetype');font-weight:300;font-display:swap;unicode-range:U+0-2F,U+3A-10FFFF}
+  :root{--panna:#F7F4DC;--rosso:#9B0E0E;--soft:rgba(155,14,14,.65);--carta:#FFFDF2;--spesso:5px}
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-  body{background:var(--panna);color:var(--rosso);font:500 17px/1.55 'Montserrat',system-ui,sans-serif;padding:clamp(24px,5vw,56px) clamp(16px,5vw,56px) 64px}
-  main{max-width:680px;margin:0 auto}
+  body{background:var(--panna);color:var(--rosso);font:500 16px/1.55 'Montserrat',system-ui,sans-serif;padding:clamp(24px,5vw,56px) clamp(16px,5vw,56px) 64px}
+  main{max-width:720px;margin:0 auto}
   :focus-visible{outline:3px solid var(--rosso);outline-offset:3px}
-  h1{font-weight:700;text-transform:uppercase;font-size:clamp(26px,5vw,38px);line-height:1.08;margin-bottom:12px}
-  .sotto{color:var(--tenue);margin-bottom:28px;max-width:58ch}
-  form{display:grid;gap:18px;border:var(--spesso) solid var(--rosso);padding:clamp(18px,3vw,28px);background:#FFFDF2}
-  label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
-  .aiuto{display:block;font-weight:500;font-size:14px;color:var(--tenue);margin-top:4px}
-  input,textarea{width:100%;font:500 17px/1.4 'Montserrat',sans-serif;color:var(--rosso);background:#fff;border:2px solid var(--rosso);border-radius:0;
+  .kicker{font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--soft);margin-bottom:10px}
+  h1{font-family:'Arsenica',serif;font-weight:300;text-transform:uppercase;font-size:clamp(34px,7vw,64px);line-height:1;margin-bottom:14px}
+  .sotto{color:var(--soft);margin-bottom:28px;max-width:60ch}
+  form{display:grid;gap:18px;border-top:var(--spesso) solid var(--rosso);padding-top:24px}
+  .due{display:grid;gap:18px}
+  @media(min-width:600px){.due{grid-template-columns:1fr 1fr}}
+  label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+  .aiuto{display:block;font-weight:500;font-size:13px;color:var(--soft);margin-top:4px}
+  input,textarea{width:100%;font:500 16px/1.4 'Montserrat',sans-serif;color:var(--rosso);background:var(--carta);border:2px solid var(--rosso);border-radius:0;
        padding:11px 12px;min-height:48px;-webkit-appearance:none;appearance:none}
-  textarea{min-height:120px;resize:vertical}
-  input[readonly]{background:var(--panna);font-size:15px}
+  textarea{min-height:150px;resize:vertical}
+  input[readonly]{background:var(--panna);font-size:15px;font-weight:600}
+  .anteprima{font-size:14px;color:var(--soft)}
+  .anteprima b{color:var(--rosso)}
   .bottoni{display:flex;flex-wrap:wrap;gap:10px}
   .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border:2.5px solid var(--rosso);
-       font:700 13px/1.2 'Montserrat',sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;
-       background:transparent;color:var(--rosso)}
+       font:700 12px/1.2 'Montserrat',sans-serif;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;cursor:pointer;
+       background:transparent;color:var(--rosso);transition:background .2s,color .2s}
+  .btn:hover{background:var(--rosso);color:var(--panna)}
   .btn.pieno{background:var(--rosso);color:var(--panna)}
-  .btn[aria-disabled=true]{opacity:.45;pointer-events:none}
-  .esito{font-weight:600;min-height:1.5em}
-  .piccolo{font-size:14px;color:var(--tenue);margin-top:22px}
+  .btn.pieno:hover{background:#7d0b0b;border-color:#7d0b0b}
+  .btn[aria-disabled=true],.btn:disabled{opacity:.45;pointer-events:none}
+  .esito{font-weight:600;min-height:1.5em;border-left:var(--spesso) solid var(--rosso);padding-left:14px}
+  .esito:empty{display:none}
+  .piccolo{font-size:13px;color:var(--soft);margin-top:22px;max-width:62ch}
+  .blocco{border-top:1px solid var(--soft);padding-top:16px}
+  .blocco h2{font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;margin-bottom:12px}
 </style>
 </head>
 <body>
 <main>
-  <h1>Link personale per un'azienda</h1>
-  <p class="sotto">Scrivi il nome dell'azienda: la pagina di Natale si apre con «Preparato per…» e il nome già scritto nel modulo: all'azienda resta da lasciare l'email, poi vede confezioni, prezzi e catalogo. Questa pagina non è collegata da nessuna parte e non salva niente.</p>
+  <p class="kicker">Piglia Bene · Natale 2026 · pagina di servizio</p>
+  <h1>Link personale<br>per un'azienda</h1>
+  <p class="sotto">Scrivi il nome dell'azienda: ottieni il link pulito <b>pigliabene.it/natale/Nome-Azienda</b>, che apre la pagina di Natale con «Preparato per…» e l'azienda già scritta nel modulo. Questa pagina non è collegata da nessuna parte e non salva niente.</p>
   <form id="f" onsubmit="return false">
-    <div>
-      <label for="azienda">Nome dell'azienda</label>
-      <input id="azienda" type="text" maxlength="80" autocomplete="off" placeholder="Per esempio: Rossi Srl">
+    <div class="due">
+      <div>
+        <label for="azienda">Nome dell'azienda</label>
+        <input id="azienda" type="text" maxlength="80" autocomplete="off" placeholder="Per esempio: Rossi Srl">
+        <span class="aiuto anteprima" id="anteprima"></span>
+      </div>
+      <div>
+        <label for="referente">Persona a cui scrivi <span class="aiuto" style="display:inline">(facoltativo)</span></label>
+        <input id="referente" type="text" maxlength="80" autocomplete="off" placeholder="Per esempio: Marco">
+      </div>
     </div>
-    <div>
-      <label for="cell">Cellulare del cliente <span class="aiuto">Facoltativo: se lo scrivi, WhatsApp apre direttamente la sua chat.</span></label>
-      <input id="cell" type="tel" inputmode="tel" maxlength="20" autocomplete="off" placeholder="333 1234567">
-    </div>
-    <div>
-      <label for="msg">Messaggio</label>
-      <textarea id="msg"></textarea>
-      <span class="aiuto">Si scrive da solo finché non lo modifichi tu.</span>
+    <div class="due">
+      <div>
+        <label for="email">Email del cliente <span class="aiuto" style="display:inline">(per mandare la mail da Piglia Bene)</span></label>
+        <input id="email" type="email" inputmode="email" maxlength="160" autocomplete="off" placeholder="nome@azienda.it">
+      </div>
+      <div>
+        <label for="cell">Cellulare del cliente <span class="aiuto" style="display:inline">(per WhatsApp)</span></label>
+        <input id="cell" type="tel" inputmode="tel" maxlength="20" autocomplete="off" placeholder="333 1234567">
+      </div>
     </div>
     <div>
       <label for="link">Il link</label>
       <input id="link" type="text" readonly>
+      <span class="aiuto">Chi lo apre vede «Preparato per <span id="per-ant">…</span>». Chi riceve il link può inoltrarlo: non è una password.</span>
+    </div>
+    <div>
+      <label for="msg">Messaggio</label>
+      <textarea id="msg"></textarea>
+      <span class="aiuto">Si scrive da solo finché non lo modifichi tu. Nella mail da Piglia Bene va così com'è, sotto il logo.</span>
     </div>
     <div class="bottoni">
       <button class="btn pieno" type="button" id="copia">Copia il link</button>
       <a class="btn" id="wa" href="#" target="_blank" rel="noopener">Manda su WhatsApp</a>
-      <a class="btn" id="mail" href="#">Manda per email</a>
       <a class="btn" id="prova" href="#" target="_blank" rel="noopener">Prova la pagina</a>
+    </div>
+    <div class="blocco">
+      <h2>La mail da Piglia Bene</h2>
+      <div class="due">
+        <div>
+          <label for="pin">PIN</label>
+          <input id="pin" type="password" inputmode="numeric" maxlength="20" autocomplete="off">
+          <span class="aiuto">Lo stesso che Gio ha scritto nello script. Resta in questa scheda finché non la chiudi.</span>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap">
+          <button class="btn pieno" type="button" id="mail-pb">Manda la mail da Piglia Bene</button>
+          <a class="btn" id="mail-mia" href="#">Dalla mia posta</a>
+        </div>
+      </div>
+      <span class="aiuto" id="mail-nota">Parte da bottegapigliabene@gmail.com, col logo e il tuo messaggio; la risposta del cliente arriva lì.</span>
     </div>
     <p class="esito" id="esito" role="status" aria-live="polite"></p>
   </form>
-  <p class="piccolo">Il nome compare nella pagina come testo semplice. Chi riceve il link può inoltrarlo: non è una password.</p>
+  <p class="piccolo">Il link funziona anche senza nome: ../natale/ con «?da=link». Il nome compare nella pagina come testo semplice, con gli spazi al posto dei trattini.</p>
 </main>
 <script src="../config.js"></script>
 <script>
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
-  /* le scadenze delle promozioni, dalle stesse date della porta (config.js) */
   var C = window.PB_NATALE || {}, MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
   function d(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : null; }
   function scrivi(x) { var y = new Date(x); return y.getUTCDate() + ' ' + MESI[y.getUTCMonth()]; }
@@ -88,42 +127,74 @@
     if (dAn !== null && oggi <= dAn) return 'Fino al ' + scrivi(dAn) + ' il −7 % pagando in anticipo: quel giorno chiudono le promozioni e gli ordini online.';
     return '';
   }
-  var base = new URL('../', location.href).href;
+  /* la base è la cartella natale/ di QUESTO sito (www o beta): il link resta giusto su entrambi */
+  var base = new URL('../', location.href).href.replace(/\/$/, '');
   var toccato = false;
-  function pulisci(s) { return s.replace(/[\u0000-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim().slice(0, 80); }
-  function link(nome) { return base + (nome ? '?per=' + encodeURIComponent(nome) + '&da=link' : '?da=link'); }
-  function messaggio(nome, l) {
-    return 'Buongiorno! Ecco i regali aziendali di Natale di Piglia Bene' + (nome ? ', preparati per ' + nome : '') +
-      ': ' + l + '\nLasciando la tua email vedi subito le confezioni pronte, il conto degli sconti e il catalogo dei nostri produttori, con i prezzi per le aziende.' +
+  function pulisci(s) { return (s || '').replace(/[\u0000-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim().slice(0, 80); }
+  /* il nome nel link: senza accenti, «&» → «e», solo lettere, cifre, punto e trattino; gli spazi diventano trattini */
+  function slug(nome) {
+    var s = nome.normalize ? nome.normalize('NFD').replace(/[̀-ͯ]/g, '') : nome;
+    s = s.replace(/&/g, ' e ').replace(/['’]/g, '').replace(/[^A-Za-z0-9 .-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    return s.replace(/ /g, '-').replace(/-{2,}/g, '-').replace(/^[-.]+|[-.]+$/g, '').slice(0, 60);
+  }
+  function link(sl) { return sl ? base + '/' + sl : base + '/?da=link'; }
+  function messaggio(nome, l, ref) {
+    return (ref ? 'Buongiorno ' + ref + '!' : 'Buongiorno!') + ' Ecco i regali aziendali di Natale di Piglia Bene' + (nome ? ', preparati per ' + nome : '') +
+      ': ' + l + '\nLasciando i tuoi dati vedi subito le confezioni pronte, il conto degli sconti e il catalogo dei nostri produttori, con i prezzi per le aziende.' +
       (scadenze() ? '\n' + scadenze() : '') + '\nPer qualsiasi cosa rispondi pure qui.';
   }
   function numero(s) {
-    var d = (s || '').replace(/[^\d+]/g, '').replace(/^\+/, '').replace(/^00/, '');
-    if (!d) return '';
-    if (/^3\d{8,9}$/.test(d) || /^0\d{5,10}$/.test(d)) d = '39' + d;
-    return /^\d{8,15}$/.test(d) ? d : '';
+    var n = (s || '').replace(/[^\d+]/g, '').replace(/^\+/, '').replace(/^00/, '');
+    if (!n) return '';
+    if (/^3\d{8,9}$/.test(n) || /^0\d{5,10}$/.test(n)) n = '39' + n;
+    return /^\d{8,15}$/.test(n) ? n : '';
+  }
+  var reMail = /^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[a-z]{2,}$/i;
+  function stato() {
+    var nome = pulisci($('azienda').value), sl = slug(nome), ref = pulisci($('referente').value);
+    return { nome: nome, slug: sl, mostrato: sl.replace(/-/g, ' '), ref: ref, link: link(sl), email: $('email').value.trim(), cell: numero($('cell').value), pin: $('pin').value.trim() };
   }
   function aggiorna() {
-    var nome = pulisci($('azienda').value), l = link(nome);
-    $('link').value = l;
-    if (!toccato) $('msg').value = messaggio(nome, l);
-    var m = $('msg').value, n = numero($('cell').value);
-    $('wa').href = 'https://wa.me/' + n + '?text=' + encodeURIComponent(m);
-    $('mail').href = 'mailto:?subject=' + encodeURIComponent('Regali aziendali di Natale 2026 · Piglia Bene') + '&body=' + encodeURIComponent(m);
-    $('prova').href = l;
-    var vuoto = !nome;
-    ['wa', 'mail', 'prova'].forEach(function (id) { $(id).setAttribute('aria-disabled', vuoto ? 'true' : 'false'); });
+    var s = stato();
+    $('link').value = s.link;
+    $('anteprima').innerHTML = s.slug ? 'Nel link: <b>/natale/' + s.slug.replace(/</g, '&lt;') + '</b>' : '';
+    $('per-ant').textContent = s.mostrato || '…';
+    if (!toccato) $('msg').value = messaggio(s.mostrato, s.link, s.ref);
+    var m = $('msg').value;
+    $('wa').href = 'https://wa.me/' + s.cell + '?text=' + encodeURIComponent(m);
+    $('mail-mia').href = 'mailto:' + encodeURIComponent(s.email) + '?subject=' + encodeURIComponent('Regali aziendali di Natale 2026 · Piglia Bene' + (s.mostrato ? ' — preparati per ' + s.mostrato : '')) + '&body=' + encodeURIComponent(m);
+    $('prova').href = s.link;
+    var vuoto = !s.slug;
+    ['wa', 'prova'].forEach(function (id) { $(id).setAttribute('aria-disabled', vuoto ? 'true' : 'false'); });
+    var mailOk = !vuoto && reMail.test(s.email);
+    $('mail-mia').setAttribute('aria-disabled', mailOk ? 'false' : 'true');
+    $('mail-pb').disabled = !(mailOk && C.ENDPOINT && s.pin);
+    $('mail-nota').textContent = !C.ENDPOINT ? 'Lo script di Gio non è ancora attivo (ENDPOINT vuoto in config.js): intanto «Dalla mia posta».'
+      : !mailOk ? 'Serve il nome dell’azienda e un’email valida.' : !s.pin ? 'Scrivi il PIN.' : 'Parte da bottegapigliabene@gmail.com, col logo e il tuo messaggio; la risposta del cliente arriva lì.';
     $('esito').textContent = vuoto ? 'Scrivi il nome dell’azienda per avere il link.' : '';
   }
-  $('azienda').addEventListener('input', aggiorna);
-  $('cell').addEventListener('input', aggiorna);
+  ['azienda', 'referente', 'email', 'cell', 'pin'].forEach(function (id) { $(id).addEventListener('input', aggiorna); });
   $('msg').addEventListener('input', function () { toccato = true; aggiorna(); });
+  try { $('pin').value = sessionStorage.getItem('pbLinkPin') || ''; } catch (e) { }
+  $('pin').addEventListener('change', function () { try { sessionStorage.setItem('pbLinkPin', $('pin').value); } catch (e) { } });
   $('copia').addEventListener('click', function () {
     var l = $('link').value;
     function fatto() { $('esito').textContent = 'Link copiato.'; }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(l).then(fatto, function () { $('link').select(); document.execCommand('copy'); fatto(); });
     } else { $('link').select(); document.execCommand('copy'); fatto(); }
+  });
+  $('mail-pb').addEventListener('click', function () {
+    var s = stato(); if (!C.ENDPOINT || !s.slug || !reMail.test(s.email) || !s.pin) return;
+    var b = $('mail-pb'); b.disabled = true; b.textContent = 'Invio…';
+    var corpo = JSON.stringify({ azione: 'link', pin: s.pin, azienda: s.mostrato, slug: s.slug, link: s.link, referente: s.ref, email: s.email, cellulare: $('cell').value.trim(), messaggio: $('msg').value, da: 'link-pagina' });
+    fetch(C.ENDPOINT, { method: 'POST', body: corpo, headers: { 'Content-Type': 'text/plain;charset=utf-8' } })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        b.textContent = 'Manda la mail da Piglia Bene'; aggiorna();
+        $('esito').textContent = (j && j.ok) ? 'Mail partita da Piglia Bene a ' + s.email + '.' : 'Non partita: ' + ((j && j.errore) || 'errore sconosciuto') + '.';
+      })
+      .catch(function () { b.textContent = 'Manda la mail da Piglia Bene'; aggiorna(); $('esito').textContent = 'Non riesco a parlare con lo script: controlla la rete o manda dalla tua posta.'; });
   });
   aggiorna();
 })();

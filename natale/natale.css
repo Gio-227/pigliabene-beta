@@ -1,0 +1,295 @@
+/* Cowork v1.0 | Feel Good srl | Foglio di stile delle pagine di Natale (natale/, natale/confezioni/) | v2.0 | 2026-10-09 CEST
+   Stessa cornice della home (testata, piede, Arsenica Light nei titoli, Montserrat nel resto, fondo panna e inchiostro rosso).
+   Le variabili hanno i nomi "invertiti" come nella home del 17/09: --rosso è il FONDO (panna), --panna è l'INCHIOSTRO (rosso).
+   Dopo una modifica: il link al foglio porta ?v=<sha1 breve del contenuto>, altrimenti il browser serve il CSS vecchio. */
+
+@font-face{font-family:'Montserrat';src:url('../media/fonts/montserrat-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Montserrat';src:url('../media/fonts/montserrat-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Montserrat';src:url('../media/fonts/montserrat-600.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Montserrat';src:url('../media/fonts/montserrat-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+/* Arsenica Light (Zetafonts), oggi la Trial: unicode-range esclude le cifre, che la Trial non ha.
+   Con la licenza Web (1 stile, 25k pagine viste/mese: € 35 + IVA, letto il 09/10/2026): togliere unicode-range. */
+@font-face{font-family:'Arsenica';src:url('../media/fonts/ArsenicaTrial-Light.ttf') format('truetype');font-weight:300;font-display:swap;unicode-range:U+0-2F,U+3A-10FFFF}
+
+:root{
+  --rosso:#F7F4DC;                 /* fondo */
+  --panna:#9B0E0E;                 /* inchiostro */
+  --panna-soft:rgba(155,14,14,.65);
+  --filo:rgba(155,14,14,.35);
+  --carta:#FFFDF2;                 /* fondo dei campi */
+  --panna-chiara:#E5C6B3;          /* testo secondario sul rosso pieno */
+  --mx:clamp(24px,6vw,80px);       /* margine pagina, come la home */
+  --spesso:clamp(4px,.55vw,6px);   /* il filo spesso del marchio */
+  --hh:116px;                      /* altezza della testata: 28 + logo 60 + 28 */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:var(--hh)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+html,body{overflow-x:clip}
+body{background:var(--rosso);color:var(--panna);font-family:'Montserrat',sans-serif;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--panna);color:var(--rosso)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--panna);outline-offset:3px}
+.nascosto{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- testata: identica alla home, con il punto acceso ---------- */
+header.testata{
+  display:flex;align-items:center;gap:8px clamp(16px,3vw,40px);
+  padding:28px var(--mx);
+  position:sticky;top:0;background:var(--rosso);z-index:10;
+  transition:transform .25s;
+}
+header.testata.via{transform:translateY(-100%)}
+.logo{display:inline-block;color:var(--panna);line-height:0}
+.logo svg{display:block;height:60px;width:auto}
+nav.menu{display:flex;align-items:center;gap:clamp(6px,1.4vw,18px);margin-left:auto;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600}
+nav.menu a{display:inline-flex;align-items:center;min-height:40px;padding:0 12px;border-bottom:0;transition:background .25s,color .25s;text-decoration:none}
+nav.menu a:hover{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
+/* Il punto in cui sei resta acceso (Gio, 09/10/2026): rosso pieno e scritta panna. */
+nav.menu a.acceso,a.natale.acceso{background:var(--panna);color:var(--rosso);text-decoration:none}
+a.natale{
+  display:inline-flex;align-items:center;flex:none;min-height:44px;padding:0 18px;
+  border:2px solid var(--panna);color:var(--panna);
+  font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+  transition:background .25s,color .25s;
+}
+a.natale:hover{background:var(--panna);color:var(--rosso)}
+
+/* Telefono in orizzontale e finestre basse: una riga sola, più bassa. */
+@media(min-width:521px) and (max-width:640px),(min-width:521px) and (max-height:500px){
+  :root{--hh:64px}
+  header.testata{padding:10px var(--mx)}
+  .logo svg{height:44px}
+  nav.menu{font-size:11px;letter-spacing:.14em;gap:clamp(2px,1vw,10px)}
+  nav.menu a{padding:0 8px}
+  a.natale{font-size:11px;letter-spacing:.14em;padding:0 14px}
+}
+/* Telefono in verticale: logo e Natale sopra, Chi siamo · Servizi · Contatti sotto. */
+@media(max-width:520px){
+  :root{--hh:101px}
+  header.testata{flex-wrap:wrap;padding:10px var(--mx) 0;row-gap:6px}
+  .logo svg{height:44px}
+  a.natale{margin-left:auto;font-size:11px;letter-spacing:.14em;padding:0 16px}
+  nav.menu{order:3;flex-basis:100%;margin-left:0;justify-content:space-between;gap:0;
+      border-top:1px solid var(--panna-soft);font-size:11px;letter-spacing:.14em}
+  nav.menu a{min-height:40px;padding:0 10px;line-height:16px}
+}
+
+/* ---------- hero: la stessa scala della home ---------- */
+.hero{min-height:calc(88vh - var(--hh));display:flex;flex-direction:column;justify-content:center;padding:6vh var(--mx) 8vh}
+.kicker{font-size:clamp(11px,1.3vw,14px);letter-spacing:.3em;text-transform:uppercase;font-weight:600;margin-bottom:4vh;color:var(--panna-soft)}
+.kicker b{font-weight:700;color:var(--panna)}
+h1{font-family:'Arsenica',serif;font-weight:300;font-size:min(12.3vw,178px);line-height:.92;letter-spacing:.01em;text-transform:uppercase;overflow-wrap:anywhere;text-wrap:balance}
+/* Il nome dell'azienda: la riga più lunga si misura in porta.js e, se non ci sta, si stringe. */
+h1.per-nome{font-size:min(11vw,150px);text-wrap:balance}
+.hero .sotto{display:block;margin-top:5vh;font-size:clamp(12px,1.4vw,15px);letter-spacing:.22em;text-transform:uppercase;font-weight:600;max-width:60ch;line-height:1.9}
+.hero .sotto span{white-space:nowrap}
+@media(max-width:560px){.hero .sotto span{white-space:normal}}
+.hero .porte{display:flex;flex-wrap:wrap;gap:14px 18px;margin-top:6vh}
+
+/* ---------- bottoni: come la cta della home ---------- */
+.cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  border:2.5px solid var(--panna);padding:18px 32px;min-height:56px;
+  font-size:13px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;text-align:center;
+  transition:background .25s,color .25s;cursor:pointer;background:transparent;color:var(--panna);font-family:inherit;
+}
+.cta:hover{background:var(--panna);color:var(--rosso)}
+.cta.pieno{background:var(--panna);color:var(--rosso)}
+.cta.pieno:hover{background:#7d0b0b;border-color:#7d0b0b}
+.cta.piccolo{padding:12px 20px;min-height:46px;font-size:12px;letter-spacing:.2em}
+.cta svg{width:18px;height:18px;flex:none}
+.cta[aria-disabled=true]{opacity:.45;pointer-events:none}
+@media(max-width:520px){.cta{padding:16px 22px;letter-spacing:.22em;width:100%}}
+
+/* ---------- sezioni e titoli: come la home ---------- */
+section{padding:12vh var(--mx)}
+.label{font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;margin-bottom:7vh;display:flex;align-items:baseline;gap:24px}
+.label::after{content:'';flex:1;border-bottom:1px solid var(--panna-soft)}
+h2{font-family:'Arsenica',serif;font-weight:300;text-transform:uppercase;font-size:clamp(30px,7vw,96px);line-height:1;margin-bottom:6vh;text-wrap:balance}
+h3{font-family:'Arsenica',serif;font-weight:300;text-transform:uppercase;font-size:clamp(26px,3.6vw,48px);line-height:1.02}
+.prose{max-width:62ch;font-size:clamp(17px,2vw,21px);line-height:1.7}
+.prose p+p{margin-top:1.2em}
+
+/* ---------- l'evidenziato: la scritta "selezionata" che piace a Gio (09/10/2026) ----------
+   Il blocco rosso segue le righe come una selezione col mouse: box-decoration-break:clone. */
+.evid{background:var(--panna);color:var(--rosso);padding:.04em .22em .08em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.evid::selection{background:var(--rosso);color:var(--panna)}
+h2 .evid{padding:.02em .18em .08em}
+
+/* ---------- la stanza: le due porte ---------- */
+.porte-due{display:grid;gap:clamp(24px,4vw,56px)}
+@media(min-width:760px){.porte-due{grid-template-columns:1fr 1fr}}
+.porta{border-top:var(--spesso) solid var(--panna);padding-top:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:18px}
+.porta .numero{font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--panna-soft)}
+.porta h3{min-height:2.04em}
+.porta p{max-width:46ch;font-size:clamp(16px,1.6vw,19px)}
+.porta .cta{align-self:flex-start;margin-top:auto}
+@media(max-width:520px){.porta .cta{align-self:stretch}}
+.porta .nota{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--panna-soft)}
+
+/* ---------- la fascia del tempo: numero grande e frase evidenziata ---------- */
+.tempo{display:grid;gap:clamp(20px,3vw,40px) clamp(24px,5vw,72px);align-items:center;border-top:var(--spesso) solid var(--panna);padding-top:clamp(24px,4vw,48px)}
+@media(min-width:900px){.tempo{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}}
+.tempo .dirtelo{font-family:'Arsenica',serif;font-weight:300;text-transform:uppercase;font-size:clamp(34px,6.4vw,88px);line-height:1.04;margin:0;text-wrap:balance}
+.conto{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 22px;align-items:center}
+.conto .n{font-weight:700;font-size:clamp(72px,11vw,128px);line-height:.86;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.conto .cosa{font-weight:600;font-size:clamp(16px,1.6vw,19px);line-height:1.35;max-width:30ch}
+.conto .cosa b{display:block;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:.72em;margin-bottom:4px;color:var(--panna-soft)}
+.conto.senza-n{grid-template-columns:1fr}
+.date{display:flex;flex-wrap:wrap;gap:6px 28px;font-weight:600;font-size:15px;margin-top:14px;letter-spacing:.04em}
+.date span{color:var(--panna-soft);font-weight:500}
+
+/* ---------- condizioni: righe come i servizi della home ---------- */
+.cond{list-style:none;border-top:1px solid var(--panna-soft);max-width:980px}
+.cond > div{display:grid;gap:6px 32px;padding:22px 0;border-bottom:1px solid var(--panna-soft)}
+@media(min-width:760px){.cond > div{grid-template-columns:260px minmax(0,1fr)}}
+.cond dt{font-family:'Arsenica',serif;font-weight:300;font-size:clamp(20px,2.4vw,29px);line-height:1.15}
+.cond dd{max-width:62ch;font-size:clamp(15px,1.5vw,17px)}
+.cond dd b{font-weight:700}
+.cond dd p{margin-top:8px}
+.scala{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0 8px}
+.scala li{border:2px solid var(--panna);padding:8px 10px;line-height:1.25;font-size:14px}
+.scala b{display:block;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.esempi{list-style:none;margin:12px 0 4px;border-left:var(--spesso) solid var(--panna);padding-left:14px}
+.esempi li{display:grid;gap:0 16px;padding:6px 0;line-height:1.35}
+.esempi li span{color:var(--panna-soft);font-weight:500}
+@media(min-width:620px){.esempi li{grid-template-columns:minmax(0,19em) minmax(0,1fr)}}
+
+/* ---------- le confezioni pronte (blocco generato da genera-canvas-porta.py) ----------
+   Due colonne da 1100 px in su; dentro, la scheda si impagina sulla PROPRIA larghezza (container query), non su quella dello schermo. */
+.canvas-elenco{display:grid;gap:clamp(24px,3vw,40px);align-items:start}
+@media(min-width:1100px){.canvas-elenco{grid-template-columns:1fr 1fr}}
+.canvas{border:var(--spesso) solid var(--panna);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;background:var(--rosso);container-type:inline-size}
+.canvas .c-testa{background:var(--panna);color:var(--rosso);padding:18px clamp(18px,3vw,28px) 20px}
+.canvas h3{font-family:'Arsenica',serif;font-weight:300;text-transform:uppercase;font-size:clamp(28px,3.4vw,42px);line-height:1.02;overflow-wrap:anywhere;text-wrap:balance}
+.canvas .idea{margin-top:8px;color:var(--panna-chiara);font-size:15px;max-width:60ch;line-height:1.5}
+.canvas .c-corpo{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 16px;padding:clamp(18px,3vw,28px);align-items:end;align-content:start}
+.canvas ul{grid-column:1/-1;list-style:none}
+.canvas li{padding:11px 0;border-bottom:1px solid var(--filo)}
+.canvas li:first-child{padding-top:0}
+.canvas li:last-child{border-bottom:0}
+.canvas .prodotto{display:block;font-weight:600;font-size:clamp(16px,1.6vw,18px);line-height:1.3}
+.canvas .q{font-weight:700}
+.canvas .da{display:block;margin-top:2px;font-size:13px;color:var(--panna-soft);font-weight:500;letter-spacing:.02em}
+.canvas .prezzo{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
+.canvas .prezzo b{font-weight:700;font-size:clamp(38px,5vw,52px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.canvas .prezzo span{font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:var(--panna);color:var(--rosso);padding:5px 8px}
+.canvas .regalo{width:72px;height:auto;color:var(--panna);justify-self:end}
+@media(max-width:380px){.canvas .prezzo b{font-size:34px}.canvas .regalo{width:60px}}
+@container (min-width:560px){
+  .canvas .c-corpo{column-gap:32px;grid-template-columns:minmax(0,1fr) 200px}
+  .canvas ul{grid-column:1;grid-row:1/3}
+  .canvas .prezzo{grid-column:2;grid-row:1;justify-content:flex-end}
+  .canvas .regalo{grid-column:2;grid-row:2;width:112px;align-self:start}
+}
+.canvas-nota{margin-top:clamp(24px,3vw,40px);display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center}
+.canvas-nota p{max-width:56ch;font-size:15px;color:var(--panna-soft)}
+.piccolo{font-size:14px;color:var(--panna-soft)}
+
+/* ---------- fai il conto ---------- */
+.calcola{margin-top:clamp(40px,6vw,80px);border-top:var(--spesso) solid var(--panna);padding-top:clamp(24px,3vw,40px);max-width:980px}
+.calcola h3{margin-bottom:8px}
+.calc-righe{margin:18px 0 18px;border-top:1px solid var(--panna-soft)}
+.calc-riga{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:4px 14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--panna-soft)}
+.calc-riga label{grid-column:1;grid-row:1;margin:0;font-weight:600;font-size:16px;line-height:1.3;cursor:pointer}
+.calc-nome{display:block;overflow-wrap:anywhere}
+.calc-prezzo{display:block;font-weight:500;font-size:14px;color:var(--panna-soft);font-variant-numeric:tabular-nums}
+.calc-riga input{grid-column:2;grid-row:1;width:100%;text-align:right;font:600 18px/1.2 'Montserrat',sans-serif;color:var(--panna);background:var(--carta);border:2px solid var(--panna);
+     border-radius:0;padding:10px 12px;min-height:48px;-webkit-appearance:none;appearance:none;-moz-appearance:textfield;font-variant-numeric:tabular-nums}
+.calc-riga input::-webkit-inner-spin-button,.calc-riga input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.calc-riga .r-esito{grid-column:1/-1;grid-row:2;font-size:14px;font-weight:600;color:var(--panna-soft);font-variant-numeric:tabular-nums}
+.calc-riga .r-esito:empty{display:none}
+.calc-riga .r-esito.sconto{color:var(--panna)}
+@media(min-width:760px){
+  .calc-riga{grid-template-columns:minmax(0,1fr) minmax(0,220px) 96px}
+  .calc-riga input{grid-column:3}
+  .calc-riga .r-esito{grid-column:2;grid-row:1;text-align:right}
+  .calc-riga .r-esito:empty{display:block}
+}
+.calc-tot{display:grid;gap:0;margin-top:18px;border-top:var(--spesso) solid var(--panna)}
+.calc-tot > div{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--panna-soft);font-variant-numeric:tabular-nums}
+.calc-tot dt{font-weight:500}
+.calc-tot dd{font-weight:700;text-align:right;white-space:nowrap}
+.calc-tot .tot dt,.calc-tot .tot dd{font-size:clamp(20px,2.4vw,24px);font-weight:700}
+.calc-tot .tot{border-bottom:0}
+.calc-consiglio{margin-top:10px;font-weight:600}
+.calc-consiglio:empty{display:none}
+.spunta{display:flex;gap:12px;align-items:flex-start;font-weight:500;font-size:15px;line-height:1.45;margin:0;cursor:pointer}
+.spunta input{flex:none;width:22px;height:22px;margin-top:1px;accent-color:var(--panna)}
+.calcola .bottoni{margin-top:18px}
+.bottoni{display:flex;flex-wrap:wrap;gap:12px 16px}
+
+/* ---------- il cancello: una finestra sopra la pagina ---------- */
+dialog.cancello{border:var(--spesso) solid var(--panna);background:var(--rosso);color:var(--panna);padding:0;max-width:min(92vw,680px);width:100%;margin:auto}
+dialog.cancello::backdrop{background:rgba(155,14,14,.55)}
+.cancello-dentro{padding:clamp(20px,3vw,36px)}
+.cancello-testa{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:6px}
+.cancello h2{font-size:clamp(26px,4vw,44px);margin-bottom:10px}
+.cancello .chiudi{background:none;border:0;color:var(--panna);cursor:pointer;font:700 13px/1 'Montserrat',sans-serif;letter-spacing:.2em;text-transform:uppercase;padding:8px 0;flex:none}
+.cancello .chiudi:hover{text-decoration:underline;text-underline-offset:4px}
+.cancello .perche{max-width:52ch;margin-bottom:22px;font-size:15px;color:var(--panna-soft)}
+.cancello .perche b{color:var(--panna);font-weight:700}
+form.modulo{display:grid;gap:16px}
+.riga2{display:grid;gap:16px}
+@media(min-width:560px){.riga2{grid-template-columns:1fr 1fr}}
+.campo label,.modulo legend{display:block;font-weight:600;font-size:14px;margin-bottom:6px;letter-spacing:.02em}
+.obb{color:var(--panna-soft);font-weight:500}
+.modulo input[type=text],.modulo input[type=email],.modulo input[type=tel],.modulo textarea{width:100%;font:500 17px/1.4 'Montserrat',sans-serif;color:var(--panna);
+     background:var(--carta);border:2px solid var(--panna);border-radius:0;padding:11px 12px;min-height:48px;-webkit-appearance:none;appearance:none}
+.modulo textarea{min-height:88px;resize:vertical}
+.modulo input::placeholder,.modulo textarea::placeholder{color:#c27a72}
+.modulo fieldset{border:0}
+.scelte{display:flex;flex-wrap:wrap;gap:8px}
+.scelte label{margin:0;display:inline-flex;align-items:center;gap:8px;border:2px solid var(--panna);padding:9px 14px;min-height:44px;font-weight:600;cursor:pointer;background:var(--carta);font-size:14px}
+.scelte input{accent-color:var(--panna);width:18px;height:18px}
+.scelte label:has(input:checked){background:var(--panna);color:var(--rosso)}
+.esca{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.errore{display:none;font-size:13px;font-weight:600;margin-top:6px}
+.campo-err .errore{display:block}
+.campo-err input{border-width:3px}
+.esito{border-left:var(--spesso) solid var(--panna);padding:8px 0 8px 16px;font-weight:600;font-size:15px}
+.esito:empty{display:none}
+.esito .bottoni{margin-top:12px}
+.modulo .piccolo{font-size:13px}
+
+/* ---------- chiuso: quando la pagina riservata viene aperta senza passare dalla stanza ---------- */
+.chiuso{border-top:var(--spesso) solid var(--panna);padding-top:clamp(20px,3vw,32px);max-width:62ch;display:grid;gap:16px}
+.chiuso .lucchetto{font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--panna-soft)}
+.chiuso p{font-size:clamp(16px,1.6vw,19px)}
+.chiuso .cta{justify-self:start}
+@media(max-width:520px){.chiuso .cta{justify-self:stretch}}
+
+/* ---------- WhatsApp sempre a portata, su tutti gli schermi (Gio, 09/10/2026) ---------- */
+.wa-fisso{
+  position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:20;
+  display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:12px 20px;
+  background:var(--panna);color:var(--rosso);border:0;box-shadow:0 0 0 3px var(--rosso);
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;transition:background .25s;
+}
+.wa-fisso:hover{background:#7d0b0b}
+.wa-fisso svg{width:20px;height:20px}
+body{padding-bottom:0}
+@media(max-width:640px){body{padding-bottom:84px}}
+
+/* ---------- piede: identico alla home ---------- */
+footer.piede{
+  padding:10vh var(--mx) 6vh;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
+  color:var(--panna-soft);line-height:2.2;
+  display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+  gap:2px clamp(16px,3vw,48px);
+  border-top:0;
+}
+footer.piede a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+footer.piede .copy{flex-basis:100%}
+
+/* ---------- respiro sul telefono, come la home ---------- */
+@media(max-width:640px){
+  .hero{min-height:calc(78vh - var(--hh));min-height:calc(78svh - var(--hh));padding:4vh var(--mx) 7vh}
+  section{padding:9vh var(--mx)}
+  .label{margin-bottom:5vh}
+  h2{margin-bottom:4vh}
+  footer.piede{justify-content:flex-start;row-gap:6px;padding-bottom:12vh}
+}

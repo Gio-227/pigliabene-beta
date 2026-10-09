@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — porta di Natale 2026 | v1.1 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-06 20:36 CEST (v1.3 — telefono: prezzi su una riga anche a 320 px, testata in orizzontale su due colonne, numero di telefono intero) - 2026-10-05 14:56 CEST (v1.2 — Gio 14:50: confezioni, prezzi, «Fai il conto» e catalogo si aprono solo dopo l'email; aperto ricordato nel browser) - 2026-10-05 14:27 CEST (v1.1 — regola sconti di Gio: contano solo le confezioni prese in almeno 25 pezzi uguali, −7 % anticipato su tutto; 15/11 chiusura promozioni e ordini online; «Fai il conto»; consegna nascosta finché non c'è) | Da: sessione cloud porta-catalogo-natale (05/10) | fascicolo: pigliabene-sito-online + natale-2026 -->
-<!-- La porta pubblica del Natale: solo materiale di Piglia Bene (niente foto né loghi dei produttori).
-     Il catalogo resta sul beta, noindex. Il modulo manda la richiesta all'Apps Script di Gio
-     (URL in config.js → ENDPOINT); finché ENDPOINT è vuoto apre una mail già scritta.
-     Il blocco fra CANVAS:INIZIO e CANVAS:FINE lo scrive genera-canvas-porta.py: non toccarlo a mano.
-     Sul beta: noindex. Su main, solo dopo il sì di Gio (porta-catalogo\proposta-main.md). -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — la stanza di Natale 2026 (porta) | v2.0 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-09 CEST (v2.0 — Gio 09/10: stessa cornice della home (testata, piede, Arsenica), il nome dell'azienda in testa, pagina corta con due porte (confezioni → confezioni/, catalogo), cancello in finestra senza posta che si apre da sola, link puliti /natale/<azienda>, WhatsApp sempre a vista) - 2026-10-06 20:36 CEST (v1.3) - 2026-10-05 14:56 CEST (v1.2 — cancello) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI | fascicolo: pigliabene-sito-online + natale-2026 -->
+<!-- La stanza: tutto quello che serve per scegliere quale porta aprire. Le confezioni stanno in confezioni/, il catalogo dove dice config.js.
+     Stile e script comuni: natale.css e porta.js (col ?v= dell'impronta: cambiano insieme al contenuto).
+     Il modulo manda la richiesta all'Apps Script di Gio (config.js → ENDPOINT); se è vuoto la porta si apre lo stesso e nessuna posta si apre da sola.
+     Sul beta: noindex. Su main, solo dopo il sì di Gio. -->
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -12,415 +11,114 @@
 <title>Regali aziendali di Natale 2026 · Piglia Bene</title>
 <meta name="description" content="I regali aziendali di Natale di Piglia Bene, enoteca e vineria con catering a Sansepolcro: confezioni pronte a prezzo chiuso o su misura dal catalogo dei nostri produttori artigiani.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#9B0E0E">
+<meta name="theme-color" content="#F7F4DC">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Piglia Bene">
 <meta property="og:locale" content="it_IT">
 <meta property="og:title" content="A Natale Piglia Bene · regali aziendali 2026">
 <meta property="og:description" content="Confezioni pronte a prezzo chiuso o su misura dal catalogo: i regali di Natale per la tua azienda, dai produttori artigiani scelti da Piglia Bene.">
-<meta property="og:image" content="https://gio-227.github.io/pigliabene-beta/media/og-preview.jpg">
+<meta property="og:image" content="https://www.pigliabene.it/media/og-preview.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-<style>
-  /* Montserrat in casa (licenza SIL OFL): nessuna chiamata a terzi aprendo la pagina.
-     Niente Arsenica: sul sito c'è la Trial, la licenza è ancora da decidere. */
-  @font-face{font-family:'Montserrat';src:url('../media/fonts/montserrat-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
-  @font-face{font-family:'Montserrat';src:url('../media/fonts/montserrat-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
-  @font-face{font-family:'Montserrat';src:url('../media/fonts/montserrat-600.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
-  @font-face{font-family:'Montserrat';src:url('../media/fonts/montserrat-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
-
-  :root{
-    --panna:#F7F4DC;      /* fondo del sito */
-    --rosso:#9B0E0E;      /* inchiostro del sito: 7,7:1 sul panna */
-    --tenue:#AD3C37;      /* rosso all'80 % sul panna: 5,4:1, per i testi secondari */
-    --carta:#FFFDF2;      /* fondo dei campi */
-    --panna-tenue:#E5C6B3;/* panna all'80 % sul rosso: 5,3:1 */
-    --filo:rgba(155,14,14,.35);
-    --mx:clamp(16px,5vw,64px);
-    --largo:1120px;
-    --spesso:clamp(4px,.55vw,6px);   /* il filo spesso del marchio */
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  [hidden]{display:none!important}
-  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  html,body{overflow-x:clip}
-  body{background:var(--panna);color:var(--rosso);font-family:'Montserrat',system-ui,sans-serif;font-weight:400;
-       font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
-  ::selection{background:var(--rosso);color:var(--panna)}
-  a{color:inherit}
-  :focus-visible{outline:3px solid var(--rosso);outline-offset:3px}
-  .fascia :focus-visible{outline-color:var(--panna)}
-  .giro{max-width:var(--largo);margin:0 auto;padding:0 var(--mx)}
-  .nascosto{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  h2{font-weight:700;font-size:clamp(26px,4.4vw,42px);line-height:1.1;letter-spacing:-.012em;margin-bottom:.55em;text-wrap:balance}
-  .sotto-h2{max-width:60ch;margin:-.2em 0 1.6em;color:var(--tenue)}
-  section{padding:clamp(48px,9vw,104px) 0}
-  section+section{border-top:1px solid var(--filo)}
-
-  /* ---------- bottoni ---------- */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:48px;padding:12px 22px;
-       border:2.5px solid var(--rosso);font:700 14px/1.2 'Montserrat',sans-serif;letter-spacing:.08em;text-transform:uppercase;
-       text-decoration:none;cursor:pointer;background:transparent;color:var(--rosso);text-align:center}
-  .btn.pieno{background:var(--rosso);color:var(--panna)}
-  .btn:hover{background:var(--rosso);color:var(--panna)}
-  .btn.pieno:hover{background:#7d0b0b;border-color:#7d0b0b}
-  .btn svg{width:18px;height:18px;flex:none}
-  .bottoni{display:flex;flex-wrap:wrap;gap:12px}
-
-  /* ---------- per chi riceve un link personale ---------- */
-  .per{background:var(--rosso);color:var(--panna)}
-  .per .giro{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-top:14px;padding-bottom:14px}
-  .per p{font-weight:600;font-size:16px;overflow-wrap:anywhere}
-  .per p b{font-weight:700}
-  .per .btn{border-color:var(--panna);color:var(--panna);min-height:44px;padding:10px 18px}
-  .per .btn:hover{background:var(--panna);color:var(--rosso)}
-
-  /* ---------- testata: il marchio del Natale ---------- */
-  .testata{padding:clamp(28px,6vw,72px) 0 clamp(40px,7vw,88px)}
-  .testata .giro{display:grid;gap:clamp(28px,5vw,64px);align-items:center}
-  .marchio{display:block;color:var(--rosso);text-decoration:none;max-width:560px}
-  .marchio .lettera{display:block;width:100%;height:auto}
-  .marchio .logo{display:block;width:44%;height:auto;margin:clamp(10px,2vw,18px) 0 0 auto}
-  /* Telefono in orizzontale: il marchio a tutta larghezza riempiva il primo schermo da solo,
-     titolo e bottoni arrivavano due schermate più giù. Qui marchio e titolo stanno affiancati. */
-  @media (min-width:560px) and (max-width:899px) and (max-height:520px){
-    .testata{padding:24px 0 32px}
-    .testata .giro{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:32px}
-  }
-  h1{font-weight:700;text-transform:uppercase;font-size:clamp(28px,5.2vw,52px);line-height:1.04;letter-spacing:.005em;text-wrap:balance}
-  .chi{margin:18px 0 28px;max-width:46ch;font-size:clamp(17px,1.7vw,19px)}
-  @media (min-width:900px){
-    .testata .giro{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
-  }
-
-  /* ---------- fascia rossa: come il 6x3 ---------- */
-  .fascia{background:var(--rosso);color:var(--panna);padding:clamp(36px,6vw,72px) 0}
-  .fascia .giro{display:grid;gap:24px 48px;align-items:center}
-  .fascia .dirtelo{font-weight:700;text-transform:uppercase;font-size:clamp(24px,4vw,40px);line-height:1.08;text-wrap:balance}
-  .conto{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 20px;align-items:center;background:var(--panna);color:var(--rosso);
-         padding:clamp(16px,2.6vw,26px) clamp(18px,3vw,30px)}
-  .conto .n{font-weight:700;font-size:clamp(64px,10vw,112px);line-height:.86;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-  .conto .cosa{font-weight:600;font-size:clamp(16px,1.6vw,18px);line-height:1.35}
-  .conto .cosa b{display:block;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.85em;margin-bottom:2px}
-  .conto.senza-n{grid-template-columns:1fr}
-  .date{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 28px;font-weight:600;font-size:16px;color:var(--panna)}
-  .date span{color:var(--panna-tenue);font-weight:500}
-  .fascia .segnaposto{background:var(--panna);color:var(--rosso)}
-  @media (min-width:900px){.fascia .giro{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}}
-
-  /* ---------- le due strade ---------- */
-  .strade{display:grid;gap:18px}
-  @media (min-width:760px){.strade{grid-template-columns:1fr 1fr;gap:24px}}
-  .strada{border:var(--spesso) solid var(--rosso);padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:10px}
-  .strada h3{font-weight:700;font-size:clamp(21px,2.4vw,26px);line-height:1.15}
-  .strada p{max-width:42ch}
-  .strada a{margin-top:auto;align-self:flex-start;font-weight:700;text-underline-offset:4px;text-decoration-thickness:2px;padding:6px 0}
-
-  /* ---------- le confezioni pronte (generate) ---------- */
-  .canvas-elenco{display:grid;gap:24px}
-  .canvas{border:var(--spesso) solid var(--rosso);display:grid;grid-template-columns:minmax(0,1fr);background:var(--panna)}
-  .canvas .c-testa{background:var(--rosso);color:var(--panna);padding:16px clamp(18px,3vw,28px)}
-  .canvas h3{font-weight:700;text-transform:uppercase;font-size:clamp(24px,3.4vw,34px);line-height:1.05;letter-spacing:.01em;overflow-wrap:anywhere}
-  .canvas .idea{margin-top:6px;color:var(--panna-tenue);font-size:16px;max-width:60ch}
-  .canvas .c-corpo{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 16px;padding:clamp(18px,3vw,28px);align-items:end}
-  .canvas ul{grid-column:1/-1}
-  .canvas ul{list-style:none}
-  .canvas li{padding:12px 0;border-bottom:1px solid var(--filo)}
-  .canvas li:first-child{padding-top:0}
-  .canvas li:last-child{border-bottom:0}
-  .canvas .prodotto{display:block;font-weight:600;font-size:clamp(18px,2vw,21px);line-height:1.25}
-  .canvas .q{font-weight:700}
-  .canvas .da{display:block;margin-top:2px;font-size:14px;color:var(--tenue);font-weight:500}
-  .canvas .prezzo{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
-  .canvas .prezzo b{font-weight:700;font-size:clamp(40px,6vw,56px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .canvas .prezzo span{font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:var(--rosso);color:var(--panna);padding:4px 8px}
-  .canvas .regalo{width:72px;height:auto;color:var(--rosso);justify-self:end}
-  /* 320-380 px: «68,00 €» non ci stava accanto al pacco e l'euro andava a capo. */
-  @media (max-width:380px){
-    .canvas .prezzo b{font-size:34px}
-    .canvas .regalo{width:60px}
-  }
-  @media (min-width:760px){
-    .canvas .c-corpo{column-gap:32px}
-    .canvas ul{grid-column:1;grid-row:1/3}
-    .canvas .prezzo{grid-column:2;grid-row:1}
-    .canvas .regalo{grid-column:2;grid-row:2;width:132px;align-self:start}
-  }
-  .canvas-nota{margin-top:22px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
-  .canvas-nota p{max-width:56ch}
-  .piccolo{font-size:14px;color:var(--tenue)}
-
-  /* ---------- condizioni ---------- */
-  .cond{display:grid;gap:0;border-top:var(--spesso) solid var(--rosso)}
-  .cond > div{display:grid;gap:4px 32px;padding:16px 0;border-bottom:1px solid var(--filo)}
-  .cond dt{font-weight:700}
-  .cond dd{max-width:62ch}
-  @media (min-width:760px){.cond > div{grid-template-columns:240px minmax(0,1fr)}}
-  .scala{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:8px 0 6px}
-  .scala li{border:2px solid var(--rosso);padding:8px 10px;line-height:1.25}
-  .scala b{display:block;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
-  .segnaposto{background:var(--rosso);color:var(--panna);padding:0 .3em;font-weight:600;white-space:nowrap}
-  .cond dd p{margin-top:8px}
-  .cond dd b{font-weight:700}
-  .esempi{list-style:none;margin:12px 0 4px;display:grid;gap:0;border-left:var(--spesso) solid var(--rosso);padding-left:14px}
-  .esempi li{display:grid;gap:0 16px;padding:6px 0;line-height:1.35}
-  .esempi li span{color:var(--tenue);font-weight:500}
-  .esempi li b{font-weight:700}
-  @media (min-width:620px){.esempi li{grid-template-columns:minmax(0,19em) minmax(0,1fr)}}
-
-  /* ---------- il cancello: confezioni e prezzi dopo l'email (Gio, 05/10/2026) ---------- */
-  .chiuso{border:var(--spesso) solid var(--rosso);padding:clamp(20px,3vw,32px);display:grid;gap:14px;max-width:760px}
-  .chiuso p{max-width:58ch}
-  .chiuso .lucchetto{font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:13px}
-  .aperto-azioni{border-left:var(--spesso) solid var(--rosso);padding:6px 0 6px 18px;display:grid;gap:14px}
-  .aperto-azioni p{font-weight:600}
-
-  /* ---------- fai il conto: stessa regola del Database (pagina Ordini) ---------- */
-  .calcola{margin-top:clamp(28px,4vw,44px);border:var(--spesso) solid var(--rosso);background:var(--carta);padding:clamp(18px,3vw,30px)}
-  .calcola h3{font-weight:700;text-transform:uppercase;font-size:clamp(21px,2.6vw,26px);line-height:1.1;margin-bottom:6px}
-  .calc-righe{margin:16px 0 18px;border-top:2px solid var(--rosso)}
-  .calc-riga{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:4px 14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--filo)}
-  .calc-riga label{grid-column:1;grid-row:1;margin:0;font-weight:600;font-size:16px;line-height:1.3;cursor:pointer}
-  .calc-nome{display:block;overflow-wrap:anywhere}
-  .calc-prezzo{display:block;font-weight:500;font-size:14px;color:var(--tenue);font-variant-numeric:tabular-nums}
-  .calc-riga input{grid-column:2;grid-row:1;width:100%;text-align:right;font:600 18px/1.2 'Montserrat',sans-serif;color:var(--rosso);background:#fff;border:2px solid var(--rosso);
-       border-radius:0;padding:10px 12px;min-height:48px;-webkit-appearance:none;appearance:none;-moz-appearance:textfield;font-variant-numeric:tabular-nums}
-  .calc-riga input::-webkit-inner-spin-button,.calc-riga input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-  .calc-riga .r-esito{grid-column:1/-1;grid-row:2;font-size:14px;font-weight:600;color:var(--tenue);font-variant-numeric:tabular-nums}
-  .calc-riga .r-esito:empty{display:none}
-  .calc-riga .r-esito.sconto{color:var(--rosso)}
-  @media (min-width:760px){
-    .calc-riga{grid-template-columns:minmax(0,1fr) minmax(0,220px) 96px}
-    .calc-riga input{grid-column:3}
-    .calc-riga .r-esito{grid-column:2;grid-row:1;text-align:right}
-    .calc-riga .r-esito:empty{display:block}
-  }
-  .calc-tot{display:grid;gap:0;margin-top:18px;border-top:var(--spesso) solid var(--rosso)}
-  .calc-tot > div{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--filo);font-variant-numeric:tabular-nums}
-  .calc-tot dt{font-weight:500}
-  .calc-tot dd{font-weight:700;text-align:right;white-space:nowrap}
-  .calc-tot .tot dt,.calc-tot .tot dd{font-size:clamp(20px,2.4vw,24px);font-weight:700}
-  .calc-tot .tot{border-bottom:0}
-  .calc-consiglio{margin-top:10px;font-weight:600}
-  .calc-consiglio:empty{display:none}
-  .calcola .bottoni{margin-top:16px}
-
-  /* ---------- modulo ---------- */
-  .modulo-giro{display:grid;gap:clamp(24px,4vw,56px)}
-  @media (min-width:900px){.modulo-giro{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}}
-  form{display:grid;gap:18px;background:var(--carta);border:var(--spesso) solid var(--rosso);padding:clamp(18px,3vw,32px)}
-  .riga2{display:grid;gap:18px}
-  @media (min-width:620px){.riga2{grid-template-columns:1fr 1fr}}
-  label,legend{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
-  .obb{color:var(--tenue);font-weight:500}
-  input[type=text],input[type=email],input[type=tel],textarea{width:100%;font:500 17px/1.4 'Montserrat',sans-serif;color:var(--rosso);
-       background:#fff;border:2px solid var(--rosso);border-radius:0;padding:11px 12px;min-height:48px;-webkit-appearance:none;appearance:none}
-  textarea{min-height:110px;resize:vertical}
-  input::placeholder,textarea::placeholder{color:#c27a72}
-  input:focus-visible,textarea:focus-visible{outline:3px solid var(--rosso);outline-offset:2px}
-  fieldset{border:0}
-  .scelte{display:flex;flex-wrap:wrap;gap:8px}
-  .scelte label{margin:0;display:inline-flex;align-items:center;gap:8px;border:2px solid var(--rosso);padding:9px 14px;min-height:44px;font-weight:600;cursor:pointer;background:#fff}
-  .scelte input{accent-color:var(--rosso);width:18px;height:18px}
-  .scelte label:has(input:checked){background:var(--rosso);color:var(--panna)}
-  .spunta{display:flex;gap:12px;align-items:flex-start;font-weight:500;font-size:15px;line-height:1.45;margin:0}
-  .spunta input{flex:none;width:22px;height:22px;margin-top:1px;accent-color:var(--rosso)}
-  .esca{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
-  .errore{display:none;font-size:14px;font-weight:600;margin-top:6px}
-  .campo-err .errore{display:block}
-  .campo-err input,.campo-err textarea{border-width:3px}
-  .esito{border-left:var(--spesso) solid var(--rosso);padding:10px 0 10px 16px;font-weight:600}
-  .esito:empty{display:none}
-  .esito .bottoni{margin-top:12px}
-  .altri{font-size:15px}
-  .altri a{font-weight:600;white-space:nowrap}
-
-  /* ---------- piede ---------- */
-  footer{border-top:var(--spesso) solid var(--rosso);padding:40px 0 56px;font-size:13px;line-height:1.9;color:var(--tenue)}
-  footer .giro{display:flex;flex-wrap:wrap;gap:4px 32px}
-  footer a{font-weight:600;color:var(--rosso)}
-
-  /* ---------- WhatsApp sempre a portata, sul telefono ---------- */
-  .wa-fisso{display:none}
-  @media (max-width:759px){
-    body{padding-bottom:84px}
-    .wa-fisso{display:inline-flex;position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:20;
-      min-height:52px;padding:12px 18px;box-shadow:0 0 0 3px var(--panna);transition:opacity .2s}
-    .wa-fisso.via{opacity:0;visibility:hidden;pointer-events:none}
-  }
-</style>
+<link rel="stylesheet" href="natale.css?v=9537e5c7">
 </head>
-<body>
+<body data-pagina="stanza">
 
-<div class="per" id="per" hidden>
-  <div class="giro">
-    <p>Preparato per <b id="per-nome"></b></p>
-    <a class="btn" id="per-catalogo" href="#catalogo">Vedi confezioni e prezzi</a>
+<header class="testata">
+  <a class="logo" href="../" aria-label="Piglia Bene — home"><svg viewBox="306 355 1333 780" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Piglia Bene"><path fill-rule="nonzero" d="M 348 397 L 1597 397 L 1597 1093 L 348 1093 Z M 306 1135 L 1639 1135 L 1639 355 L 306 355 Z M 306 1135 "/><g transform="translate(306,355)"><path fill-rule="nonzero" d="M 127.121094 122.554688 L 222.527344 122.554688 C 237.316406 122.957031 250.582031 126.453125 262.328125 133.035156 C 273.796875 139.347656 283.351562 148.636719 289.976562 159.925781 C 296.710938 171.4375 300.175781 184.570312 300.003906 197.90625 C 300.003906 212.085938 296.714844 224.847656 290.128906 236.1875 C 283.535156 247.542969 273.980469 256.890625 262.480469 263.230469 C 250.636719 269.914062 237.316406 273.359375 222.527344 273.5625 L 168.445312 273.5625 L 168.445312 336.457031 L 127.121094 336.457031 Z M 220.402344 232.238281 C 232.152344 232.238281 241.46875 229.097656 248.355469 222.820312 C 255.242188 216.539062 258.683594 208.234375 258.683594 197.90625 C 258.683594 187.777344 255.242188 179.675781 248.355469 173.597656 C 241.46875 167.519531 232.152344 164.484375 220.402344 164.484375 L 168.445312 164.484375 L 168.445312 232.238281 Z M 357.128906 122.554688 L 398.757812 122.554688 L 398.757812 336.457031 L 357.128906 336.457031 Z M 565.867188 338.582031 C 545.207031 338.582031 526.367188 333.671875 509.355469 323.847656 C 492.675781 314.355469 478.75 300.691406 468.941406 284.195312 C 459.042969 267.679688 453.890625 248.757812 454.054688 229.503906 C 453.890625 210.25 459.042969 191.328125 468.941406 174.8125 C 478.75 158.316406 492.675781 144.65625 509.351562 135.160156 C 526.367188 125.339844 545.207031 120.425781 565.867188 120.425781 C 603.136719 120.425781 632.710938 134.503906 654.589844 162.660156 L 622.078125 188.183594 C 615.796875 179.773438 607.625 172.957031 598.226562 168.28125 C 589.214844 163.925781 578.425781 161.746094 565.867188 161.746094 C 553.425781 161.613281 541.164062 164.757812 530.320312 170.859375 C 519.84375 176.6875 511.089844 185.179688 504.949219 195.472656 C 498.785156 205.746094 495.578125 217.523438 495.679688 229.503906 C 495.578125 241.484375 498.785156 253.261719 504.949219 263.535156 C 511.089844 273.828125 519.839844 282.320312 530.316406 288.144531 C 541.164062 294.25 553.421875 297.394531 565.867188 297.261719 C 588.554688 297.261719 606.480469 291.082031 619.648438 278.726562 L 619.648438 250.46875 L 555.839844 250.46875 L 555.839844 213.402344 L 659.449219 213.402344 L 659.449219 296.347656 C 648.851562 309.972656 635.011719 320.730469 619.191406 327.644531 C 602.886719 334.9375 585.109375 338.582031 565.867188 338.582031 M 719.613281 122.554688 L 760.933594 122.554688 L 760.933594 294.527344 L 878.824219 294.527344 L 878.824219 336.457031 L 719.613281 336.457031 Z M 935.945312 122.554688 L 977.574219 122.554688 L 977.574219 336.457031 L 935.945312 336.457031 Z M 1109.136719 122.554688 L 1154.105469 122.554688 L 1233.402344 336.453125 L 1189.652344 336.453125 L 1167.46875 277.207031 L 1095.765625 277.207031 L 1073.582031 336.457031 L 1029.832031 336.457031 Z M 1151.671875 235.277344 L 1131.613281 181.496094 L 1111.558594 235.277344 Z M 1151.671875 235.277344 "/><path fill-rule="nonzero" d="M 126.699219 447.273438 L 226.664062 447.273438 C 239.832031 447.472656 251.378906 450.203125 261.300781 455.472656 C 270.828125 460.363281 278.777344 467.839844 284.242188 477.046875 C 289.6875 486.457031 292.46875 497.171875 292.292969 508.039062 C 292.292969 520.800781 288.242188 531.433594 280.140625 539.941406 C 289.464844 545.417969 297.210938 553.214844 302.621094 562.574219 C 308.265625 572.089844 311.207031 582.960938 311.132812 594.023438 C 311.214844 605.671875 308.113281 617.121094 302.167969 627.140625 C 296.246094 637.21875 287.820312 645.59375 277.710938 651.453125 C 267.277344 657.558594 255.460938 660.90625 243.375 661.175781 L 126.699219 661.175781 Z M 224.839844 526.570312 C 232.945312 526.570312 239.324219 524.800781 243.984375 521.253906 C 248.640625 517.710938 250.972656 513.304688 250.972656 508.039062 C 250.972656 502.164062 248.84375 497.554688 244.589844 494.214844 C 240.335938 490.871094 233.753906 489.199219 224.839844 489.203125 L 168.023438 489.203125 L 168.023438 526.574219 Z M 241.246094 619.242188 C 249.351562 619.242188 256.085938 616.8125 261.453125 611.949219 C 266.65625 607.457031 269.601562 600.894531 269.503906 594.023438 C 269.628906 587.015625 266.6875 580.300781 261.453125 575.640625 C 256.085938 570.679688 249.351562 568.199219 241.246094 568.199219 L 168.023438 568.199219 L 168.023438 619.246094 Z M 445.734375 447.273438 L 604.941406 447.273438 L 604.941406 489.203125 L 487.054688 489.203125 L 487.054688 533.257812 L 567.269531 533.257812 L 567.269531 575.1875 L 487.054688 575.1875 L 487.054688 619.246094 L 604.941406 619.246094 L 604.941406 661.175781 L 445.734375 661.175781 Z M 740.152344 447.273438 L 782.082031 447.273438 L 886.90625 590.988281 L 886.90625 447.273438 L 928.535156 447.273438 L 928.535156 661.171875 L 886.605469 661.171875 L 781.476562 516.851562 L 781.476562 661.175781 L 740.152344 661.175781 Z M 1072.253906 447.273438 L 1231.460938 447.273438 L 1231.460938 489.203125 L 1113.570312 489.203125 L 1113.570312 533.257812 L 1193.785156 533.257812 L 1193.785156 575.1875 L 1113.570312 575.1875 L 1113.570312 619.246094 L 1231.460938 619.246094 L 1231.460938 661.175781 L 1072.25 661.175781 Z M 1072.253906 447.273438 "/></g></svg></a>
+  <nav class="menu" aria-label="Sezioni del sito">
+    <a href="../#chi">Chi siamo</a>
+    <a href="../#servizi">Servizi</a>
+    <a href="../#contatti">Contatti</a>
+  </nav>
+  <a class="natale acceso" href="./" aria-current="page">Natale</a>
+</header>
+
+<!-- HERO: la stessa scala della home. Con il link personale il nome dell'azienda prende il posto del titolo. -->
+<div class="hero" id="top">
+  <div id="h1-standard">
+    <p class="kicker">Regali aziendali · Natale 2026 — Sansepolcro</p>
+    <h1>Regali<br>aziendali<br>di Natale</h1>
+  </div>
+  <div id="per-box" hidden>
+    <p class="kicker">Regali aziendali di Natale 2026 — preparato per</p>
+    <h1 class="per-nome" id="per-nome"></h1>
+  </div>
+  <p class="sotto"><span>Confezioni pronte a prezzo chiuso,</span> <span>o su misura dal catalogo.</span> <span>Prezzi per le aziende, IVA esclusa.</span></p>
+  <div class="porte">
+    <a class="cta pieno" href="confezioni/" data-porta="confezioni">Apri le confezioni</a>
+    <a class="cta" href="#" data-porta="catalogo">Apri il catalogo</a>
   </div>
 </div>
 
-<header class="testata">
-  <div class="giro">
-    <a class="marchio" href="../" aria-label="A Natale Piglia Bene — vai al sito"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1475 556" fill="currentColor" class="lettera" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M84 545C73 544 59 539 50 534C40 528 29 518 23 510C22 507 20 505 19 504C19 504 18 502 18 502C18 501 17 498 15 494C13 491 12 487 11 485C11 482 9 477 8 472C7 463 6 445 8 435C9 431 9 427 10 427C10 427 10 424 11 420C13 407 27 376 36 367C37 365 38 364 38 363C38 363 40 361 42 359C44 357 46 355 47 354C49 351 62 340 66 337C82 327 99 322 117 322C133 322 141 326 147 337C148 340 149 343 149 350C149 357 148 359 145 367C144 372 141 378 139 380C137 382 136 384 136 384C136 386 122 399 118 400C117 401 115 402 113 403C104 408 86 411 77 409C68 406 62 399 61 388L60 382L57 386C49 396 38 419 39 422C39 423 38 426 38 428C35 436 34 453 36 462C37 466 38 470 38 472C38 473 40 477 42 480C43 484 45 488 45 488C45 489 45 490 46 490C46 490 48 493 51 496C58 506 71 515 83 517C98 520 122 518 141 512C153 508 167 502 172 498C173 497 175 496 175 496C177 496 208 474 215 467C224 459 241 442 241 441C241 441 243 439 245 437C247 435 249 433 249 433C249 432 250 431 252 429C254 428 255 426 255 426C255 425 256 424 256 424C257 423 261 419 264 414C268 410 272 405 273 405C273 404 274 404 274 403C274 402 275 401 276 400C278 397 291 380 293 376C294 375 295 373 296 372C297 371 299 368 300 366C301 364 303 361 305 359C307 356 308 354 308 353C308 353 308 352 309 352C309 352 311 350 312 347C314 344 316 341 318 339C319 338 320 336 320 335C320 334 320 333 321 333C321 333 323 331 324 328C326 325 328 322 329 320C330 319 332 316 334 312C336 309 338 306 338 306C338 306 341 301 344 296C346 292 349 287 349 286C350 286 354 278 360 268C362 264 364 261 365 260C365 260 366 258 366 257C366 256 366 255 367 255C368 254 374 244 379 234C380 231 382 228 382 228C382 228 384 225 385 222C387 220 389 215 391 211C394 206 399 196 404 188C404 186 406 184 407 181C408 178 410 176 411 175C411 174 412 173 412 172C412 172 414 168 416 165C417 162 419 159 419 158C419 157 420 155 422 152C424 150 425 148 425 147C425 146 433 130 434 129C435 129 436 127 437 124C438 122 441 115 444 109C448 103 453 93 456 88C459 82 463 75 465 71C466 68 469 64 470 63C470 62 471 60 471 59C471 58 471 57 472 57C472 57 474 54 476 51C480 42 484 37 489 31C496 24 501 20 510 15C518 12 520 11 527 10C539 10 546 11 553 16C556 18 561 23 563 26C566 29 568 32 568 32C569 32 569 33 569 34C569 34 571 38 572 42C574 45 576 49 576 50C576 52 577 56 578 60C579 68 579 88 578 98C577 102 577 107 577 110C577 116 572 137 567 153C565 158 564 163 564 164C564 164 562 170 560 175C558 181 556 188 554 191C554 194 552 198 551 199C551 200 550 202 550 203C550 204 548 208 546 212C545 216 543 220 543 220C543 221 542 224 540 228C538 231 537 234 537 235C537 236 536 239 534 242C532 246 531 250 531 250C531 251 529 254 528 258C526 262 524 265 524 266C524 267 522 270 520 275C519 279 517 282 517 283C517 283 515 287 514 291C512 295 510 298 510 299C510 300 509 303 507 306C505 310 503 316 501 320C499 323 498 326 498 327C498 328 496 331 494 335C493 339 491 343 491 343C491 344 489 348 488 352C486 355 484 359 484 360C484 361 482 365 481 369C474 386 471 395 467 413C465 426 466 435 472 438C476 440 487 439 493 436C499 433 510 424 511 421C512 420 513 419 514 418C516 417 517 416 517 415C517 415 518 413 520 411C522 409 523 407 523 406C523 406 523 405 524 405C525 405 536 389 545 372C550 362 564 334 572 316C575 311 578 305 579 301C581 298 582 295 582 295C582 294 583 291 585 288C586 284 590 277 592 272C594 267 597 260 599 258C600 255 602 250 603 247C604 244 606 241 606 240C606 240 607 238 608 237C608 236 610 232 611 228C612 225 616 218 618 213C620 208 624 201 625 198C627 194 628 192 628 191C628 189 657 130 658 129C658 129 660 126 661 123C663 120 666 114 668 110C671 106 674 101 674 100C675 99 676 97 676 97C676 97 678 94 680 92C681 89 683 85 685 84C686 82 687 80 687 80C687 79 687 78 688 78C688 78 690 75 693 72C695 68 698 65 699 64C700 62 701 61 701 61C701 60 704 57 708 53C711 50 714 46 714 45C714 45 715 44 715 44C716 44 720 41 723 38C727 34 731 31 732 30C733 30 734 30 734 29C734 28 738 26 744 24C759 16 776 12 793 12C806 12 812 13 825 17C841 22 850 29 858 39L863 46L861 52C859 55 858 58 858 59C858 60 857 62 857 62C855 64 855 64 848 62C834 58 816 60 802 69C799 71 797 72 796 72C795 72 787 79 776 90C762 104 762 104 754 115C751 120 748 124 748 124C748 124 747 126 746 127C744 130 737 142 735 144C734 146 733 147 733 148C733 148 733 149 732 149C732 149 729 153 727 156C725 160 721 167 718 171C716 175 714 179 714 179C714 180 714 180 713 180C713 180 712 181 712 182C711 183 709 186 707 190C705 194 702 198 702 199C701 200 699 204 697 206C696 209 694 212 694 212C694 213 694 214 693 214C693 214 690 218 688 222C686 225 684 229 684 229C684 229 682 232 681 234C679 237 677 242 675 244C673 247 671 252 669 255C663 266 658 275 656 276C656 277 655 278 655 279C655 280 655 281 654 281C653 282 648 289 648 292C647 293 646 294 646 294C646 294 645 296 644 298C642 300 640 304 638 306C634 312 629 321 629 322C629 322 627 324 626 327C624 329 622 332 622 332C622 333 616 342 615 343C614 343 614 344 614 344C614 345 613 346 612 348C610 350 609 352 609 353C609 353 609 354 608 354C608 354 606 356 605 358C604 360 602 362 602 362C602 362 601 363 600 364C599 366 594 374 588 381C586 385 583 388 582 389C582 390 580 392 579 394C577 395 576 397 576 398C576 398 576 399 575 399C575 399 571 403 568 408C560 417 559 418 549 429C545 432 542 436 542 437C542 437 541 438 540 439C538 440 535 443 532 446C517 461 508 467 488 479C480 483 472 486 458 490C450 492 428 492 420 490C401 484 390 471 387 449C385 439 386 420 389 408C390 403 391 397 392 394C392 392 393 386 395 380C397 375 398 370 398 369C398 368 400 363 402 358C403 353 405 347 406 346C406 344 407 341 408 338C409 336 411 331 412 327C417 314 419 308 422 302C424 299 425 296 425 295C425 294 426 291 428 288C430 284 431 281 431 280C431 280 433 276 435 272C437 267 440 260 442 256C444 251 446 245 448 241C450 238 451 234 451 234C451 234 453 230 454 226C456 222 458 218 458 218C458 217 459 214 460 212C463 206 467 196 470 188C471 186 473 181 474 178C476 175 477 172 477 172C477 171 478 167 480 162C493 131 496 106 489 100C487 98 486 99 485 102C484 104 482 108 481 110C479 113 478 115 478 116C478 116 476 119 474 122C473 125 471 128 471 129C471 130 469 132 468 135C466 138 464 141 464 142C464 143 460 150 459 151C458 151 458 152 458 153C458 154 456 157 455 160C453 163 450 168 448 172C447 175 445 178 445 178C445 178 442 182 440 187C438 192 434 198 432 202C430 206 427 211 426 214C424 218 422 222 421 223C420 224 419 226 419 227C419 228 419 229 418 229C418 229 415 233 413 238C411 242 408 247 407 248C406 250 405 252 405 252C405 253 405 254 404 254C404 254 402 257 400 260C399 263 397 267 396 268C394 270 393 273 387 284C384 289 380 296 376 302C375 304 372 308 372 310C370 312 369 314 369 314C368 314 368 316 367 317C366 319 365 321 365 321C365 321 363 323 362 326C359 330 359 330 353 340C351 344 348 347 348 348C347 349 346 350 346 351C346 352 346 353 345 353C344 354 341 359 330 376C327 380 323 385 322 387C320 389 319 391 319 392C319 392 319 393 318 393C318 393 316 395 315 397C314 399 311 402 309 405C308 407 306 409 306 410C306 410 305 411 304 412C303 413 301 416 299 419C292 428 284 438 282 440C281 440 280 442 280 442C280 443 279 445 277 446C275 447 274 448 274 449C274 450 272 451 270 453C269 455 267 457 267 457C267 458 258 467 248 476C238 486 228 495 227 496C226 497 225 498 224 498C224 498 222 499 221 501C218 503 204 514 198 518C173 533 150 542 129 544C116 546 96 546 84 545ZM720 408C716 407 710 405 708 404C701 401 693 392 690 383C687 377 686 376 686 360C686 350 686 342 687 338C688 332 695 313 696 312C696 311 697 309 698 307C700 301 706 289 709 285C710 283 712 280 713 278C715 274 728 256 735 250C748 236 766 225 782 220C796 215 804 214 815 214C825 215 833 217 839 223C842 226 844 225 844 221L845 218L872 218C894 218 900 218 900 219C900 221 892 241 888 250C888 251 886 255 885 258C884 260 881 267 878 274C876 280 873 287 872 290C871 293 869 296 869 297C868 297 867 300 866 303C865 306 862 313 860 320C857 326 854 333 853 336C852 338 850 342 849 344C846 350 844 360 844 363C846 368 855 370 866 365C880 360 889 349 896 332C897 329 900 322 902 316C905 309 908 302 909 299C910 296 911 293 912 293C912 292 914 289 915 286C918 277 925 261 926 258C927 256 928 255 928 254C928 253 929 250 931 246C932 242 936 235 938 230C940 224 943 217 945 214C946 211 947 208 947 207C947 206 943 206 934 206C919 206 919 206 928 191L934 180L946 180L959 180L960 175C964 164 964 165 971 164C975 163 981 162 983 162C986 161 994 160 1001 158C1009 156 1016 155 1019 155C1024 155 1024 156 1020 166C1018 170 1016 175 1016 175C1016 176 1016 177 1015 178C1012 180 1016 180 1035 180C1054 180 1056 180 1056 182C1056 183 1053 188 1050 195L1044 206L1024 206L1004 206L1000 214C996 225 992 234 990 239C986 249 982 260 980 264C979 266 978 269 977 272C976 274 973 280 970 286C968 293 965 300 964 302C963 305 961 309 960 312C959 314 958 316 958 317C958 317 956 321 954 326C953 330 951 334 951 334C951 335 950 337 949 339C946 345 941 359 941 361C941 362 942 364 944 365C946 368 948 368 952 368C958 368 968 364 975 359C984 352 988 345 992 330C994 323 997 315 999 312C1003 301 1010 287 1012 284C1013 283 1015 279 1018 275C1022 267 1027 261 1037 250C1051 236 1067 226 1084 220C1108 212 1129 212 1140 222C1142 223 1144 225 1144 225C1145 225 1146 223 1147 222L1148 218L1176 218C1191 218 1203 218 1203 219C1203 220 1199 231 1197 236C1196 238 1194 241 1194 244C1193 246 1190 253 1187 260C1184 266 1182 273 1181 274C1181 275 1179 279 1178 282C1176 285 1174 289 1174 292C1173 294 1170 300 1168 306C1165 313 1162 320 1160 324C1159 327 1156 334 1154 340C1146 358 1145 364 1151 366C1159 370 1171 366 1182 356C1186 352 1190 348 1191 346C1194 340 1198 333 1198 332C1198 331 1199 328 1201 325C1203 321 1204 318 1204 317C1204 316 1205 315 1206 313C1208 310 1216 289 1217 285C1218 283 1219 280 1220 279C1221 276 1228 259 1231 252C1231 250 1232 248 1233 246C1234 243 1242 225 1244 220C1244 218 1246 214 1248 211C1249 208 1250 206 1250 205C1250 205 1252 199 1255 193C1262 178 1262 175 1260 170C1259 166 1254 164 1248 164C1241 164 1241 164 1247 151L1252 142L1260 140C1271 137 1291 138 1298 140C1314 146 1319 159 1314 182C1312 188 1310 196 1308 199C1306 203 1305 206 1305 207C1305 208 1304 209 1304 210C1303 212 1296 227 1292 238C1291 241 1288 248 1286 254C1283 261 1280 267 1279 270C1279 272 1278 274 1277 275C1276 277 1269 294 1266 302C1266 304 1264 307 1263 308C1261 313 1255 329 1253 335C1252 338 1251 341 1250 341C1250 342 1248 346 1247 350C1242 362 1243 366 1250 368C1262 371 1282 358 1290 343C1291 341 1293 335 1294 328C1295 322 1298 313 1301 306C1306 295 1316 275 1318 273C1319 272 1321 269 1324 266C1326 262 1332 255 1338 249C1361 226 1388 214 1417 214C1432 214 1442 218 1450 227C1457 235 1459 241 1460 255C1460 268 1457 276 1451 288C1446 296 1445 298 1434 309C1427 316 1424 318 1416 322C1402 329 1396 330 1370 331L1349 332L1348 334C1347 336 1347 341 1347 345C1347 351 1347 354 1350 359C1352 366 1359 372 1366 376C1372 379 1385 381 1395 379C1403 378 1419 373 1424 370C1425 369 1427 368 1430 367C1438 362 1453 350 1458 342C1458 341 1460 340 1460 340C1462 340 1469 351 1469 354C1469 357 1461 368 1453 376C1435 394 1409 405 1377 408C1344 411 1325 406 1310 392C1304 387 1302 384 1299 377C1295 370 1293 367 1293 370C1293 371 1289 376 1283 381C1273 391 1265 397 1250 403C1231 412 1205 410 1194 400C1192 397 1186 387 1186 384C1186 384 1186 383 1185 383C1185 383 1176 390 1174 392C1173 393 1168 396 1160 400C1145 408 1132 410 1117 408C1109 407 1107 406 1102 402C1096 399 1095 397 1092 392L1089 385L1079 392C1064 402 1053 406 1042 408C1025 410 1010 406 1001 397C997 393 990 380 990 376C990 373 988 374 983 380C963 400 935 411 912 408C898 406 889 400 886 389C884 387 883 384 883 384C882 383 880 385 876 388C858 403 835 411 815 408C801 406 794 401 789 391C788 388 786 385 786 385C786 385 784 386 782 388C777 392 770 396 759 402C752 405 748 406 741 408C730 409 729 409 720 408ZM764 373C769 372 784 362 786 359C787 358 792 347 792 346C792 345 793 342 795 338C797 334 798 331 799 329C799 328 800 325 802 321C804 318 805 315 805 314C805 314 806 310 808 306C810 303 811 300 811 299C811 298 812 295 814 292C818 284 822 274 824 268C824 266 826 261 828 257C830 253 832 249 832 248C831 245 826 243 821 242C811 241 799 247 789 256C784 262 773 275 773 277C773 277 772 279 771 280C769 283 767 286 761 298C759 302 756 307 755 308C754 310 753 312 753 312C753 313 752 316 750 319C746 329 741 342 740 347C739 353 739 366 740 369C741 370 741 372 742 372C743 372 744 373 744 374C747 376 755 376 764 373ZM1067 373C1072 371 1080 366 1087 361C1090 358 1093 353 1094 348C1094 348 1095 344 1097 341C1098 337 1100 333 1100 333C1100 332 1101 329 1103 325C1105 322 1106 318 1107 316C1107 315 1108 312 1110 308C1112 305 1113 302 1113 301C1113 301 1114 297 1116 293C1118 290 1119 286 1119 286C1119 285 1121 281 1123 277C1125 272 1127 268 1127 267C1127 266 1128 264 1129 263C1130 261 1131 257 1132 253C1135 246 1135 245 1129 243C1122 240 1113 242 1103 248C1095 253 1089 258 1081 268C1075 277 1074 278 1069 288C1067 292 1065 295 1065 295C1064 296 1049 327 1048 330C1048 331 1048 333 1047 334C1043 341 1041 352 1042 364C1042 369 1045 373 1049 375C1052 376 1061 375 1067 373ZM1382 308C1387 306 1396 298 1396 295C1396 295 1396 294 1397 294C1398 294 1399 291 1401 287C1403 284 1405 280 1406 279C1406 278 1407 277 1408 275C1408 274 1410 269 1412 265C1414 260 1415 256 1416 250C1416 240 1415 237 1411 237C1408 237 1396 244 1395 247C1395 248 1393 250 1392 251C1390 252 1389 254 1390 254C1390 255 1390 255 1389 255C1388 255 1386 258 1384 261C1382 264 1380 268 1378 269C1377 271 1376 273 1377 273C1377 274 1377 274 1376 274C1376 274 1374 276 1369 286C1364 295 1357 309 1357 310C1357 310 1361 310 1366 310C1374 310 1377 310 1382 308ZM184 220C184 219 181 219 178 218C170 216 166 214 158 204C154 199 150 182 152 170C154 156 158 141 160 139C161 139 161 138 161 137C161 136 168 120 172 114C179 102 186 93 193 86C200 80 212 70 213 70C214 70 216 69 218 67C221 66 228 63 234 61C244 57 246 57 257 57C267 57 269 57 274 59C276 61 279 62 280 63C282 66 284 65 285 62L285 60L309 60C322 60 332 60 332 61C332 61 330 66 328 70C326 76 324 82 323 84C322 87 320 92 319 94C318 96 316 100 316 102C315 104 313 108 312 110C311 112 309 117 308 120C307 122 304 129 302 136C299 142 296 149 295 152C294 154 292 158 291 161C290 163 289 165 289 166C289 166 288 169 287 171C284 178 284 182 288 184C292 186 296 186 304 183C310 180 321 170 324 165C326 161 327 161 330 166C334 173 334 173 330 181C319 200 300 214 280 218C269 220 266 220 256 218C249 217 247 216 244 212C240 208 237 204 237 201C237 200 237 199 226 206C222 210 215 213 212 215C205 218 189 221 184 220ZM219 189C228 185 236 179 238 175C238 173 240 171 240 170C241 169 241 167 241 167C241 166 243 162 244 158C246 154 248 150 248 149C248 149 249 145 251 142C253 138 254 135 254 134C254 134 256 130 257 126C259 122 261 119 260 119C260 118 261 116 263 112C264 109 266 105 266 104C267 103 269 99 270 95C274 86 274 84 271 82C266 79 259 80 251 84C244 87 235 94 235 96C235 97 234 98 234 98C233 99 230 102 228 105C226 108 224 111 223 112C223 113 222 114 222 114C223 115 223 115 222 115C222 115 221 116 221 116C221 117 220 119 218 122C216 124 215 126 215 126C216 126 213 132 209 139C206 146 202 153 202 154C202 155 201 159 200 163C196 173 195 179 198 185C200 192 208 194 219 189Z"/></svg><svg viewBox="306 355 1333 780" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="logo" aria-hidden="true" focusable="false"><path fill-rule="nonzero" d="M 348 397 L 1597 397 L 1597 1093 L 348 1093 Z M 306 1135 L 1639 1135 L 1639 355 L 306 355 Z M 306 1135 "/><g transform="translate(306,355)"><path fill-rule="nonzero" d="M 127.121094 122.554688 L 222.527344 122.554688 C 237.316406 122.957031 250.582031 126.453125 262.328125 133.035156 C 273.796875 139.347656 283.351562 148.636719 289.976562 159.925781 C 296.710938 171.4375 300.175781 184.570312 300.003906 197.90625 C 300.003906 212.085938 296.714844 224.847656 290.128906 236.1875 C 283.535156 247.542969 273.980469 256.890625 262.480469 263.230469 C 250.636719 269.914062 237.316406 273.359375 222.527344 273.5625 L 168.445312 273.5625 L 168.445312 336.457031 L 127.121094 336.457031 Z M 220.402344 232.238281 C 232.152344 232.238281 241.46875 229.097656 248.355469 222.820312 C 255.242188 216.539062 258.683594 208.234375 258.683594 197.90625 C 258.683594 187.777344 255.242188 179.675781 248.355469 173.597656 C 241.46875 167.519531 232.152344 164.484375 220.402344 164.484375 L 168.445312 164.484375 L 168.445312 232.238281 Z M 357.128906 122.554688 L 398.757812 122.554688 L 398.757812 336.457031 L 357.128906 336.457031 Z M 565.867188 338.582031 C 545.207031 338.582031 526.367188 333.671875 509.355469 323.847656 C 492.675781 314.355469 478.75 300.691406 468.941406 284.195312 C 459.042969 267.679688 453.890625 248.757812 454.054688 229.503906 C 453.890625 210.25 459.042969 191.328125 468.941406 174.8125 C 478.75 158.316406 492.675781 144.65625 509.351562 135.160156 C 526.367188 125.339844 545.207031 120.425781 565.867188 120.425781 C 603.136719 120.425781 632.710938 134.503906 654.589844 162.660156 L 622.078125 188.183594 C 615.796875 179.773438 607.625 172.957031 598.226562 168.28125 C 589.214844 163.925781 578.425781 161.746094 565.867188 161.746094 C 553.425781 161.613281 541.164062 164.757812 530.320312 170.859375 C 519.84375 176.6875 511.089844 185.179688 504.949219 195.472656 C 498.785156 205.746094 495.578125 217.523438 495.679688 229.503906 C 495.578125 241.484375 498.785156 253.261719 504.949219 263.535156 C 511.089844 273.828125 519.839844 282.320312 530.316406 288.144531 C 541.164062 294.25 553.421875 297.394531 565.867188 297.261719 C 588.554688 297.261719 606.480469 291.082031 619.648438 278.726562 L 619.648438 250.46875 L 555.839844 250.46875 L 555.839844 213.402344 L 659.449219 213.402344 L 659.449219 296.347656 C 648.851562 309.972656 635.011719 320.730469 619.191406 327.644531 C 602.886719 334.9375 585.109375 338.582031 565.867188 338.582031 M 719.613281 122.554688 L 760.933594 122.554688 L 760.933594 294.527344 L 878.824219 294.527344 L 878.824219 336.457031 L 719.613281 336.457031 Z M 935.945312 122.554688 L 977.574219 122.554688 L 977.574219 336.457031 L 935.945312 336.457031 Z M 1109.136719 122.554688 L 1154.105469 122.554688 L 1233.402344 336.453125 L 1189.652344 336.453125 L 1167.46875 277.207031 L 1095.765625 277.207031 L 1073.582031 336.457031 L 1029.832031 336.457031 Z M 1151.671875 235.277344 L 1131.613281 181.496094 L 1111.558594 235.277344 Z M 1151.671875 235.277344 "/><path fill-rule="nonzero" d="M 126.699219 447.273438 L 226.664062 447.273438 C 239.832031 447.472656 251.378906 450.203125 261.300781 455.472656 C 270.828125 460.363281 278.777344 467.839844 284.242188 477.046875 C 289.6875 486.457031 292.46875 497.171875 292.292969 508.039062 C 292.292969 520.800781 288.242188 531.433594 280.140625 539.941406 C 289.464844 545.417969 297.210938 553.214844 302.621094 562.574219 C 308.265625 572.089844 311.207031 582.960938 311.132812 594.023438 C 311.214844 605.671875 308.113281 617.121094 302.167969 627.140625 C 296.246094 637.21875 287.820312 645.59375 277.710938 651.453125 C 267.277344 657.558594 255.460938 660.90625 243.375 661.175781 L 126.699219 661.175781 Z M 224.839844 526.570312 C 232.945312 526.570312 239.324219 524.800781 243.984375 521.253906 C 248.640625 517.710938 250.972656 513.304688 250.972656 508.039062 C 250.972656 502.164062 248.84375 497.554688 244.589844 494.214844 C 240.335938 490.871094 233.753906 489.199219 224.839844 489.203125 L 168.023438 489.203125 L 168.023438 526.574219 Z M 241.246094 619.242188 C 249.351562 619.242188 256.085938 616.8125 261.453125 611.949219 C 266.65625 607.457031 269.601562 600.894531 269.503906 594.023438 C 269.628906 587.015625 266.6875 580.300781 261.453125 575.640625 C 256.085938 570.679688 249.351562 568.199219 241.246094 568.199219 L 168.023438 568.199219 L 168.023438 619.246094 Z M 445.734375 447.273438 L 604.941406 447.273438 L 604.941406 489.203125 L 487.054688 489.203125 L 487.054688 533.257812 L 567.269531 533.257812 L 567.269531 575.1875 L 487.054688 575.1875 L 487.054688 619.246094 L 604.941406 619.246094 L 604.941406 661.175781 L 445.734375 661.175781 Z M 740.152344 447.273438 L 782.082031 447.273438 L 886.90625 590.988281 L 886.90625 447.273438 L 928.535156 447.273438 L 928.535156 661.171875 L 886.605469 661.171875 L 781.476562 516.851562 L 781.476562 661.175781 L 740.152344 661.175781 Z M 1072.253906 447.273438 L 1231.460938 447.273438 L 1231.460938 489.203125 L 1113.570312 489.203125 L 1113.570312 533.257812 L 1193.785156 533.257812 L 1193.785156 575.1875 L 1113.570312 575.1875 L 1113.570312 619.246094 L 1231.460938 619.246094 L 1231.460938 661.175781 L 1072.25 661.175781 Z M 1072.253906 447.273438 "/></g></svg></a>
-    <div>
-      <h1>Regali aziendali di Natale 2026</h1>
-      <p class="chi">Piglia Bene è un'enoteca e vineria con catering a Sansepolcro. I regali li prepariamo con i produttori artigiani che abbiamo scelto uno per uno.</p>
-      <div class="bottoni">
-        <a class="btn pieno" href="#catalogo">Vedi confezioni e prezzi</a>
-        <a class="btn js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4.5 20l1.2-3.7A8 8 0 1 1 8.4 19z"/></svg>Scrivici su WhatsApp</a>
-      </div>
+<!-- LE DUE PORTE -->
+<section id="porte">
+  <p class="label">Due porte</p>
+  <div class="porte-due">
+    <div class="porta">
+      <p class="numero">01</p>
+      <h3>Confezioni<br>pronte</h3>
+      <p>Dieci confezioni che componiamo noi con i nostri produttori, a prezzo chiuso: da 18 a 68 € più IVA, busta compresa. Scegli quale e quante; con «Fai il conto» vedi subito gli sconti.</p>
+      <p class="nota">Riservate alle aziende · si aprono lasciando i tuoi dati</p>
+      <a class="cta pieno" href="confezioni/" data-porta="confezioni">Apri le confezioni</a>
+    </div>
+    <div class="porta">
+      <p class="numero">02</p>
+      <h3>Su misura<br>dal catalogo</h3>
+      <p>Ventuno produttori e circa 285 referenze, con i prezzi per le aziende. Scegli tu i prodotti: il preventivo te lo prepariamo noi.</p>
+      <p class="nota">Si apre in una pagina a parte</p>
+      <a class="cta" href="#" data-porta="catalogo">Apri il catalogo</a>
     </div>
   </div>
-</header>
+  <p class="prose" style="margin-top:7vh;font-size:clamp(15px,1.5vw,17px)">Preferisci parlarne? <a class="js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline;text-underline-offset:4px">WhatsApp 0575 1694910</a> o <a href="mailto:bottegapigliabene@gmail.com" style="font-weight:700;text-decoration:underline;text-underline-offset:4px">bottegapigliabene@gmail.com</a>.</p>
+</section>
 
-<div class="fascia">
-  <div class="giro">
-    <p class="dirtelo" id="dirtelo">Cominciamo a dirtelo per tempo.</p>
+<!-- PER TEMPO: il conto alla rovescia e la frase evidenziata -->
+<section id="tempo">
+  <p class="label">Per tempo</p>
+  <div class="tempo">
+    <p class="dirtelo"><span class="evid">Cominciamo a dirtelo per tempo.</span></p>
     <div>
       <div class="conto" id="conto">
         <span class="n" id="conto-n"></span>
         <p class="cosa" id="conto-cosa"><b>Sconti di quantità</b>per gli ordini fino al 30 ottobre.</p>
       </div>
-      <p class="date" style="margin-top:14px">
-        <span>Chiusura promozioni e ordini online:</span> <strong id="data-chiusura">15 novembre</strong>
-      </p>
-    </div>
-  </div>
-</div>
-
-<section id="strade" aria-labelledby="strade-h">
-  <div class="giro">
-    <h2 id="strade-h">Due modi di regalare</h2>
-    <div class="strade">
-      <div class="strada">
-        <h3>Confezioni pronte</h3>
-        <p>Le componiamo noi, a prezzo chiuso. Scegli quale e quante.</p>
-        <a href="#confezioni">Vedi le confezioni</a>
-      </div>
-      <div class="strada">
-        <h3>Su misura dal catalogo</h3>
-        <p>21 produttori e circa 285 referenze da cui scegliere, con i prezzi. Il preventivo te lo prepariamo noi.</p>
-        <a href="#catalogo">Vedi il catalogo con i prezzi</a>
-      </div>
+      <p class="date"><span>Chiusura promozioni e ordini online:</span> <strong class="js-chiusura">15 novembre</strong></p>
     </div>
   </div>
 </section>
 
-<section id="confezioni" aria-labelledby="confezioni-h">
-  <div class="giro">
-    <h2 id="confezioni-h">Le confezioni pronte</h2>
-    <div class="chiuso" id="chiuso">
-      <p class="lucchetto">Riservato alle aziende</p>
-      <p>Dieci confezioni pronte, a prezzo chiuso, e il catalogo completo dei nostri produttori con i prezzi. Le vedi lasciandoci la tua email: si aprono subito, qui.</p>
-      <div class="bottoni"><a class="btn pieno" href="#catalogo">Lascia la tua email</a></div>
-    </div>
-    <div id="riservato" hidden>
-<!-- CANVAS:INIZIO -->
-<!-- generato da genera-canvas-porta.py il 05/10/2026 14:30 · matrice 05/10/2026 h14:03 · 10 approvate su 10 · non modificare a mano -->
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="pacco" viewBox="0 0 583 655.8"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo3YThhZjNjNC0zY2I1LTQzOTktOGVmMy1hMjAxMzA4MWFlNDQAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaIeuEwqj3mhH6CfDwS0NY+EAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDpiYWE3Y2FlYS0yMDY4LTRhNTUtYmE5YS1kNjdlYWI5NzU1NmRscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNolgQcOpLBYivmz/JEVmi5KgAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFgg2MbQF6b6txQjuG/gydygZdOzt2TPpCdaALt1hzHHfcKkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaFNU0XKRYQNQajo68y1AoxQAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBcC3gUZnnW2b+RtTPock3nWt1ocK+KD5mFsy3mzB3f7mRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBidZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjdhOGFmM2M0LTNjYjUtNDM5OS04ZWYzLWEyMDEzMDgxYWU0NC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmViZTk3ZTExLTgxOTQtNGIzYi05NmE4LWIxODJkZDk4YjRjYXJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDYxtAXpvq3FCO4b+DJ3KBl07O3ZM+kJ1oAu3WHMcd9wqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggF7BAcAQejSAMHeTH0W9DgzDV23NzqYx6IHoGX3nDwDyiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggSSeV+At4bj9DQxOIMId438N0nQZp+upfmicvgtck8BF0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQB+jkfkvnb/xG77IwCnx42/jK2DDYDd3AXJm5lDuqe636Ox3SeSN+FcT4KdCasvQoqfBSah2RsJ401zblo4tkV0=</c2pa:manifest></metadata><path fill="currentColor" fill-rule="nonzero" d="M 346.5,590.5 L 347.3,570.3 C 348.4,562.4 348,554.9 347.5,546.9 L 348.3,533.5 L 348.8,500.2 L 349.3,488.6 L 348.1,466.5 L 348,454.5 L 348.2,443 L 348.3,421.5 C 348.4,415.5 348.1,409.9 347.8,403.9 L 346.8,387.3 C 346.3,378.7 346.1,370.6 346.7,362 C 347,357.3 346,352.4 346.6,347.8 C 347.3,343.5 347.1,339.8 346.7,335.3 C 346.3,331.1 348,326.4 347.9,322.1 L 347.7,305.6 L 336,303.8 L 321.2,300.3 L 293.3,295.9 L 278.9,294.1 C 270.3,292.9 262.5,291.4 254.2,288.8 C 241.3,284.7 228.3,282.1 215.1,279.6 L 204.9,277.7 L 188.1,274.8 L 188.1,282.8 L 188.3,300.2 L 187.8,318 L 187.9,329.7 L 187.4,349.3 L 185.9,363.4 L 185.4,368.9 L 185.3,388.4 L 184.9,408.2 L 185.2,430.6 L 186,441.9 C 186.7,452.2 184.9,462.4 184.5,472.8 L 183.8,491.8 L 183.8,519.7 L 184.5,537.4 L 184.5,561.1 C 184,567.7 183.8,574.2 184.3,580.6 L 218.1,588.9 L 239.1,595.1 L 252.3,599.7 L 271.8,605.6 L 292.2,610.6 L 311.1,616.3 C 322.7,619.7 333.4,624.3 345.8,626.4 C 347.9,613.7 344.7,602.7 346.5,590.5 M 374.6,581.4 L 374.1,607.7 L 374.8,619.7 L 385.2,612.5 L 414.9,592 L 441.8,572.3 L 449.5,566.5 L 459.2,559.8 C 462.2,557.8 466.1,556.1 468.6,553.4 C 469.5,549.5 469,545 468.8,540.9 L 468.3,531.1 L 468.9,504.2 L 469.1,488.6 L 469.9,476.5 L 470.4,459 L 470.1,438 L 470,428.5 L 469.9,415.2 C 471,395.5 471.3,376.6 470.2,356.9 C 469.9,352.1 471.7,347.1 471.6,342.3 L 471.5,326.5 C 471.5,319.2 471.4,312.3 472.1,305 C 473.4,296.4 472.4,288.2 472.5,279.6 C 472.6,270.2 473.2,261.2 472.3,251.8 C 463.3,255.5 455.6,260.7 447.1,265.3 L 419.2,280.4 L 412.1,284.2 C 404,288.5 395.9,292.4 387.5,296.2 L 374.5,302.2 L 373.7,309.6 L 374,322.7 L 374.4,341.8 C 373.2,348.5 373,355.1 373.8,361.9 C 374.5,367.8 373.8,373.2 374,379.1 L 374.6,398 C 374.9,405.1 376.5,411.9 376.3,419.1 L 375.8,434.2 L 375.8,444.3 L 375.6,463.2 L 376.2,471 L 376.5,478.9 C 376.8,486.8 376.6,494.1 376.1,502 L 375.4,514 C 375.1,518.9 375.6,523.7 375.5,528.6 L 375.4,541.9 C 375.3,551.9 376,561.5 375.3,571.6 Z M 156,512.4 L 156.2,490.7 L 157.1,481.1 L 158,459.5 L 158.7,444.3 L 158,426.6 L 157.5,411.4 L 158.1,394.9 L 157.7,382.3 C 157.4,373.7 158,365.5 158.8,356.9 L 159.6,346.7 L 160.4,332.2 L 160.8,320.5 L 161.1,301.8 L 161.6,289.7 L 161.7,279.6 L 161.5,269.6 C 154.9,268.7 148.3,266.7 141.7,265 L 130.1,262 L 119.4,259 L 110,256.9 L 94.6,253.1 L 81.8,250.1 C 78.7,249.4 75.6,247.7 72.6,246.9 L 60.8,243.6 L 52.2,241.2 L 44.6,239.2 L 27.1,234.5 C 28.1,242.7 28.2,249.6 27.9,257.4 L 27.4,270.2 L 27.6,294.8 L 27,308.1 C 26.6,317 26.1,325.2 26.6,334.1 C 27,340.2 27.1,345.8 28.2,351.9 C 28.9,355.6 28,359.5 28.3,363.2 L 29.5,378.5 L 31.6,399.3 L 31.5,418.3 L 31.8,436.6 L 31.9,456.4 L 31.3,469.3 L 31.4,480.4 L 32,496.2 C 32.3,502.7 31.2,508.8 32.1,515.2 C 32.9,521 33,526.3 32.9,532.2 L 54.3,538.6 L 75.8,545.6 L 104.4,555.6 L 120.2,561.4 L 146.3,568.8 L 156.4,571.9 L 156.8,564.6 L 156.8,546.9 L 156.9,536.8 L 156.2,525.9 Z M 495.1,534.1 L 503.5,528.1 L 524.8,512.1 L 531.2,507.6 L 541.8,499.9 L 551.1,493 L 552,465.8 L 551.5,439.2 L 552.2,406.9 L 554.1,372.1 L 554,358.8 L 553.4,336.7 L 553.4,320.8 L 554,311.9 L 554.8,296.1 C 554.6,287.9 555.5,280.4 556.6,272.4 L 556.7,263.9 L 557.6,250 L 559.1,220.7 L 559.6,205.9 L 538.8,217.6 L 521.9,226.6 L 514.7,230.9 L 498.4,239.1 L 497.6,249.8 L 497.5,263.3 L 497.9,272.6 L 498.1,284.1 L 498,299.9 C 497.3,310.6 496.6,320.8 497.4,331.6 C 497.9,338 497.3,343.8 496.2,350.1 C 494.9,356.9 496.6,363.9 496.3,370.8 L 495.2,394.9 L 495.6,409.7 L 495.2,424.7 C 494.9,434.9 494.7,444.9 495.8,455.1 C 496.6,463 495.5,470.6 495.3,478.5 L 494.8,496.9 L 494.9,508.3 C 494.9,517 493.8,525.6 495.1,534.1 M 333.5,277.8 C 341.5,279.3 349,280.1 356.6,281 C 358.8,281.2 362.3,279.5 364.1,278.7 L 377.2,272.6 L 385.9,268.6 L 395.3,264.6 L 413.9,254.8 L 426.9,248.2 L 437.2,242.6 C 445.2,238.3 452.5,233.2 460.7,229.5 L 470.4,225.1 L 448.5,216.8 L 443.1,215.1 L 422,208.4 L 407.9,204.2 L 394.2,199.3 L 383.8,195.8 L 368.1,191.4 L 353.4,188.3 C 347.9,187.2 343.2,185.7 337.8,184.2 L 329.9,182.1 L 320.3,180.3 L 331.6,194.3 L 336.2,199.8 C 344.6,208.9 353.4,217.6 363.2,225.1 C 366.6,227.6 368.7,229.4 369.7,233.7 C 370.9,238.9 369.3,243.2 364.9,246.3 C 358.7,250.6 352,249.4 346,244.9 L 334.6,236.1 L 314.4,218.4 C 305.6,209.9 298.3,200.8 291.1,190.9 C 289.5,188.8 286.4,187 284.5,185.3 L 278.1,191.2 C 272.3,196.6 267,201.9 260.8,206.9 L 252.8,213.4 L 243.2,220.9 L 231.3,229.4 L 198.6,252.1 L 205.4,253.3 L 232.7,258.7 L 267,266.8 L 286,269.9 L 304,272.3 Z M 517.3,186.3 L 506.5,184 L 499.1,182 L 487.6,179.5 L 473.3,176.7 C 467.6,174.8 461.8,174.1 455.8,173.2 L 436,170.2 L 421.4,166.6 L 412.6,164.5 L 381.7,157.9 L 370.2,161.2 L 356.6,164.3 L 395.8,174.4 L 416.6,180.9 L 429.1,184.8 L 457.9,193.9 L 480.3,201.8 C 486.7,204.1 492.5,206 495.6,212.9 L 508.6,205.8 L 517,201 L 537.7,190.6 Z M 224.2,204.8 C 231.5,199.1 238.7,194.4 245.6,188.5 L 234.7,192.2 L 222,196.6 L 210.9,199.6 L 199.7,202.4 L 187.8,205 C 183.5,205.9 179.2,209.4 174.6,207.9 L 169,206.1 C 165.6,205 164.1,201.7 164.1,198.3 C 161.1,194.7 161.3,189.3 165.2,186.5 C 166.9,181.7 171.5,179.8 176.5,179.5 C 184.7,179.1 192.4,176.3 200.3,174.4 C 205.9,173 211.4,172 216.9,170 L 234.5,163.4 C 226.3,162.2 219,162.3 211.8,159.3 L 191.8,151 L 173.1,157.4 C 168.6,158.9 164.1,161.3 160,163.7 C 151.4,168.8 143.1,172.9 133.7,176.2 L 122.9,181.1 C 118.4,183.2 114.6,185.4 109.7,186.5 C 104.6,187.7 100.4,191 95.6,193 L 79.6,199.9 L 46.3,214 L 83.1,224 C 87.7,225.3 91.8,227.8 96.5,228.3 L 107.9,230.8 L 120.1,233.9 L 139,238.4 L 150.3,241.7 L 167.2,245.2 L 195.6,226 L 211.9,214.4 Z M 307,143.4 C 321.8,143.7 335.1,142.1 348.6,138.7 L 357.6,136.5 C 377.6,131.5 400,125.2 415.7,112.3 L 430,100.5 C 432.4,98.5 433.8,95.4 435.4,92.6 C 438,88.1 439.9,83.5 439.8,78.2 C 439.7,72.3 439.8,66.3 436.7,61.1 C 433,55 426.7,51.5 420.6,48.1 L 413.7,44.2 C 410.6,42.4 406.6,40.3 402.9,41.2 L 395.8,43 C 390.9,44.2 386.4,47 382.1,49.5 L 374.5,54 C 366.8,58.6 359.7,64.4 353.8,71.2 L 347.9,77.9 L 330.7,100 L 327.2,105.9 L 323.7,112.1 L 319,119.9 L 315.6,126.7 Z M 239,137.2 L 261.6,141.2 L 260.7,133.4 C 259.8,125.5 254.7,118.7 252.9,109.2 C 251.5,102.3 249.1,95.7 245.3,89.7 L 231.7,67.9 L 226.8,59.9 C 224.4,55.9 221,51.9 217.6,48.5 L 208.8,40.1 C 205.4,36.8 201.4,33.6 197,31.7 L 189.2,28.2 C 184,25.9 179.1,26.5 173.8,28 C 169.1,29.3 164.7,30.6 160.4,33 C 153.2,37.1 146,41.8 141.9,49.2 C 140.3,52 139.4,56.1 138.9,59.4 C 138.6,61.7 139.2,65 139.7,67.5 C 141.7,78.6 147.9,91.6 155.9,99.3 C 159.4,102.7 163.4,105.5 167.4,108 L 176.4,113.6 L 192.8,120.8 C 199.6,122.9 205.8,125.8 212.2,129.2 L 220,132.2 C 226.1,134.6 232.4,136.1 239,137.2 M 381.2,643.3 C 378.5,645.9 375.2,647.6 371.9,649.2 C 370.1,652.1 367.4,653.9 364.1,654.8 C 360.8,656.1 357.7,656.2 354.5,654.6 C 352.2,653.5 349.7,652.9 347.3,652.3 L 330.8,648 L 321,645 L 300.2,638.5 L 283.5,633.7 L 272.9,631 L 257.6,626.7 C 253.2,625.5 249.3,623.9 245,622.3 L 238.7,619.8 L 230.1,616.9 L 220.9,613.9 L 212,611.3 L 199.7,607.9 L 189.4,605.5 L 182.4,603.8 L 171.7,602.1 C 168.3,601.5 166,600 163,599.1 L 131.8,589.9 C 128,588.7 124.3,588.2 120.8,586.1 C 117.9,584.3 114.4,584.5 111.4,583.4 L 86.2,573.9 L 78.4,571 L 70.9,568.4 L 61.5,565.1 L 53.9,562.5 L 34.5,556.5 C 29.9,555.1 25.5,553.5 20.6,553.2 C 16.6,552.9 12.3,550.9 10,547.5 L 7.2,543.3 C 5.1,540.3 6,536.9 6.5,533.5 C 7.4,528.1 5.9,522.7 5.9,517.1 L 6,493.7 L 6.1,488.6 L 6.2,473 C 6.2,467 6,461.7 6.5,455.7 C 7.1,447.8 6.2,439.8 6.3,432 L 6.3,420.6 L 6.1,405 L 5.6,389.2 L 4.3,376.6 L 3.7,364.5 L 3,356.2 L 1.9,345.4 L 0.8,332.8 C 0.2,325.5 0.6,318.6 1,311.3 L 1.8,298.6 L 2.2,279 L 2.5,263.2 L 2.3,241.2 L 1.4,225.9 C -0.2,223.5 -0.4,220.8 0.7,218.1 C -0.4,215 0.6,212.3 1.7,209.6 C 4,204.2 7.9,202.1 13.7,201.3 C 19.1,200.6 24.8,198.1 29.7,195.7 L 37.2,192.1 C 44,188.9 50.8,186 57.9,183.2 L 70.1,178.4 L 79.2,174.8 C 83.4,173.1 87.4,171.5 91.3,169.1 C 95.7,166.5 100.1,164.9 105.1,163.8 C 109.8,162.7 114,160.8 118.5,158.9 L 128.2,154.9 L 137.3,151.8 L 147.7,147.5 L 168.2,139.6 C 159.5,135.8 152,131.6 144.9,126.3 L 136.5,118.8 C 133,115.8 130,112.5 127.7,108.5 L 121.3,97.7 L 116.7,88.4 C 114.9,84.7 113.7,80.9 112.8,77 L 110.7,67.6 C 109.6,62.8 109.6,58.2 111,53.4 L 113.9,44.3 C 117.1,33.9 124.5,25.9 133.4,19.9 L 144.4,12.4 C 153.6,6.1 168.7,1.7 180.2,0.1 C 183.8,-0.4 187.6,1.1 191,1.3 C 196,1.6 200,2.1 204.4,4.6 L 213.5,9.9 C 217,11.9 219.8,13.4 222.8,16 L 233.4,25 L 240.6,31.9 C 242.7,34 244.6,36.2 246.3,38.7 L 250.4,44.8 C 255.2,52 259.7,59.2 263.9,66.8 L 273.4,83.8 C 276.4,89.2 278.2,93.9 279,100 C 279.5,103.2 281.7,106.8 282.8,109.9 L 288.1,124.7 L 293.7,115 L 296.5,109.5 L 300.4,102.6 L 313.4,81.4 L 322,70.3 C 324.1,67.6 326.8,64.5 329.2,61.9 L 335.3,55.2 L 345.3,45.6 L 354.9,37.4 L 364,31.3 L 372.7,26 L 385,20.6 C 402.3,12.9 415.4,14.9 430.8,24.5 L 441,30.9 C 448.5,35.5 455.8,40.9 460.1,49.2 C 464.6,57.9 466.1,68.3 465.1,77.9 L 464.4,83.9 C 463.6,91.9 460.5,99.8 456.5,106.8 C 449.1,119.9 430.5,134.2 416.7,141.9 C 415.8,142.5 416,142.7 416.9,142.6 L 428.6,145.3 L 441.6,148.1 L 456.4,150.3 L 471.2,152.7 C 477.4,153.8 483,156.5 489.4,156.8 L 503,159.3 L 513.4,161.7 C 517.6,163.6 522,164.2 526.7,164.1 C 540.5,170 554.4,166.1 567.8,172.4 C 571.3,171.5 574.4,172.6 577.1,174.8 C 584.4,179.7 580.3,186.2 582,189.9 C 583.9,194 582.8,196.6 581.2,200.6 C 580.6,202.3 580.8,205.8 580.7,208 L 580.3,220.8 L 581,242.2 L 580.6,246.7 C 580.8,257.4 581.5,267.7 579.8,278.3 C 578.4,287.8 578,296.6 578.6,306.2 L 578.4,323.8 C 578.3,328.8 577.6,333.5 577.7,338.5 L 577.9,349.2 L 578.3,357.6 L 578.9,368.3 L 578,398.7 L 577.3,413.4 L 576.9,439.9 C 577.8,446.1 577.9,452.1 576.9,458.2 C 578.2,465.4 577.6,472.3 577.3,479.4 L 576.6,494.4 C 576.4,498.7 577.1,503.3 572.9,506.4 C 571.5,509.7 567.9,511.7 564.3,512.4 L 541.8,528.5 L 530.2,537.1 L 520.1,544.8 L 512.8,550.1 L 490.9,566.2 C 488.3,570.9 484.2,574.2 479.1,575.3 L 468.2,581.6 C 460.2,586.2 452.7,591.6 445.6,597.6 C 438.3,603.8 431.3,608.9 422.9,613.6 C 411,620.2 401.2,629.3 390.1,637 C 386.9,639.1 383.9,640.6 381.2,643.3"/></symbol></svg>
-    <div class="canvas-elenco">
-      <article class="canvas" id="n26-01" data-nome="L&#x27;aperitivo #1" data-prezzo="18.00">
-        <div class="c-testa"><h3>L&#x27;aperitivo #1</h3><p class="idea">Il Durello dei Lessini, la salsiccia stagionata di Scianca e i taralli classici di Fragranze Mediterranee: il regalo più piccolo, da aprire alla cena di reparto.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Durello Monti Lessini brut</span><span class="da">Cadis · bottiglia, 750 ml</span></li><li><span class="prodotto">Salsiccia stagionata (normale o siena)</span><span class="da">Scianca · sottovuoto, 300 g</span></li><li><span class="prodotto">Taralli — Classico</span><span class="da">Fragranze Mediterranee · busta, 400 g</span></li></ul><p class="prezzo"><b>18,00 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-02" data-nome="Ci vediamo per un caffè!" data-prezzo="26.00">
-        <div class="c-testa"><h3>Ci vediamo per un caffè!</h3><p class="idea">Il caffè 100 % arabica di Colzani, in grani o macinato per la moka, con i biscotti gocciolati di Infermentum e 150 g di Giuinott di Guido Castagna: la pausa da offrire.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Caffè 100% arabica blend — Grani o macinato moka, sacchetto 250 g</span><span class="da">Colzani · busta</span></li><li><span class="prodotto">Giuinott (gianduiotto) sfusi</span><span class="da">Guido Castagna · sacchetto, 150 g</span></li><li><span class="prodotto">Il Biscotto Gocciolato</span><span class="da">Infermentum · 160 g</span></li></ul><p class="prezzo"><b>26,00 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-03" data-nome="L&#x27;aperitivo #2" data-prezzo="19.50">
-        <div class="c-testa"><h3>L&#x27;aperitivo #2</h3><p class="idea">Il Durello dei Lessini con le alici di Cetara di Armatore e la crema di cime di rapa e pomodori secchi di Materia: un aperitivo tra mare e orto.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Durello Monti Lessini brut</span><span class="da">Cadis · bottiglia, 750 ml</span></li><li><span class="prodotto">Alici di Cetara sott&#x27;olio</span><span class="da">Armatore Cetara · latta, 45 g</span></li><li><span class="prodotto">Crema 200 g — Cime di rapa e pomodori secchi</span><span class="da">Materia (FPTA) · vaso</span></li></ul><p class="prezzo"><b>19,50 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-04" data-nome="Tre pomodori" data-prezzo="26.50">
-        <div class="c-testa"><h3>Tre pomodori</h3><p class="idea">Giallo, San Marzano DOP e datterino di Casa Marrazzo, con due paste Matt di Monograno Felicetti nel formato che preferisci: tre sughi da confrontare.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Pomodori pelati San Marzano dell&#x27;Agro Sarnese-Nocerino DOP</span><span class="da">Casa Marrazzo · latta, 420 g</span></li><li><span class="prodotto">Pomodori pelati gialli in succo</span><span class="da">Casa Marrazzo · latta, 400 g</span></li><li><span class="prodotto">Passata di datterino</span><span class="da">Casa Marrazzo · vaso, 310 g</span></li><li><span class="prodotto">Matt — Spaghetti quadrati</span><span class="da">Monograno Felicetti · astuccio, 500 g</span></li><li><span class="prodotto">Matt — Penne ritorte</span><span class="da">Monograno Felicetti · astuccio, 500 g</span></li></ul><p class="prezzo"><b>26,50 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-05" data-nome="L&#x27;amatriciana" data-prezzo="26.00">
-        <div class="c-testa"><h3>L&#x27;amatriciana</h3><p class="idea">Una ricetta intera nel sacchetto: 400 g di guanciale TerraBrada, due pelati San Marzano DOP di Casa Marrazzo e la pasta Il Cappelli di Monograno Felicetti, nel formato che preferisci.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Guanciale stagionato S/V</span><span class="da">Scianca (TerraBrada) · sacchetto, 400 g</span></li><li><span class="prodotto"><span class="q">2 × </span>Pomodori pelati San Marzano dell&#x27;Agro Sarnese-Nocerino DOP</span><span class="da">Casa Marrazzo · latta, 420 g</span></li><li><span class="prodotto">Il Cappelli — Il Valentino</span><span class="da">Monograno Felicetti · astuccio, 500 g</span></li></ul><p class="prezzo"><b>26,00 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-06" data-nome="Un norcino in Gargano" data-prezzo="33.50">
-        <div class="c-testa"><h3>Un norcino in Gargano</h3><p class="idea">Lombetto, salame Ternano e salsiccia stagionata di Scianca, con la confettura di percoche e peperoncino di Materia a fare da ponte.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Lombetto stagionato</span><span class="da">Scianca · sottovuoto, trancio, 400 g</span></li><li><span class="prodotto">Salame &quot;Ternano&quot;</span><span class="da">Scianca · sottovuoto, intero, 500 g</span></li><li><span class="prodotto">Salsiccia stagionata (normale o siena)</span><span class="da">Scianca · sottovuoto, 300 g</span></li><li><span class="prodotto">Confettura 200 g — Percoche e peperoncino</span><span class="da">Materia (FPTA) · vaso</span></li></ul><p class="prezzo"><b>33,50 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-07" data-nome="Natale mille colori" data-prezzo="48.00">
-        <div class="c-testa"><h3>Natale mille colori</h3><p class="idea">Sette colori in tavola: alici di Cetara, carciofi grigliati, pomodori gialli, San Marzano DOP e pelati col basilico di Casa Marrazzo, la crema di cime di rapa di Materia e la pasta Matt di Monograno Felicetti.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Alici di Cetara sott&#x27;olio</span><span class="da">Armatore Cetara · latta, 45 g</span></li><li><span class="prodotto">Carciofi grigliati interi con gambo in olio</span><span class="da">Casa Marrazzo · latta, 750 g</span></li><li><span class="prodotto">Pomodori pelati gialli in succo</span><span class="da">Casa Marrazzo · latta, 400 g</span></li><li><span class="prodotto">Crema 200 g — Cime di rapa e pomodori secchi</span><span class="da">Materia (FPTA) · vaso</span></li><li><span class="prodotto">Matt — Spaghetti quadrati</span><span class="da">Monograno Felicetti · astuccio, 500 g</span></li><li><span class="prodotto">Pomodori pelati Napoli con basilico</span><span class="da">Casa Marrazzo · latta, 420 g</span></li><li><span class="prodotto">Pomodori pelati San Marzano dell&#x27;Agro Sarnese-Nocerino DOP</span><span class="da">Casa Marrazzo · latta, 420 g</span></li></ul><p class="prezzo"><b>48,00 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-08" data-nome="Dolce Piemonte" data-prezzo="34.50">
-        <div class="c-testa"><h3>Dolce Piemonte</h3><p class="idea">Il Moscato Fiori di Campo di Cascina Carlot con la crema di nocciola Piemonte IGP di Corilù, la tavoletta gianduia e nocciola e i Giuinott di Guido Castagna: il Piemonte a fine pasto.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Moscato «Fiori di Campo»</span><span class="da">Cascina Carlot · bottiglia, 750 ml</span></li><li><span class="prodotto">Giuinott (gianduiotto) sfusi</span><span class="da">Guido Castagna · sacchetto, 50 g</span></li><li><span class="prodotto">Crema di nocciola Piemonte IGP classica</span><span class="da">Corilù · vaso, 212 g</span></li><li><span class="prodotto">Tavoletta 100 g — Gianduja + Nocciola Piemonte IGP</span><span class="da">Guido Castagna · tavoletta</span></li></ul><p class="prezzo"><b>34,50 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-09" data-nome="Panettone &amp; Moscato" data-prezzo="52.00">
-        <div class="c-testa"><h3>Panettone &amp; Moscato</h3><p class="idea">Il panettone tradizionale di Infermentum, in soft pack da 1 kg, con il Moscato Fiori di Campo di Cascina Carlot: il Natale classico, in due.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Il Panettone Tradizionale</span><span class="da">Infermentum · soft pack, 1000 g</span></li><li><span class="prodotto">Moscato «Fiori di Campo»</span><span class="da">Cascina Carlot · bottiglia, 750 ml</span></li></ul><p class="prezzo"><b>52,00 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-      <article class="canvas" id="n26-10" data-nome="Scozzesi in Francia... Corta!" data-prezzo="68.00">
-        <div class="c-testa"><h3>Scozzesi in Francia... Corta!</h3><p class="idea">Il salmone di Smokin&#x27; Brothers, filetto reale da affettare, con il Franciacorta «Ammonites» di Camilucci.</p></div>
-        <div class="c-corpo"><ul><li><span class="prodotto">Salmone — Filetto reale, da affettare</span><span class="da">Smokin&#x27; Brothers · astuccio, 200 g</span></li><li><span class="prodotto">Franciacorta «Ammonites»</span><span class="da">Camilucci · bottiglia, 750 ml</span></li></ul><p class="prezzo"><b>68,00 €</b> <span>IVA esclusa</span></p><svg class="regalo" aria-hidden="true" focusable="false"><use href="#pacco"/></svg></div>
-      </article>
-    </div>
-    <div class="canvas-nota"><p>Prezzi IVA esclusa, riservati ad aziende e partite IVA. La busta è compresa.</p><a class="btn" href="canvas-natale-2026.pdf?v=4d52aab0">Scarica la scheda (PDF)</a></div>
-<!-- CANVAS:FINE -->
-    </div>
-  </div>
+<!-- CONDIZIONI, in breve -->
+<section id="condizioni">
+  <p class="label">Condizioni</p>
+  <dl class="cond">
+    <div><dt>Per chi</dt><dd>Aziende e partite IVA. Prezzi IVA esclusa, busta compresa.</dd></div>
+    <div><dt>Sconti di quantità</dt><dd>Sulle confezioni pronte, per gli ordini fino al <b class="js-scaglioni">30 ottobre</b>. Valgono sulle confezioni che prendi in <b>almeno 25 pezzi uguali</b>; da 50 pezzi in su puoi sommare confezioni diverse, purché ognuna arrivi a 25.
+      <ul class="scala">
+        <li><b>−4 %</b>25 pezzi della stessa confezione</li>
+        <li><b>−6 %</b>da 50 pezzi</li>
+        <li><b>−8 %</b>da 100 pezzi</li>
+        <li><b>−10 %</b>da 200 pezzi</li>
+      </ul></dd></div>
+    <div><dt>Pagamento anticipato</dt><dd><b>−7 % su tutto l'ordine</b> fino al <b class="js-anticipato">15 novembre</b>, anche sulle confezioni senza sconto di quantità. Si applica dopo lo sconto di quantità.</dd></div>
+    <div><dt>Chiusura promozioni</dt><dd><b class="js-chiusura">15 novembre</b>: chiudono le promozioni e gli ordini online. Dopo, si ordina in bottega, secondo disponibilità.</dd></div>
+    <div id="riga-consegna" hidden><dt>Consegna</dt><dd id="cond-consegna"></dd></div>
+    <div><dt>Su misura dal catalogo</dt><dd>Preventivo su richiesta.</dd></div>
+  </dl>
 </section>
 
-<section id="condizioni" aria-labelledby="condizioni-h">
-  <div class="giro">
-    <h2 id="condizioni-h">Condizioni</h2>
-    <dl class="cond">
-      <div><dt>Per chi</dt><dd>Aziende e partite IVA. Prezzi IVA esclusa, busta compresa.</dd></div>
-      <div><dt>Sconti di quantità</dt><dd>Sulle confezioni pronte, per gli ordini fino al 30 ottobre. Valgono sulle confezioni che prendi in <b>almeno 25 pezzi uguali</b>: quelle sotto i 25 restano a prezzo pieno.
-        <ul class="scala">
-          <li><b>−4 %</b>25 pezzi della stessa confezione</li>
-          <li><b>−6 %</b>da 50 pezzi</li>
-          <li><b>−8 %</b>da 100 pezzi</li>
-          <li><b>−10 %</b>da 200 pezzi</li>
-        </ul>
-        <p>Da 50 pezzi in su puoi sommare confezioni diverse, purché ognuna arrivi a 25.</p>
-        <ul class="esempi" aria-label="Esempi">
-          <li><span>25 confezioni A + 25 confezioni B</span><b>−6 % su tutte e 50</b></li>
-          <li><span>40 confezioni A + 30 confezioni B</span><b>−6 % su tutte e 70</b></li>
-          <li><span>25 A + 15 B + 10 C</span><b>−4 % sulle 25 A; B e C a prezzo pieno</b></li>
-        </ul></dd></div>
-      <div><dt>Pagamento anticipato</dt><dd><b>−7 % su tutto l'ordine</b> fino al 15 novembre, anche sulle confezioni senza sconto di quantità. Si applica dopo lo sconto di quantità.</dd></div>
-      <div><dt>Chiusura promozioni</dt><dd><b id="cond-chiusura">15 novembre</b>: chiudono le promozioni e gli ordini online. Dopo, si ordina in bottega, secondo disponibilità.</dd></div>
-      <div id="riga-consegna" hidden><dt>Consegna</dt><dd id="cond-consegna"></dd></div>
-      <div><dt>Su misura dal catalogo</dt><dd>Preventivo su richiesta.</dd></div>
-    </dl>
-
-    <div class="calcola" id="calcola" hidden>
-      <h3>Fai il conto</h3>
-      <p class="piccolo">Scrivi quante confezioni ti servono: gli sconti si calcolano da soli. Prezzi IVA esclusa; il conto è indicativo, l'ordine si conferma con noi.</p>
-      <div class="calc-righe" id="calc-righe"></div>
-      <label class="spunta"><input type="checkbox" id="calc-ant"> <span>Pago in anticipo: −7 % su tutto, fino al 15 novembre</span></label>
-      <dl class="calc-tot" id="calc-tot" aria-live="polite"></dl>
-      <p class="calc-consiglio" id="calc-consiglio"></p>
-      <div class="bottoni"><a class="btn pieno" id="calc-wa" href="#" target="_blank" rel="noopener" hidden>Chiedi questo ordine su WhatsApp</a></div>
+<!-- IL CANCELLO: una finestra sopra la pagina (Gio, 05/10/2026: confezioni, prezzi e catalogo dopo i dati; 09/10: niente posta che si apre da sola) -->
+<dialog class="cancello" id="cancello" aria-labelledby="cancello-h">
+  <div class="cancello-dentro">
+    <div class="cancello-testa">
+      <p class="label" style="margin:0;flex:1">Riservato alle aziende</p>
+      <button type="button" class="chiudi" data-chiudi-cancello>Chiudi</button>
     </div>
-  </div>
-</section>
-
-<section id="catalogo" aria-labelledby="catalogo-h">
-  <div class="giro modulo-giro">
-    <div>
-      <h2 id="catalogo-h">Vedi confezioni e prezzi</h2>
-      <p class="sotto-h2" style="color:inherit">Le dieci confezioni pronte e il catalogo completo dei nostri 21 produttori, con i prezzi per le aziende (+ IVA). Lascia i tuoi dati: si aprono subito, qui sopra.</p>
-      <p class="altri">Preferisci scrivere tu? <a class="js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener">WhatsApp 0575 1694910</a> o <a href="mailto:bottegapigliabene@gmail.com">bottegapigliabene@gmail.com</a>.</p>
-    </div>
-    <div class="aperto-azioni" id="aperto-azioni" hidden>
-      <p>Confezioni e prezzi sono aperti.</p>
-      <div class="bottoni">
-        <a class="btn pieno" href="#confezioni">Vedi le confezioni</a>
-        <a class="btn" id="apri-catalogo" href="#" target="_blank" rel="noopener">Apri il catalogo con i prezzi</a>
-        <a class="btn" id="apri-pdf" href="canvas-natale-2026.pdf" target="_blank" rel="noopener">Scarica la scheda (PDF)</a>
-      </div>
-    </div>
-    <form id="modulo" novalidate>
+    <h2 id="cancello-h">Vedi confezioni e prezzi</h2>
+    <p class="perche">Confezioni, prezzi e catalogo sono riservati alle aziende. Lascia i tuoi dati: <b>si aprono subito</b>, e ti ricontattiamo solo per il preventivo.</p>
+    <form id="modulo" class="modulo" novalidate>
       <div class="riga2">
         <div class="campo"><label for="f-nome">Nome e cognome <span class="obb">*</span></label>
           <input type="text" id="f-nome" name="nome" autocomplete="name" required maxlength="100" aria-describedby="e-nome">
@@ -432,7 +130,7 @@
       <div class="riga2">
         <div class="campo"><label for="f-email">Email <span class="obb">*</span></label>
           <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required maxlength="160" aria-describedby="e-email">
-          <p class="errore" id="e-email">Scrivi un indirizzo email valido: il catalogo arriva lì.</p></div>
+          <p class="errore" id="e-email">Scrivi un indirizzo email valido.</p></div>
         <div class="campo"><label for="f-tel">Telefono</label>
           <input type="tel" id="f-tel" name="telefono" autocomplete="tel" inputmode="tel" maxlength="40"></div>
       </div>
@@ -444,301 +142,30 @@
           <label><input type="radio" name="quantita" value="oltre 50"> oltre 50</label>
         </div>
       </fieldset>
-      <div class="campo"><label for="f-msg">Messaggio</label>
-        <textarea id="f-msg" name="messaggio" maxlength="1000" placeholder="Per esempio: quando vi servono, a chi sono destinati, un budget a persona."></textarea></div>
       <div class="esca" aria-hidden="true"><label for="f-sito">Non compilare questo campo</label><input type="text" id="f-sito" name="sito" tabindex="-1" autocomplete="off"></div>
       <div class="campo">
-        <label class="spunta"><input type="checkbox" id="f-privacy" name="privacy" required aria-describedby="e-privacy"> <span>Ho letto l'<a href="../privacy/#catalogo" target="_blank" rel="noopener">informativa privacy</a>: i miei dati servono a mostrarmi confezioni e prezzi, a mandarmi il catalogo e a ricontattarmi per il preventivo. <span class="obb">*</span></span></label>
-        <p class="errore" id="e-privacy">Serve la spunta per mandarti il catalogo.</p>
+        <label class="spunta"><input type="checkbox" id="f-privacy" name="privacy" required aria-describedby="e-privacy"> <span>Ho letto l'<a href="../privacy/#catalogo" target="_blank" rel="noopener" style="text-decoration:underline">informativa privacy</a>: i miei dati servono a mostrarmi confezioni e prezzi, a mandarmi il catalogo e a ricontattarmi per il preventivo. <span class="obb">*</span></span></label>
+        <p class="errore" id="e-privacy">Serve la spunta per aprire.</p>
       </div>
       <label class="spunta"><input type="checkbox" id="f-agg" name="aggiornamenti"> <span>Voglio ricevere gli aggiornamenti di Piglia Bene per le aziende (facoltativo, ci si cancella quando si vuole).</span></label>
       <input type="hidden" name="origine" id="f-origine" value="sito">
-      <div class="bottoni"><button class="btn pieno" type="submit" id="invia">Vedi confezioni e prezzi</button></div>
+      <div class="bottoni"><button class="cta pieno" type="submit" id="invia">Apri</button></div>
       <p class="piccolo">* obbligatorio</p>
       <div class="esito" id="esito" role="status" aria-live="polite"></div>
     </form>
   </div>
-</section>
+</dialog>
 
-<footer>
-  <div class="giro">
-    <span>Piglia Bene · Feel Good S.r.l. — Via Giordano Bruno 47, Sansepolcro (AR)</span>
-    <span>P.IVA e C.F. 02434040511 · REA AR-213209 · Capitale sociale € 10.000,00 i.v.</span>
-    <span><a href="../">Il sito</a> · <a href="../privacy/">Privacy</a></span>
-  </div>
+<footer class="piede">
+  <span>Piglia Bene · Feel Good S.r.l. — Via Giordano Bruno 47, Sansepolcro (AR)</span>
+  <span>P.IVA e C.F. 02434040511 · REA AR-213209 · Capitale sociale € 10.000,00 i.v.</span>
+  <span>bottegapigliabene@gmail.com · <a href="../privacy/">Privacy</a></span>
+  <span class="copy">© 2026 Feel Good S.r.l.</span>
 </footer>
 
-<a class="btn pieno wa-fisso js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4.5 20l1.2-3.7A8 8 0 1 1 8.4 19z"/></svg>WhatsApp</a>
+<a class="wa-fisso js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4.5 20l1.2-3.7A8 8 0 1 1 8.4 19z"/></svg>WhatsApp</a>
 
-<script src="config.js?v=8a5a11fd"></script>
-<script>
-(function () {
-  'use strict';
-  var C = window.PB_NATALE || {};
-  var EMAIL = C.EMAIL || 'bottegapigliabene@gmail.com';
-  var WA = C.WHATSAPP || '3905751694910';
-  var $ = function (id) { return document.getElementById(id); };
-  var q = new URLSearchParams(location.search);
-  var t0 = Date.now();
-
-  /* --- da dove arriva chi visita: ?da=qr, link, mail, wa, ig… (N-05: l'etichetta va nel messaggio) --- */
-  var da = (q.get('da') || '').toLowerCase();
-  if (!/^[a-z0-9-]{1,20}$/.test(da)) da = '';
-  var per = (q.get('per') || '').replace(/[\u0000-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim();
-  if (per.length > 80) per = per.slice(0, 79) + '…';
-  if (per && !da) da = 'link';
-  var origine = da || 'sito';
-  $('f-origine').value = origine;
-
-  var frasi = {
-    qr: 'Ciao, ho visto il manifesto di Natale.',
-    mail: 'Ciao, dalla mail del catalogo di Natale.',
-    wa: 'Ciao, dal messaggio di Natale su WhatsApp.',
-    ig: 'Ciao, da Instagram.',
-    pdf: 'Ciao, dalla scheda delle confezioni di Natale.'
-  };
-  function fraseWA() {
-    if (per) return 'Ciao, sono di ' + per + ': ho aperto la pagina di Natale che ci avete mandato.';
-    return frasi[da] || 'Ciao, dalla pagina di Natale per le aziende.';
-  }
-  function linkWA(testo) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(testo); }
-  var wa = linkWA(fraseWA());
-  /* il bottone fisso compare quando quelli della testata escono dallo schermo */
-  var fisso = document.querySelector('.wa-fisso'), testa = document.querySelector('.testata .bottoni');
-  if (fisso && testa && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (e) { fisso.classList.toggle('via', e[0].isIntersecting); }).observe(testa);
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('.js-wa'), function (a) { a.href = wa; });
-
-  /* --- link personale: ?per=Nome Azienda (testo, mai HTML) --- */
-  var cat = (C.CATALOGO_URL || 'https://gio-227.github.io/pigliabene-beta/catalogo/') + '?da=' + encodeURIComponent(origine);
-  if (per) {
-    $('per-nome').textContent = per;
-    $('per').hidden = false;
-    $('f-azienda').value = per;
-    document.title = 'Per ' + per + ' · Regali aziendali di Natale 2026 · Piglia Bene';
-  }
-
-  /* --- date: si scrivono in config.js; vuote = segnaposto --- */
-  var MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
-  function parseData(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : null; }
-  function scrivi(d) { var x = new Date(d); return x.getUTCDate() + ' ' + MESI[x.getUTCMonth()]; }
-  function oggiRoma() {
-    try {
-      var p = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-      return parseData(p);
-    } catch (e) { var n = new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()); }
-  }
-  var oggi = oggiRoma(), G = 864e5;
-  var dSc = parseData(C.SCAGLIONI_FINO || '2026-10-30');
-  var dAn = parseData(C.ANTICIPATO_FINO || '2026-11-15');
-  var dCh = parseData(C.CHIUSURA_ORDINI);
-  if (dCh) {
-    $('data-chiusura').textContent = scrivi(dCh);
-    $('cond-chiusura').textContent = scrivi(dCh);
-  }
-  if (C.CONSEGNA) { $('cond-consegna').textContent = C.CONSEGNA; $('riga-consegna').hidden = false; }
-
-  function conto(n, titolo, resto) {
-    var nn = $('conto-n'), co = $('conto-cosa');
-    co.textContent = '';
-    var b = document.createElement('b'); b.textContent = titolo; co.appendChild(b);
-    co.appendChild(document.createTextNode(resto));
-    if (n === null) { nn.hidden = true; $('conto').classList.add('senza-n'); return; }
-    nn.textContent = n;
-  }
-  function giorni(d) { return Math.round((d - oggi) / G); }
-  if (dSc !== null && oggi <= dSc) {
-    var n1 = giorni(dSc);
-    if (n1 === 0) conto(null, 'Oggi è l’ultimo giorno', ' degli sconti di quantità.');
-    else conto(n1, n1 === 1 ? 'Giorno' : 'Giorni', ' agli sconti di quantità: valgono per gli ordini fino al ' + scrivi(dSc) + '.');
-  } else if (dAn !== null && oggi <= dAn) {
-    var n2 = giorni(dAn), insieme = dCh === dAn;
-    if (n2 === 0) conto(null, 'Oggi chiudono le promozioni', insieme ? 'Ultimo giorno per ordinare online e per il −7 % con pagamento anticipato.' : 'Ultimo giorno del −7 % con pagamento anticipato.');
-    else conto(n2, n2 === 1 ? 'Giorno' : 'Giorni', ' alla chiusura delle promozioni: −7 % con pagamento anticipato fino al ' + scrivi(dAn) + '.');
-  } else if (dCh !== null && oggi <= dCh) {
-    var n3 = giorni(dCh);
-    if (n3 === 0) conto(null, 'Oggi', ' è l’ultimo giorno per ordinare.');
-    else conto(n3, n3 === 1 ? 'Giorno' : 'Giorni', ' all’ultimo giorno per ordinare: ' + scrivi(dCh) + '.');
-  } else {
-    conto(null, 'Promozioni chiuse', dCh ? ' il ' + scrivi(dCh) + '. Si ordina in bottega, secondo disponibilità.' : '');
-  }
-
-  /* --- fai il conto: la stessa regola della pagina Ordini del Database (Gio, 05/10/2026) ---
-     contano solo le confezioni prese in almeno 25 pezzi; lo scaglione si legge sulla loro somma e vale solo su di loro;
-     −7 % pagamento anticipato su tutto, dopo lo scaglione. Dopo la chiusura delle promozioni il conto non si mostra. */
-  function preparaConto() {
-    var box = $('calcola'), arts = document.querySelectorAll('article.canvas[data-prezzo]');
-    if (box && box.getAttribute('data-pronto')) return;
-    if (box) box.setAttribute('data-pronto', '1');
-    var chiuse = (dAn !== null && oggi > dAn) || (dCh !== null && oggi > dCh);
-    if (!box || !arts.length || chiuse) return;
-    var entroSc = dSc !== null && oggi <= dSc;
-    var righe = [], cont = $('calc-righe');
-    function euro(v) { return v.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
-    Array.prototype.forEach.call(arts, function (a, i) {
-      var r = { nome: a.getAttribute('data-nome') || '', prezzo: parseFloat(a.getAttribute('data-prezzo')), q: 0 };
-      if (!(r.prezzo > 0)) return;
-      var riga = document.createElement('div'); riga.className = 'calc-riga';
-      var lab = document.createElement('label'); lab.htmlFor = 'q-' + i;
-      var nm = document.createElement('span'); nm.className = 'calc-nome'; nm.textContent = r.nome;
-      var pr = document.createElement('span'); pr.className = 'calc-prezzo'; pr.textContent = euro(r.prezzo) + ' a confezione';
-      lab.appendChild(nm); lab.appendChild(pr);
-      var inp = document.createElement('input'); inp.type = 'number'; inp.id = 'q-' + i; inp.min = '0'; inp.step = '1';
-      inp.inputMode = 'numeric'; inp.placeholder = '0'; inp.setAttribute('aria-label', 'Quante «' + r.nome + '»');
-      var out = document.createElement('span'); out.className = 'r-esito';
-      riga.appendChild(lab); riga.appendChild(out); riga.appendChild(inp);
-      cont.appendChild(riga);
-      r.inp = inp; r.out = out; righe.push(r);
-      inp.addEventListener('input', calcola);
-    });
-    if (!righe.length) return;
-    $('calc-ant').addEventListener('change', calcola);
-    box.hidden = false;
-    function voce(dl, k, v, cls) {
-      var d = document.createElement('div'); if (cls) d.className = cls;
-      var t = document.createElement('dt'); t.textContent = k; var x = document.createElement('dd'); x.textContent = v;
-      d.appendChild(t); d.appendChild(x); dl.appendChild(d);
-    }
-    function calcola() {
-      var ant = $('calc-ant').checked ? 0.93 : 1, qual = 0, tot = 0, lordo = 0, netto = 0;
-      righe.forEach(function (r) { var v = parseInt(r.inp.value, 10); r.q = v > 0 ? Math.min(v, 99999) : 0; tot += r.q; if (r.q >= 25) qual += r.q; });
-      var tier = !entroSc ? 0 : qual >= 200 ? 10 : qual >= 100 ? 8 : qual >= 50 ? 6 : qual >= 25 ? 4 : 0;
-      righe.forEach(function (r) {
-        var sc = r.q >= 25 ? tier : 0, l = r.prezzo * r.q, n = l * (1 - sc / 100) * ant;
-        lordo += l; netto += n;
-        r.out.className = 'r-esito' + (sc || ant < 1 ? ' sconto' : '');
-        r.out.textContent = r.q ? (sc ? '−' + sc + ' %' : 'prezzo pieno') + (ant < 1 ? ' · −7 %' : '') + ' · ' + euro(n) : '';
-      });
-      var dl = $('calc-tot'); dl.textContent = '';
-      var cons = $('calc-consiglio'); cons.textContent = '';
-      var wa = $('calc-wa');
-      if (!tot) { wa.hidden = true; return; }
-      voce(dl, 'Confezioni', String(tot));
-      voce(dl, 'Sconto di quantità', !entroSc ? 'chiuso il ' + scrivi(dSc) : tier ? '−' + tier + ' % su ' + qual + ' pezzi' : 'nessuno');
-      if (ant < 1) voce(dl, 'Pagamento anticipato', '−7 % su tutto');
-      if (netto < lordo - 0.004) voce(dl, 'Risparmi', euro(lordo - netto));
-      voce(dl, 'Totale, IVA esclusa', euro(netto), 'tot');
-      if (entroSc) {
-        var vicino = righe.filter(function (r) { return r.q >= 15 && r.q < 25; })[0];
-        if (vicino) cons.textContent = 'Con ' + (25 - vicino.q) + ' «' + vicino.nome + '» in più' + (qual ? ', anche quella entra nello sconto di quantità.' : ' arrivi a 25 pezzi uguali: −4 %.');
-        else if (!tier) cons.textContent = 'Lo sconto di quantità parte da 25 pezzi della stessa confezione.';
-      }
-      var testo = ['Ciao' + (per ? ', sono di ' + per : '') + '. Vorrei un preventivo per le confezioni di Natale:'];
-      righe.forEach(function (r) { if (r.q) testo.push(r.q + ' × ' + r.nome); });
-      testo.push('Pagamento anticipato: ' + (ant < 1 ? 'sì' : 'no'));
-      testo.push('Totale indicativo: ' + euro(netto) + ' IVA esclusa (' + origine + ')');
-      wa.href = linkWA(testo.join('\n')); wa.hidden = false;
-    }
-  }
-
-  /* --- il cancello (Gio, 05/10/2026 14:50): confezioni, prezzi, conto e catalogo dopo l'email ---
-     Si ricorda nel browser; ?aperto=1 arriva solo dalla mail che manda l'Apps Script. È un cancello
-     di cortesia per raccogliere i contatti, non una protezione: i file restano pubblici a chi ha l'indirizzo. */
-  var CHIAVE = 'pbNatale2026Aperto';
-  function giaAperto() {
-    if (q.get('aperto') === '1') return true;
-    try { return localStorage.getItem(CHIAVE) === '1'; } catch (e) { return false; }
-  }
-  function apri(scorri) {
-    try { localStorage.setItem(CHIAVE, '1'); } catch (e) { }
-    $('riservato').hidden = false; $('chiuso').hidden = true;
-    $('aperto-azioni').hidden = false; if (!scorri) $('modulo').hidden = true;   // dopo l'invio il modulo resta, per il messaggio
-    $('apri-catalogo').href = cat;
-    var pdf = document.querySelector('.canvas-nota a[href*=".pdf"]'); if (pdf) $('apri-pdf').href = pdf.getAttribute('href');
-    $('per-catalogo').href = cat; $('per-catalogo').target = '_blank'; $('per-catalogo').rel = 'noopener';
-    $('per-catalogo').textContent = 'Apri il catalogo';
-    preparaConto();
-    if (scorri) { var h = $('confezioni'); if (h && h.scrollIntoView) h.scrollIntoView(); }
-  }
-  if (giaAperto()) apri(false);
-
-  /* --- modulo «Ricevi il catalogo» --- */
-  var f = $('modulo'), esito = $('esito'), invia = $('invia');
-  var reMail = /^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[a-z]{2,}$/i;
-  function campo(id) { return $(id).closest('.campo'); }
-  function segna(id, ok) { var c = campo(id); if (c) c.classList.toggle('campo-err', !ok); $(id).setAttribute('aria-invalid', ok ? 'false' : 'true'); return ok; }
-  function dati() {
-    var r = f.querySelector('input[name=quantita]:checked');
-    return {
-      nome: $('f-nome').value.trim(), azienda: $('f-azienda').value.trim(), email: $('f-email').value.trim(),
-      telefono: $('f-tel').value.trim(), quantita: r ? r.value : '', messaggio: $('f-msg').value.trim().slice(0, 1000),
-      privacy: $('f-privacy').checked, aggiornamenti: $('f-agg').checked, origine: origine, per: per,
-      sito: $('f-sito').value, pagina: location.pathname, ua: (navigator.userAgent || '').slice(0, 300), t: Date.now() - t0
-    };
-  }
-  function valida(d) {
-    var ok = true, primo = null;
-    [['f-nome', !!d.nome], ['f-azienda', !!d.azienda], ['f-email', reMail.test(d.email)], ['f-privacy', d.privacy]].forEach(function (x) {
-      if (!segna(x[0], x[1])) { ok = false; if (!primo) primo = x[0]; }
-    });
-    if (primo) $(primo).focus();
-    return ok;
-  }
-  ['f-nome', 'f-azienda', 'f-email', 'f-privacy'].forEach(function (id) {
-    $(id).addEventListener(id === 'f-privacy' ? 'change' : 'blur', function () {
-      if (!campo(id).classList.contains('campo-err')) return;
-      var d = dati(); segna(id, id === 'f-email' ? reMail.test(d.email) : id === 'f-privacy' ? d.privacy : !!$(id).value.trim());
-    });
-  });
-  function mostra(testo, conWA, conMail) {
-    esito.textContent = '';
-    var p = document.createElement('p'); p.textContent = testo; esito.appendChild(p);
-    if (conWA || conMail) {
-      var b = document.createElement('div'); b.className = 'bottoni';
-      if (conMail) { var m = document.createElement('a'); m.className = 'btn'; m.href = conMail; m.textContent = 'Riapri la mail'; b.appendChild(m); }
-      if (conWA) { var w = document.createElement('a'); w.className = 'btn pieno'; w.href = conWA; w.target = '_blank'; w.rel = 'noopener'; w.textContent = 'Scrivici su WhatsApp'; b.appendChild(w); }
-      esito.appendChild(b);
-    }
-  }
-  function waRichiesta(d) { return linkWA('Ciao, sono ' + d.nome + ' di ' + d.azienda + ': vorrei il catalogo di Natale 2026. (' + origine + ')'); }
-  function mailto(d) {
-    var righe = [
-      'Richiesta del catalogo di Natale 2026', '',
-      'Nome e cognome: ' + d.nome, 'Azienda: ' + d.azienda, 'Email: ' + d.email,
-      'Telefono: ' + (d.telefono || '—'), 'Quante confezioni: ' + (d.quantita || '—'),
-      'Messaggio: ' + (d.messaggio || '—'), '',
-      'Ho letto l’informativa privacy: sì', 'Aggiornamenti per le aziende: ' + (d.aggiornamenti ? 'sì' : 'no'),
-      'Origine: ' + origine + (per ? ' (link per ' + per + ')' : '')
-    ];
-    return 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Catalogo di Natale 2026 — ' + d.azienda) +
-      '&body=' + encodeURIComponent(righe.join('\r\n'));
-  }
-  function attesa(on) { invia.disabled = on; invia.textContent = on ? 'Invio in corso…' : 'Vedi confezioni e prezzi'; }
-
-  f.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var d = dati();
-    if (!valida(d)) { mostra('Mancano dei dati: li trovi segnati sopra.'); return; }
-    if (d.sito) { mostra('Fatto: ti abbiamo scritto.'); f.reset(); return; }   // esca: un programma, non una persona
-
-    if (!C.ENDPOINT) {   // modalità posta: finché Gio non attiva l'Apps Script
-      var m = mailto(d);
-      apri(true);
-      location.href = m;
-      mostra('Confezioni e catalogo sono aperti. Si è aperta anche la tua posta con la richiesta: premi Invia e ti ricontattiamo noi.', waRichiesta(d), m);
-      return;
-    }
-    attesa(true);
-    var corpo = JSON.stringify(d);
-    var ctrl = ('AbortController' in window) ? new AbortController() : null;
-    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
-    fetch(C.ENDPOINT, { method: 'POST', body: corpo, headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctrl ? ctrl.signal : undefined })
-      .then(function (r) { return r.json(); })
-      .then(function (j) {
-        clearTimeout(timer); attesa(false);
-        apri(true);
-        if (j && j.ok) { mostra('Fatto: confezioni e catalogo sono aperti, e ti abbiamo scritto anche per email (guarda nello spam se non arriva).', waRichiesta(d)); f.reset(); }
-        else { mostra('Confezioni e catalogo sono aperti, ma la mail non è partita: ' + ((j && j.errore) || 'errore sconosciuto') + '. Scrivici su WhatsApp.', waRichiesta(d), mailto(d)); }
-      })
-      .catch(function () {
-        // la risposta non si legge (rete o CORS): si riprova alla cieca; il foglio scarta i doppioni entro 10 minuti
-        fetch(C.ENDPOINT, { method: 'POST', body: corpo, mode: 'no-cors' })
-          .then(function () { clearTimeout(timer); attesa(false); apri(true); mostra('Fatto: confezioni e catalogo sono aperti. Ti scriviamo anche per email (guarda nello spam se non arriva).', waRichiesta(d)); f.reset(); })
-          .catch(function () { clearTimeout(timer); attesa(false); apri(true); mostra('Confezioni e catalogo sono aperti, ma non riusciamo a inviare dal sito: scrivici su WhatsApp o mandaci la mail già pronta.', waRichiesta(d), mailto(d)); });
-      });
-  });
-})();
-</script>
+<script src="config.js?v=7d868334"></script>
+<script src="porta.js?v=0ebcd1c9"></script>
 </body>
 </html>
