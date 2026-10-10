@@ -1,4 +1,4 @@
-/* Cowork v1.0 | Feel Good srl | Foglio di stile delle pagine di Natale (natale/, natale/confezioni/) | v2.2 | 2026-10-10 CEST (v2.2 — Gio 02:13: il titolo attacca alla stessa altezza e con la stessa misura di «Solamente i soliti noti?»: stesso box dell'hero della home, con l'attacco calcolato sul contenuto della home) - 2026-10-09 CEST (v2.1 — Gio 17:16: si sfoglia tutto senza dati, i prezzi restano coperti e un avviso ridotto resta a vista; porta 02 in fondo alle confezioni più visibile)
+/* Cowork v1.0 | Feel Good srl | Foglio di stile delle pagine di Natale (natale/, natale/confezioni/) | v2.3 | 2026-10-10 CEST (v2.3 — Gio 14:06: schede delle confezioni più leggere: cornice 2 px, rosso pieno solo dietro il titolo, descrizione su panna, filetto sotto la testa 1 px più sottile del filo spesso) - 2026-10-10 CEST (v2.2 — Gio 02:13: il titolo attacca alla stessa altezza e con la stessa misura di «Solamente i soliti noti?»: stesso box dell'hero della home, con l'attacco calcolato sul contenuto della home) - 2026-10-09 CEST (v2.1 — Gio 17:16: si sfoglia tutto senza dati, i prezzi restano coperti e un avviso ridotto resta a vista; porta 02 in fondo alle confezioni più visibile)
    Stessa cornice della home (testata, piede, Arsenica Light nei titoli, Montserrat nel resto, fondo panna e inchiostro rosso).
    Le variabili hanno i nomi "invertiti" come nella home del 17/09: --rosso è il FONDO (panna), --panna è l'INCHIOSTRO (rosso).
    Dopo una modifica: il link al foglio porta ?v=<sha1 breve del contenuto>, altrimenti il browser serve il CSS vecchio. */
@@ -172,10 +172,11 @@ h2 .evid{padding:.02em .18em .08em}
    Due colonne da 1100 px in su; dentro, la scheda si impagina sulla PROPRIA larghezza (container query), non su quella dello schermo. */
 .canvas-elenco{display:grid;gap:clamp(24px,3vw,40px);align-items:start}
 @media(min-width:1100px){.canvas-elenco{grid-template-columns:1fr 1fr}}
-.canvas{border:var(--spesso) solid var(--panna);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;background:var(--rosso);container-type:inline-size}
-.canvas .c-testa{background:var(--panna);color:var(--rosso);padding:18px clamp(18px,3vw,28px) 20px}
+.canvas{border:2px solid var(--panna);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;background:var(--rosso);container-type:inline-size}
+.canvas .c-testa{background:var(--rosso);color:var(--panna);padding:0;border-bottom:calc(var(--spesso) - 1px) solid var(--panna)}
+.canvas .c-testa h3{background:var(--panna);color:var(--rosso);padding:14px clamp(18px,3vw,28px) 12px}
 .canvas h3{font-family:'Arsenica',serif;font-weight:300;text-transform:uppercase;font-size:clamp(28px,3.4vw,42px);line-height:1.02;overflow-wrap:anywhere;text-wrap:balance}
-.canvas .idea{margin-top:8px;color:var(--panna-chiara);font-size:15px;max-width:60ch;line-height:1.5}
+.canvas .idea{margin:0;color:var(--panna-soft);padding:12px clamp(18px,3vw,28px) 14px;font-size:15px;max-width:60ch;line-height:1.5}
 .canvas .c-corpo{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 16px;padding:clamp(18px,3vw,28px);align-items:end;align-content:start}
 .canvas ul{grid-column:1/-1;list-style:none}
 .canvas li{padding:11px 0;border-bottom:1px solid var(--filo)}
