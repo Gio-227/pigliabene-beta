@@ -1,4 +1,4 @@
-/* Cowork v1.0 | Feel Good srl | Foglio di stile delle pagine di Natale (natale/, natale/confezioni/) | v2.1 | 2026-10-09 CEST (v2.1 — Gio 17:16: si sfoglia tutto senza dati, i prezzi restano coperti e un avviso ridotto resta a vista; porta 02 in fondo alle confezioni più visibile)
+/* Cowork v1.0 | Feel Good srl | Foglio di stile delle pagine di Natale (natale/, natale/confezioni/) | v2.2 | 2026-10-10 CEST (v2.2 — Gio 02:13: il titolo attacca alla stessa altezza e con la stessa misura di «Solamente i soliti noti?»: stesso box dell'hero della home, con l'attacco calcolato sul contenuto della home) - 2026-10-09 CEST (v2.1 — Gio 17:16: si sfoglia tutto senza dati, i prezzi restano coperti e un avviso ridotto resta a vista; porta 02 in fondo alle confezioni più visibile)
    Stessa cornice della home (testata, piede, Arsenica Light nei titoli, Montserrat nel resto, fondo panna e inchiostro rosso).
    Le variabili hanno i nomi "invertiti" come nella home del 17/09: --rosso è il FONDO (panna), --panna è l'INCHIOSTRO (rosso).
    Dopo una modifica: il link al foglio porta ?v=<sha1 breve del contenuto>, altrimenti il browser serve il CSS vecchio. */
@@ -77,12 +77,23 @@ a.natale:hover{background:var(--panna);color:var(--rosso)}
 }
 
 /* ---------- hero: la stessa scala della home ---------- */
-.hero{min-height:calc(88vh - var(--hh));display:flex;flex-direction:column;justify-content:center;padding:6vh var(--mx) 8vh}
+/* L'hero della home è un box da 88vh con il contenuto centrato (6vh sopra, 10vh sotto). Qui il contenuto è diverso
+   (tre righe, oppure il nome dell'azienda su una), quindi centrarlo lo farebbe attaccare più in basso o più in alto.
+   L'attacco si calcola come lo calcola la home — kicker + 4vh + tre righe di titolo + 5vh + riga piccola, centrati in 72vh —
+   e si usa come spazio sopra: il titolo parte alla stessa altezza di «SOLAMENTE», qualunque cosa ci sia scritto (Gio, 10/10). */
+.hero{
+  --h-kicker:calc(1.6 * clamp(11px,1.3vw,14px));
+  --h-titolo:calc(2.76 * min(13.2vw,190px));
+  --h-piccola:calc(1.6 * clamp(12px,1.4vw,15px));
+  --h-home:calc(var(--h-kicker) + 4vh + var(--h-titolo) + 5vh + var(--h-piccola));
+  min-height:88vh;display:flex;flex-direction:column;justify-content:flex-start;
+  padding:calc(6vh + max(0px, (72vh - var(--h-home)) / 2)) var(--mx) 10vh;
+}
 .kicker{font-size:clamp(11px,1.3vw,14px);letter-spacing:.3em;text-transform:uppercase;font-weight:600;margin-bottom:4vh;color:var(--panna-soft)}
 .kicker b{font-weight:700;color:var(--panna)}
-h1{font-family:'Arsenica',serif;font-weight:300;font-size:min(12.3vw,178px);line-height:.92;letter-spacing:.01em;text-transform:uppercase;overflow-wrap:anywhere;text-wrap:balance}
+h1{font-family:'Arsenica',serif;font-weight:300;font-size:min(13.2vw,190px);line-height:.92;letter-spacing:.01em;text-transform:uppercase;overflow-wrap:normal;word-break:keep-all;text-wrap:balance}  /* una parola lunga non si spezza: porta.js stringe il titolo finché ci sta */  /* la stessa misura di «SOLAMENTE»; sotto i 340 px «AZIENDALI» la stringe porta.js */
 /* Il nome dell'azienda: la riga più lunga si misura in porta.js e, se non ci sta, si stringe. */
-h1.per-nome{font-size:min(11vw,150px);text-wrap:balance}
+h1.per-nome{text-wrap:balance}  /* il nome dell'azienda ha la stessa misura; se è lungo lo stringe porta.js */
 .hero .sotto{display:block;margin-top:5vh;font-size:clamp(12px,1.4vw,15px);letter-spacing:.22em;text-transform:uppercase;font-weight:600;max-width:60ch;line-height:1.9}
 .hero .sotto span{white-space:nowrap}
 @media(max-width:560px){.hero .sotto span{white-space:normal}}
@@ -304,7 +315,12 @@ footer.piede .copy{flex-basis:100%}
 
 /* ---------- respiro sul telefono, come la home ---------- */
 @media(max-width:640px){
-  .hero{min-height:calc(78vh - var(--hh));min-height:calc(78svh - var(--hh));padding:4vh var(--mx) 7vh}
+  .hero{min-height:78vh;min-height:78svh;padding:calc(4vh + max(0px, (66svh - var(--h-home)) / 2)) var(--mx) 8vh}
+}
+/* Sotto i 580 px il kicker della home va su due righe, sotto i 420 anche la riga piccola: l'attacco della home ne tiene conto, e così questo. */
+@media(max-width:580px){.hero{--h-home:calc(2 * var(--h-kicker) + 4vh + var(--h-titolo) + 5vh + var(--h-piccola))}}
+@media(max-width:420px){.hero{--h-home:calc(2 * var(--h-kicker) + 4vh + var(--h-titolo) + 5vh + 2 * var(--h-piccola))}
+
   section{padding:9vh var(--mx)}
   .label{margin-bottom:5vh}
   h2{margin-bottom:4vh}
