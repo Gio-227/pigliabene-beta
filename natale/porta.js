@@ -1,4 +1,4 @@
-/* Cowork v1.0 | Feel Good srl | Script comune delle pagine di Natale (natale/, natale/confezioni/) | v2.1 | 2026-10-09 CEST (v2.1 — Gio 17:16: le porte si aprono senza dati; i prezzi restano coperti finché non si lasciano i dati, con l'avviso fisso; «Fai il conto» e la scheda PDF arrivano con i prezzi)
+/* Cowork v1.0 | Feel Good srl | Script comune delle pagine di Natale (natale/, natale/confezioni/) | v2.2 | 2026-10-10 17:30 CEST (v2.2 — Gio 17:22: il conto alla rovescia dice «giorni alla fine delle promozioni sui canvas»; date di riserva 05/11 e 20/11) - 2026-10-09 CEST (v2.1 — Gio 17:16: le porte si aprono senza dati; i prezzi restano coperti finché non si lasciano i dati, con l'avviso fisso; «Fai il conto» e la scheda PDF arrivano con i prezzi)
    Fa quattro cose: legge da dove arriva chi visita (?da=, link personale), tiene acceso il punto giusto in testata,
    gestisce il cancello (confezioni, prezzi e catalogo dopo i dati: Gio, 05/10/2026) e il conto delle confezioni.
    Niente chiamate a terzi: l'unica è al modulo di Gio (ENDPOINT in config.js), e solo quando si preme Invia. */
@@ -94,8 +94,8 @@
     } catch (e) { var n = new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()); }
   }
   var oggi = oggiRoma(), G = 864e5;
-  var dSc = parseData(C.SCAGLIONI_FINO || '2026-10-30');
-  var dAn = parseData(C.ANTICIPATO_FINO || '2026-11-15');
+  var dSc = parseData(C.SCAGLIONI_FINO || '2026-11-05');
+  var dAn = parseData(C.ANTICIPATO_FINO || '2026-11-20');
   var dCh = parseData(C.CHIUSURA_ORDINI);
   Array.prototype.forEach.call(document.querySelectorAll('.js-chiusura'), function (e) { if (dCh) e.textContent = scrivi(dCh); });
   Array.prototype.forEach.call(document.querySelectorAll('.js-scaglioni'), function (e) { if (dSc) e.textContent = scrivi(dSc); });
@@ -114,8 +114,8 @@
   if ($('conto')) {
     if (dSc !== null && oggi <= dSc) {
       var n1 = giorni(dSc);
-      if (n1 === 0) conto(null, 'Oggi è l’ultimo giorno', ' degli sconti di quantità.');
-      else conto(n1, n1 === 1 ? 'Giorno' : 'Giorni', ' agli sconti di quantità: valgono per gli ordini fino al ' + scrivi(dSc) + '.');
+      if (n1 === 0) conto(null, 'Oggi è l’ultimo giorno', ' delle promozioni sui canvas.');
+      else conto(n1, n1 === 1 ? 'Giorno' : 'Giorni', ' alla fine delle promozioni sui canvas');   // Gio, 10/10/2026 h17:22
     } else if (dAn !== null && oggi <= dAn) {
       var n2 = giorni(dAn), insieme = dCh === dAn;
       if (n2 === 0) conto(null, 'Oggi chiudono le promozioni', insieme ? ' Ultimo giorno per ordinare online e per il −7 % con pagamento anticipato.' : ' Ultimo giorno del −7 % con pagamento anticipato.');

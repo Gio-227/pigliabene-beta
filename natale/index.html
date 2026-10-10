@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — la stanza di Natale 2026 (porta) | v2.1 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-09 17:40 CEST (v2.1 — Gio 17:16: le porte si aprono senza dati, i prezzi arrivano con i dati nelle pagine delle porte) - 2026-10-09 CEST (v2.0 — Gio 09/10: stessa cornice della home (testata, piede, Arsenica), il nome dell'azienda in testa, pagina corta con due porte (confezioni → confezioni/, catalogo), cancello in finestra senza posta che si apre da sola, link puliti /natale/<azienda>, WhatsApp sempre a vista) - 2026-10-06 20:36 CEST (v1.3) - 2026-10-05 14:56 CEST (v1.2 — cancello) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI | fascicolo: pigliabene-sito-online + natale-2026 -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina sito — la stanza di Natale 2026 (porta) | v2.2 | Generato: 2026-10-05 12:50 CEST | Aggiornato: 2026-10-10 17:30 CEST (v2.2 — Gio 17:22: promozioni sui canvas fino al 5/11, −7 % anticipato e chiusura ordini al 20/11; il conto dice «giorni alla fine delle promozioni sui canvas») - 2026-10-09 17:40 CEST (v2.1 — Gio 17:16: le porte si aprono senza dati, i prezzi arrivano con i dati nelle pagine delle porte) - 2026-10-09 CEST (v2.0 — Gio 09/10: stessa cornice della home (testata, piede, Arsenica), il nome dell'azienda in testa, pagina corta con due porte (confezioni → confezioni/, catalogo), cancello in finestra senza posta che si apre da sola, link puliti /natale/<azienda>, WhatsApp sempre a vista) - 2026-10-06 20:36 CEST (v1.3) - 2026-10-05 14:56 CEST (v1.2 — cancello) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI | fascicolo: pigliabene-sito-online + natale-2026 -->
 <!-- La stanza: tutto quello che serve per scegliere quale porta aprire. Le confezioni stanno in confezioni/, il catalogo dove dice config.js.
      Stile e script comuni: natale.css e porta.js (col ?v= dell'impronta: cambiano insieme al contenuto).
      Il modulo manda la richiesta all'Apps Script di Gio (config.js → ENDPOINT); se è vuoto la porta si apre lo stesso e nessuna posta si apre da sola.
@@ -83,9 +83,9 @@
     <div>
       <div class="conto" id="conto">
         <span class="n" id="conto-n"></span>
-        <p class="cosa" id="conto-cosa"><b>Sconti di quantità</b>per gli ordini fino al 30 ottobre.</p>
+        <p class="cosa" id="conto-cosa"><b>Promozioni sui canvas</b>fino al 5 novembre.</p>
       </div>
-      <p class="date"><span>Chiusura promozioni e ordini online:</span> <strong class="js-chiusura">15 novembre</strong></p>
+      <p class="date"><span>Chiusura promozioni e ordini online:</span> <strong class="js-chiusura">20 novembre</strong></p>
     </div>
   </div>
 </section>
@@ -95,15 +95,15 @@
   <p class="label">Condizioni</p>
   <dl class="cond">
     <div><dt>Per chi</dt><dd>Aziende e partite IVA. Prezzi IVA esclusa, busta compresa.</dd></div>
-    <div><dt>Sconti di quantità</dt><dd>Sulle confezioni pronte, per gli ordini fino al <b class="js-scaglioni">30 ottobre</b>. Valgono sulle confezioni che prendi in <b>almeno 25 pezzi uguali</b>; da 50 pezzi in su puoi sommare confezioni diverse, purché ognuna arrivi a 25.
+    <div><dt>Sconti di quantità</dt><dd>Sulle confezioni pronte, per gli ordini fino al <b class="js-scaglioni">5 novembre</b>. Valgono sulle confezioni che prendi in <b>almeno 25 pezzi uguali</b>; da 50 pezzi in su puoi sommare confezioni diverse, purché ognuna arrivi a 25.
       <ul class="scala">
         <li><b>−4 %</b>25 pezzi della stessa confezione</li>
         <li><b>−6 %</b>da 50 pezzi</li>
         <li><b>−8 %</b>da 100 pezzi</li>
         <li><b>−10 %</b>da 200 pezzi</li>
       </ul></dd></div>
-    <div><dt>Pagamento anticipato</dt><dd><b>−7 % su tutto l'ordine</b> fino al <b class="js-anticipato">15 novembre</b>, anche sulle confezioni senza sconto di quantità. Si applica dopo lo sconto di quantità.</dd></div>
-    <div><dt>Chiusura promozioni</dt><dd><b class="js-chiusura">15 novembre</b>: chiudono le promozioni e gli ordini online. Dopo, si ordina in bottega, secondo disponibilità.</dd></div>
+    <div><dt>Pagamento anticipato</dt><dd><b>−7 % su tutto l'ordine</b> fino al <b class="js-anticipato">20 novembre</b>, anche sulle confezioni senza sconto di quantità. Si applica dopo lo sconto di quantità.</dd></div>
+    <div><dt>Chiusura promozioni</dt><dd><b class="js-chiusura">20 novembre</b>: chiudono le promozioni e gli ordini online. Dopo, si ordina in bottega, secondo disponibilità.</dd></div>
     <div id="riga-consegna" hidden><dt>Consegna</dt><dd id="cond-consegna"></dd></div>
     <div><dt>Su misura dal catalogo</dt><dd>Preventivo su richiesta.</dd></div>
   </dl>
@@ -119,7 +119,7 @@
 
 <a class="wa-fisso js-wa" href="https://wa.me/3905751694910" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4.5 20l1.2-3.7A8 8 0 1 1 8.4 19z"/></svg>WhatsApp</a>
 
-<script src="config.js?v=7d868334"></script>
-<script src="porta.js?v=c3f9fdd5"></script>
+<script src="config.js?v=da8e6df6"></script>
+<script src="porta.js?v=e4b7236e"></script>
 </body>
 </html>

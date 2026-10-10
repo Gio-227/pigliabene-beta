@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v2.1 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-09 18:05 CEST (v2.1 — il messaggio dice la regola nuova: si sfoglia tutto, i prezzi con i dati) - 2026-10-09 CEST (v2.0 — Gio 09/10: link pulito pigliabene.it/natale/Nome-Azienda; la mail parte da Piglia Bene (bottegapigliabene@gmail.com) col logo, attraverso lo script di Gio, con un PIN; stessa veste del sito) - 2026-10-05 14:56 CEST (v1.2) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI -->
+<!-- Header Cowork v1.0 | Progetto: Feel Good srl | Tipo: pagina di servizio — link personali della porta di Natale | v2.2 | Generato: 2026-10-05 12:58 CEST | Aggiornato: 2026-10-10 17:30 CEST (v2.2 — date di riserva 05/11 e 20/11, come config.js: Gio 10/10 17:22) - 2026-10-09 18:05 CEST (v2.1 — il messaggio dice la regola nuova: si sfoglia tutto, i prezzi con i dati) - 2026-10-09 CEST (v2.0 — Gio 09/10: link pulito pigliabene.it/natale/Nome-Azienda; la mail parte da Piglia Bene (bottegapigliabene@gmail.com) col logo, attraverso lo script di Gio, con un PIN; stessa veste del sito) - 2026-10-05 14:56 CEST (v1.2) - 2026-10-05 14:27 CEST (v1.1) | Da: sessione 09/10 feedback UX/UI -->
 <!-- Per Nicola, Gio o Nic: scrivi il nome dell'azienda e ottieni il link «Preparato per…» da mandare in giornata.
      Pagina di servizio: noindex, nessun link punta qui. Non salva niente e manda la mail solo se premi il bottone,
      attraverso lo script di Gio (config.js → ENDPOINT) e col PIN: senza, la mail la mandi dalla tua posta. -->
@@ -121,7 +121,7 @@
   function d(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : null; }
   function scrivi(x) { var y = new Date(x); return y.getUTCDate() + ' ' + MESI[y.getUTCMonth()]; }
   var oggi = (function () { try { return d(new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())); } catch (e) { var n = new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()); } })();
-  var dSc = d(C.SCAGLIONI_FINO || '2026-10-30'), dAn = d(C.ANTICIPATO_FINO || '2026-11-15');
+  var dSc = d(C.SCAGLIONI_FINO || '2026-11-05'), dAn = d(C.ANTICIPATO_FINO || '2026-11-20');
   function scadenze() {
     if (dSc !== null && oggi <= dSc) return 'Fino al ' + scrivi(dSc) + ' ci sono gli sconti di quantità (da 25 confezioni uguali); fino al ' + scrivi(dAn) + ' il −7 % pagando in anticipo.';
     if (dAn !== null && oggi <= dAn) return 'Fino al ' + scrivi(dAn) + ' il −7 % pagando in anticipo: quel giorno chiudono le promozioni e gli ordini online.';
