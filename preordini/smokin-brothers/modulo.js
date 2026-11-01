@@ -1,7 +1,9 @@
 const CFG={"ENDPOINT": "https://script.google.com/macros/s/AKfycbyXlQ6RCpILBDyApKfZARBrLNJsQgZl7132ltkYDYwmTvpo7jPrmof4ArRm2eQ1Yqwf/exec", "CHIUSURA": "2026-11-08T22:00:00+01:00", "CHIUSURA_TXT": "domenica 8 novembre, ore 22:00", "IBAN": "IT31 C030 6971 6171 0000 0005 899", "INTESTATARIO": "Feel Good S.r.l.", "RITIRO_DAL": "martedì 15 dicembre", "WA": "3905751694910", "CAMPAGNA": "smokin-2026", "PREFISSO": "PB-SMK-", "USCITA": "../"};
-/* Cowork v1.0 | Feel Good srl | preordini/smokin-brothers/modulo.js — il modulo del preordine (quantità, dati, invio al foglio o WhatsApp, QR SEPA) | v1.2 | 2026-10-31 19:47 CET | generato da genera-sito.py da web.js */
+/* Cowork v1.0 | Feel Good srl | preordini/smokin-brothers/modulo.js — il modulo del preordine (quantità, dati, invio al foglio o WhatsApp, QR SEPA) | v1.2 | 2026-11-01 22:38 CET | generato da genera-sito.py da web.js */
 const Q = {};
 const $ = (s) => document.querySelector(s);
+/* sul beta (github.io) la pagina registra nel foglio solo con ?prova nel link: altrimenti WhatsApp, così le prove non diventano ordini veri */
+if (/github\.io$/.test(location.hostname) && !/[?&]prova/.test(location.search)) CFG.ENDPOINT = '';
 const eur = (x) => x.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 const chiusura = new Date(CFG.CHIUSURA);
 let chiuso = false;
@@ -120,20 +122,21 @@ function mostraEsito(codice, d, righe, tot, fallback) {
       ['Importo', eur(tot)], ['Causale', causale],
     ].map(([k, v]) => `<b>${k}</b><code>${v}</code><button type="button" data-copia="${(k === 'Importo' ? tot.toFixed(2).replace('.', ',') : v).replace(/"/g, '&quot;')}">Copia</button>`).join('');
     const qr = ibanOk(iban) ? `<div class="qr">${epcQr(CFG.INTESTATARIO, iban, tot, causale)}<small>QR SEPA: alcune app di home banking lo leggono e compilano il bonifico da sole. Se la tua no, usa i tre «Copia».</small></div>` : '';
-    paga = `<p><b>Fai il bonifico adesso</b>: il preordine vale quando arriva, entro ${CFG.CHIUSURA_TXT}.</p><div class="pagabox"><div class="kv">${kv}</div>${qr}</div>`;
+    paga = `<p><b>Fai il bonifico adesso</b>: il preordine vale quando arriva, entro ${CFG.CHIUSURA_TXT}. Se la tua banca non fa in tempo, mandaci la <b>contabile del bonifico</b> per email o su WhatsApp: vale come pagamento.</p><div class="pagabox"><div class="kv">${kv}</div>${qr}</div>`;
   } else {
     paga = `<p><b>Passa in cassa da Piglia Bene entro ${CFG.CHIUSURA_TXT}</b> e di’ il codice <b>${codice}</b>: POS o contanti. Giorni e orari di apertura sono pochi — se non ce la fai, il bonifico va bene lo stesso: scrivici e ti mandiamo i dati.</p>`;
   }
   const wa = `https://wa.me/${CFG.WA}?text=` + encodeURIComponent(testoWa(codice, d, righe, tot, fallback));
   const perche = CFG.ENDPOINT ? 'Non siamo riusciti a registrarlo da qui: con il tasto qui sotto ci arriva tutto, già scritto.' : 'Con il tasto qui sotto ci arriva tutto, già scritto.';
-  const grazie = `<p class="grazie"><b>Grazie per il tuo ordine!</b> Ricordati di pagare per confermarlo entro ${CFG.CHIUSURA_TXT}.</p>`;
+  const grazie = `<p class="grazie"><b>Hai fatto tutto: manca solo il pagamento.</b> L’ordine <b>${codice}</b> esiste, ma vale solo quando arriva il pagamento, entro ${CFG.CHIUSURA_TXT}: senza, decade da solo e non entra nell’ordine al produttore.</p>`;
   const testa = fallback
-    ? `<h2>Preordine pronto, mandacelo su WhatsApp</h2>${grazie}<p>${perche} Il tuo codice è <span class="cod">${codice}</span>: mettilo nella causale.</p><p><a class="btn" href="${wa}" target="_blank" rel="noopener">Manda il preordine su WhatsApp</a></p>`
-    : `<h2>Preordine registrato</h2>${grazie}<p>Il tuo codice è <span class="cod">${codice}</span>. Ti abbiamo mandato il riepilogo a <b>${d.email}</b>.</p>`;
+    ? `<h2>Preordine pronto: mandacelo su WhatsApp, poi paga</h2><p>${perche} Il tuo codice è <span class="cod">${codice}</span>: mettilo nella causale.</p><p><a class="btn" href="${wa}" target="_blank" rel="noopener">Manda il preordine su WhatsApp</a></p>${grazie}`
+    : `<h2>Preordine registrato: manca solo il pagamento</h2><p>Grazie! Il tuo codice è <span class="cod">${codice}</span>. Ti abbiamo mandato il riepilogo a <b>${d.email}</b>.</p>${grazie}`;
   const esci = CFG.USCITA ? `<a class="btn sec" href="${CFG.USCITA}">Esci</a>` : `<button type="button" class="btn sec" id="esci">Esci</button>`;
   $('#esito').innerHTML = `${testa}
 <div class="riep"><b>Riepilogo</b><ul>${righe.map((x) => `<li>${x.qta} × ${x.nome} — ${eur(x.qta * x.pre)}</li>`).join('')}</ul><p style="margin:8px 0 0"><b>Totale ${eur(tot)}</b></p></div>
 <div class="riep">${paga}</div>
+<div class="riep sbagliato"><p><b>Hai sbagliato? Niente panico.</b></p><ul><li>Vuoi annullare un ordine non pagato: non fare nulla, decade da solo alla chiusura.</li><li>Vuoi aggiungere qualcosa: fai un nuovo preordine, con il suo codice e la sua causale.</li><li>Hai fatto un ordine sbagliato e non l’hai pagato: rifallo giusto e paga quello nuovo con la causale nuova; il vecchio decade.</li><li>Hai già pagato e vuoi togliere qualcosa: scrivici o passa al banco, ti lasciamo un buono di spesa da Piglia Bene per la differenza.</li></ul></div>
 <div class="riep"><p><b>Ritiro</b> in bottega dal ${rit}. Ti avvisiamo per email quando il salmone è arrivato.</p><p class="azioni"><a class="btn sec" href="${wa}" target="_blank" rel="noopener">${fallback ? 'Apri di nuovo WhatsApp' : 'Scrivici su WhatsApp'}</a> ${esci}</p></div>`;
   const b = $('#esci'); if (b) b.addEventListener('click', () => location.reload());
   $('#esito').hidden = false;

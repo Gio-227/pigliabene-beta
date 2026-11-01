@@ -88,6 +88,8 @@ a.natale.preordini:hover{background:#7d0b0b;border-color:#7d0b0b;color:var(--ros
 .pre .esito h2{font-family:'Arsenica','Montserrat',serif;font-weight:300;font-size:30px;text-transform:none;line-height:1.1;margin-bottom:8px;color:var(--r)}
 .pre .esito .cod{font:700 28px 'Montserrat';color:var(--r);letter-spacing:.04em}
 .pre .grazie{font-size:17px;border-left:4px solid var(--r);padding:6px 12px;background:#fbf9ea;margin:10px 0 14px}.pre .azioni{display:flex;gap:12px;flex-wrap:wrap}
+.pre .sbagliato ul,.sbagliato-pag ul{margin:6px 0 0;padding-left:18px}.pre .sbagliato li,.sbagliato-pag li{margin:4px 0}
+.sbagliato-pag{margin-top:22px;border-top:1px solid var(--panna);padding-top:10px;font-size:14px;line-height:1.5;max-width:1040px;margin-left:auto;margin-right:auto;color:#2b2420}.sbagliato-pag b.t{display:block;font:600 12px 'Montserrat';letter-spacing:.1em;text-transform:uppercase;color:var(--panna);margin-bottom:4px}
 .pre .esito{padding-bottom:90px}@media(min-width:761px){.pre .esito{padding-bottom:20px}}
 .pre .pagabox{margin-top:14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start}
 .pre .kv{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;font-size:15px}
