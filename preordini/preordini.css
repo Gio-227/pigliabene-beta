@@ -1,4 +1,4 @@
-/* Cowork v1.0 | Feel Good srl | Stile delle pagine Preordini (preordini/ e preordini/<campagna>/) | v1.0 | 2026-10-31 CET
+/* Cowork v1.0 | Feel Good srl | Stile delle pagine Preordini (preordini/ e preordini/<campagna>/) | v1.1 | 2026-11-02 CET (ricordo del preordine fatto da questo dispositivo; «Mandati i dati su WhatsApp»)
    Si appoggia a natale/natale.css per cornice, testata, hero, cta, sezioni, piede e WhatsApp fisso.
    Qui solo ciò che è dei preordini: la griglia delle campagne e il modulo d'ordine (scoped in .pre).
    Variabili ereditate con i nomi «invertiti» della home: --rosso = fondo panna, --panna = inchiostro rosso. */
@@ -99,7 +99,9 @@ a.natale.preordini:hover{background:#7d0b0b;border-color:#7d0b0b;color:var(--ros
 .pre .qr svg{display:block;width:160px;height:160px;border:1px solid #d6cda9;background:#fff}
 .pre .qr small{display:block;font-size:11px;color:var(--g);max-width:160px;margin-top:4px}
 .pre .chiuso{border:2px solid var(--r);background:#fff;padding:18px;margin-top:20px;font-weight:600}
-.conto{font:600 13px 'Montserrat';letter-spacing:.08em;text-transform:uppercase;color:var(--rosso);background:var(--panna);padding:8px var(--mx);text-align:center}
+.pre .ricordo{border:2px solid var(--r);background:#fff;padding:14px 18px;margin:0 0 26px;font-size:15px}.pre .grazie a{color:var(--r);text-decoration:underline}.pre .ricordo p{margin:0 0 10px}.pre .ricordo p:last-child{margin:0}
+.pre .mandati{margin-top:12px;align-items:center}.pre .mandati .nota{font-size:13px}
+.conto{font:600 13px 'Montserrat';letter-spacing:.08em;text-transform:uppercase;color:var(--rosso);background:var(--panna);padding:8px var(--mx);text-align:center}.conto a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .carrello{position:sticky;bottom:0;background:var(--panna);color:var(--rosso);padding:12px var(--mx);display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;z-index:15}
 .carrello .tot{font:600 15px 'Montserrat'}.carrello .tot b{font-size:20px}
 .carrello a.btn{background:var(--rosso);color:var(--panna);text-decoration:none;font:700 14px 'Montserrat';letter-spacing:.08em;text-transform:uppercase;padding:12px 18px}
