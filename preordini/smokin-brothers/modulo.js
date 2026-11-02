@@ -1,7 +1,8 @@
 const CFG={"ENDPOINT": "https://script.google.com/macros/s/AKfycbyXlQ6RCpILBDyApKfZARBrLNJsQgZl7132ltkYDYwmTvpo7jPrmof4ArRm2eQ1Yqwf/exec", "CHIUSURA": "2026-11-08T22:00:00+01:00", "CHIUSURA_TXT": "domenica 8 novembre, ore 22:00", "IBAN": "IT31 C030 6971 6171 0000 0005 899", "INTESTATARIO": "Feel Good S.r.l.", "RITIRO_DAL": "martedì 15 dicembre", "WA": "3905751694910", "CAMPAGNA": "smokin-2026", "PREFISSO": "PB-SMK-", "USCITA": "../"};
-/* Cowork v1.0 | Feel Good srl | preordini/smokin-brothers/modulo.js — il modulo del preordine (quantità, dati, invio al foglio o WhatsApp, QR SEPA) | v1.3 | 2026-11-02 09:52 CET | generato da genera-sito.py da web.js */
+/* Cowork v1.0 | Feel Good srl | preordini/smokin-brothers/modulo.js — il modulo del preordine (quantità, dati, invio al foglio o WhatsApp, QR SEPA) | v1.4 | 2026-11-02 13:20 CET | generato da genera-sito.py da web.js */
 const Q = {};
 const $ = (s) => document.querySelector(s);
+const LETTURA = CFG.ENDPOINT;   /* per rileggere un ordine dal link della mail (?ordine=&k=): solo lettura, vale anche sul beta */
 /* sul beta (github.io) la pagina registra nel foglio solo con ?prova nel link: altrimenti WhatsApp, così le prove non diventano ordini veri */
 if (/github\.io$/.test(location.hostname) && !/[?&]prova/.test(location.search)) CFG.ENDPOINT = '';
 const eur = (x) => x.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
@@ -152,8 +153,10 @@ function ricordo() {
   $('#rivedi').addEventListener('click', () => { mostraEsito(s.codice, s.d, s.righe, +s.tot || 0, !!s.fallback, true); });
 }
 
-function mostraEsito(codice, d, righe, tot, fallback, ripreso) {
+function mostraEsito(codice, d, righe, tot, fallback, ripreso, stato, pagatoIl) {
   const causale = `${codice} ${d.nome}`;
+  stato = String(stato || '').toLowerCase();
+  const confermato = stato === 'pagato' || stato === 'pronto' || stato === 'ritirato';
   const iban = CFG.IBAN || '';
   const rit = CFG.RITIRO_DAL || 'giorno che ti scriviamo (data da confermare)';
   const waMe = 'https://wa.me/?text=' + encodeURIComponent(testoDati(codice, d, righe, tot, causale));
@@ -169,18 +172,33 @@ function mostraEsito(codice, d, righe, tot, fallback, ripreso) {
   } else {
     paga = `<p><b>Passa in cassa da Piglia Bene entro ${CFG.CHIUSURA_TXT}</b> e di’ il codice <b>${codice}</b>: POS o contanti. Giorni e orari di apertura sono pochi — se non ce la fai, il bonifico va bene lo stesso: scrivici e ti mandiamo i dati.</p>${mandati}`;
   }
+  if (confermato) {
+    paga = stato === 'ritirato'
+      ? `<p><b>Ritirato.</b> Grazie, e buon salmone.</p>`
+      : stato === 'pronto'
+        ? `<p><b>Pagamento ricevuto${pagatoIl ? ' il ' + esc(pagatoIl) : ''}: il preordine è confermato</b> e il salmone è arrivato — passa a ritirarlo in bottega.</p>`
+        : `<p><b>Pagamento ricevuto${pagatoIl ? ' il ' + esc(pagatoIl) : ''}: il preordine è confermato.</b> Non devi fare altro: ti avvisiamo per email quando il salmone è arrivato.</p>`;
+  } else if (stato === 'decaduto') {
+    paga = `<p><b>Questo preordine è decaduto</b>: non è arrivato il pagamento entro ${CFG.CHIUSURA_TXT}. Se pensi sia un errore, scrivici su WhatsApp.</p>`;
+  }
   const wa = `https://wa.me/${CFG.WA}?text=` + encodeURIComponent(testoWa(codice, d, righe, tot, fallback));
   const perche = CFG.ENDPOINT ? 'Non siamo riusciti a registrarlo da qui: con il tasto qui sotto ci arriva tutto, già scritto.' : 'Con il tasto qui sotto ci arriva tutto, già scritto.';
   const grazie = `<p class="grazie"><b>Hai fatto tutto: manca solo il pagamento.</b> L’ordine <b>${codice}</b> esiste, ma vale solo quando arriva il pagamento, entro ${CFG.CHIUSURA_TXT}: senza, decade da solo e non entra nell’ordine al produttore.</p>`;
   const testa = fallback
     ? `<h2>Preordine pronto: mandacelo su WhatsApp, poi paga</h2><p>${perche} Il tuo codice è <span class="cod">${codice}</span>: mettilo nella causale.</p><p><a class="btn" href="${wa}" target="_blank" rel="noopener">Manda il preordine su WhatsApp</a></p>${grazie}`
-    : ripreso
+    : confermato
+      ? `<h2>${stato === 'ritirato' ? 'Preordine ritirato' : 'Il tuo preordine è confermato'}</h2><p>Codice <span class="cod">${codice}</span>, intestato a <b>${esc(d.nome)}</b>.</p>`
+      : stato === 'decaduto'
+        ? `<h2>Preordine decaduto</h2><p>Codice <span class="cod">${codice}</span>.</p>`
+        : ripreso
       ? `<h2>Il tuo preordine: ecco i dati per pagare</h2><p>Il tuo codice è <span class="cod">${codice}</span>. Il riepilogo è anche nella mail che ti abbiamo mandato a <b>${esc(d.email)}</b>.</p>${grazie}`
       : `<h2>Preordine registrato: manca solo il pagamento</h2><p>Grazie! Il tuo codice è <span class="cod">${codice}</span>. Ti abbiamo mandato il riepilogo a <b>${esc(d.email)}</b>.</p>${grazie}`;
   const esci = CFG.USCITA ? `<a class="btn sec" href="${CFG.USCITA}">Esci</a>` : `<button type="button" class="btn sec" id="esci">Esci</button>`;
   const dove = fallback
     ? 'I dati per pagare restano nel messaggio WhatsApp che ci hai mandato, e li ritrovi riaprendo questa pagina da questo telefono o computer.'
-    : `I dati per pagare li ritrovi nella mail che ti abbiamo mandato a <b>${esc(d.email)}</b> (guarda anche nello spam) e riaprendo questa pagina da questo telefono o computer. Se non trovi la mail, <a href="${wa}" target="_blank" rel="noopener">scrivici su WhatsApp</a> con il codice <b>${codice}</b>.`;
+    : confermato || stato === 'decaduto'
+      ? `Per qualunque cosa, <a href="${wa}" target="_blank" rel="noopener">scrivici su WhatsApp</a> con il codice <b>${codice}</b>.`
+      : `I dati per pagare li ritrovi nella mail che ti abbiamo mandato a <b>${esc(d.email)}</b> (guarda anche nello spam): il link nella mail riapre questo preordine da qualunque telefono o computer, e questa pagina lo ricorda da sola su questo. Se non trovi la mail, <a href="${wa}" target="_blank" rel="noopener">scrivici su WhatsApp</a> con il codice <b>${codice}</b>.`;
   $('#esito').innerHTML = `${testa}
 <div class="riep"><b>Riepilogo</b><ul>${righe.map((x) => `<li>${x.qta} × ${x.nome} — ${eur(x.qta * x.pre)}</li>`).join('')}</ul><p style="margin:8px 0 0"><b>Totale ${eur(tot)}</b></p></div>
 <div class="riep">${paga}</div>
@@ -231,8 +249,35 @@ $('#form').addEventListener('submit', async (e) => {
   }
 });
 
+/* ---------- dal link della mail: ?ordine=CODICE&k=FIRMA → rilegge l'ordine dal foglio e mostra l'esito ---------- */
+async function riapri() {
+  const q = new URLSearchParams(location.search);
+  const codice = (q.get('ordine') || '').trim().toUpperCase(), firma = (q.get('k') || '').trim().toLowerCase();
+  if (!codice || !firma || !LETTURA) return;
+  /* il link non resta nella barra degli indirizzi: l'ordine lo ricorda la pagina su questo dispositivo */
+  try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) { /* niente */ }
+  const dove = document.querySelector('main.pre > .wrap') || document.querySelector('.hero');
+  const avviso = (msg) => { if (dove) dove.insertAdjacentHTML(dove.matches('.hero') ? 'afterend' : 'afterbegin', `<div class="ricordo"><p>${msg}</p></div>`); };
+  let r = null;
+  try {
+    const ctl = new AbortController(); const tm = setTimeout(() => ctl.abort(), 15000);
+    const res = await fetch(`${LETTURA}?ordine=${encodeURIComponent(codice)}&k=${encodeURIComponent(firma)}`, { signal: ctl.signal });
+    clearTimeout(tm);
+    r = await res.json();
+  } catch (ex) { r = null; }
+  if (!r) { avviso(`Non riesco a leggere il preordine <b>${esc(codice)}</b> in questo momento: riprova fra poco, oppure guarda la mail che ti abbiamo mandato.`); return; }
+  if (!r.ok || !Array.isArray(r.righe)) { avviso(`Non trovo il preordine <b>${esc(codice)}</b>: apri il link così com’è nella mail (intero), oppure scrivici su WhatsApp con il codice.`); return; }
+  const d = { nome: r.nome, tel: '', email: r.email, note: r.note || '', pag: r.pagamento === 'in cassa' ? 'cassa' : 'bonifico' };
+  const righe = r.righe.map((x) => ({ id: x.id, nome: x.nome, qta: +x.qta, pre: +x.prezzo, bott: +x.prezzo }));
+  const tot = +r.totale || righe.reduce((s, x) => s + x.qta * x.pre, 0);
+  salvaLocale(r.codice, d, righe, tot, false);
+  RIC = { codice: r.codice };
+  mostraEsito(r.codice, d, righe, tot, false, true, r.stato, r.pagatoIl);
+}
+
 RIC = leggiLocale();
 ricordo();
 conto();
 setInterval(conto, 60000);
 agg();
+riapri();
